@@ -1,6 +1,4 @@
-\documentclass[a4paper]{article}
-
-\usepackage[margin=2cm]{geometry}
+\documentclass[pl]{minipw/minipw}
 
 \usepackage{polski}
 \usepackage{xltxtra}
@@ -24,23 +22,42 @@
 \usepackage{fontspec}
 \usepackage{fontawesome}
 
+%-------------------------------------------------------------------------------
+% Konfiguracja klasy `minipw`
+\setboolean{lady}{false} % kobiety wpisują true, mężczyźni - false
+\title{Area lighs in computer games}
+\titleaux{Światła powierzchniowe w grach komputerowych}
+\type{magisters}
+\discipline{Informatyka}
+\specjal{Projektowanie systemów CAD/CAM}
+\author{Kamil Sienkiewicz}
+\album{254210}
+\supervisor{dr~inż. Joanna Porter}
+\date{2017}
+\klucze{światła, pbr}
+\keywords{k1, k2}
+%-------------------------------------------------------------------------------
+
 \begin{document}
+\sloppy
+\setcounter{page}{1}
 
-\begin{titlepage}
-  \centering
-  {\Large Politechnika Warszawska\par}
-	\vspace{5cm}
-  {\LARGE Światła powierzchniowe w grach komputerowych\par}
-	\vspace{1.5cm}
-  {\large Kamil Sienkiewicz\par}
-  \vspace{1.5cm}
-  {\LARGE WERSJA ROBOCZA\par}
-	\vfill
-  {promotor: dr Joanna Porter\par}
-  {Wygenerowano \today\par}
-\end{titlepage}
+% TODO: Odkomentować i uzupełnić przed oddaniem pracy.
+%\begin{streszczenie}
+%Streszczenie
+%\end{streszczenie}
 
+%\begin{abstract}
+%Abstract
+%\end{abstract}
+
+%\makestatement
+
+\cleardoublepage
 \tableofcontents
+
+\cleardoublepage
+\pagestyle{fancy}
 
 \subfile{source/ch01_introduction}
 \subfile{source/ch02_pbr}

@@ -1,9 +1,9 @@
 \documentclass[../main.tex]{subfiles}
 
 \begin{document}
-\section{Physically Based Rendering}
+\chapter{Physically Based Rendering}
 
-\subsection{Wstęp}
+\section{Wstęp}
 
 Rozważania na temat modelu zgodnego z fizyką rozpoczniemy od zrozumienia w jaki
 sposób wiązka światła zachowuje się po zderzeniu z idealnie równą powierzchnią.
@@ -112,7 +112,7 @@ $$
 
 Powyższe równanie nazywamy równaniem renderingu (ang. *render equatiton*).
 
-\subsection{Podstawowe pojęcia radiometryczne}
+\section{Podstawowe pojęcia radiometryczne}
 
 Rozpocznijmy od podstawowego budulca wiązki światła - fotonu. Energia fotonu
 o długości fali $\lambda$ może zostać policzona ze wzoru
@@ -180,7 +180,7 @@ obszar zawierający obiekt $G$. Miarą kąta planarnego jest *radian* (rad).
     \coordinate (right) at (5,2);
     \draw (2,1) -- (left) -- (2,4) -- (right) -- (2,1);
     \draw [dashed] (left)--(orig)--(right);
-    \draw pic[draw=red, <->, "$\theta$", angle eccentricity=1.5] {angle = right--orig--left};
+    %\draw pic[draw=red, <->, "$\theta$", angle eccentricity=1.5] {angle = right--orig--left};
   \end{tikzpicture}
   \caption{Kąt planarny obiektu geometrycznego}
   \label{fig:PlanarAngle}
@@ -235,7 +235,7 @@ irradiancji powierzchni na której leży $p$, ma to na celu wyeliminowanie
 czynnika $\cos \alpha$ z definicji cite:3, p.339. Jednstką radiancji jest "flux
 density" na jednostkę powierzchni na jednostkę kąta bryłowego.
 
-\subsection{Reflectance equation}
+\section{Reflectance equation}
 
 BRDF $f_r(p, \omega_o, \omega_i)$
 

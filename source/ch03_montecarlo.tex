@@ -1,7 +1,7 @@
 \documentclass[../main.tex]{subfiles}
 
 \begin{document}
-\section{Metoda Monte Carlo}
+\chapter{Metoda Monte Carlo}
 
 Równanie renderingu (ang. *render equation*) w danym punkcie ma postać:
 
@@ -37,7 +37,7 @@ Metody przybliżające wartość całki zostaną opisane w kolejnych rozdziałac
 jednak wiedza na temat rozwiązania dokładnego przyda nam się do zrozumienia
 kolejnych metod.
 
-\subsection{Metoda Monte Carlo}
+\section{Metoda Monte Carlo}
 
 Całkowanie funkcji renderingu
 
@@ -92,7 +92,7 @@ $$
 
 gdzie, $x=(x_1, \ldots, x_n)$ jest zbiorem $n$ próbek zmiennej losowej $X$.
 
-\subsection{Metoda iteracyjna}
+\section{Metoda iteracyjna}
 
 Metoda Monte-Carlo ze względu na swoją złożoność obliczeniową nie umożliwia
 uzyskania rezultatu w czasie rzeczywistym. Możliwość operowania sceną,
@@ -159,9 +159,9 @@ for i = 1..max_batches:
     .. opisac algorytm dalej albo skpiowac z kodu ..
 \end{lstlisting}
 
-\subsection{Importance Sampling}
+\section{Importance Sampling}
 
-\subsection{Low-discrepancy sequence}
+\section{Low-discrepancy sequence}
 
 Ciągi o niskim *discrepancy* są bardzo istotne w generowaniu próbek używanych
 do importance samplingu.
@@ -169,6 +169,6 @@ do importance samplingu.
 Niestety, komputerowe generowanie wartości z przedziału $(0,1)$ w większości
 przypadków nie da nam wystarczająco jednakowej
 
-\subsubsection{Halton sequence}
+\subsection{Halton sequence}
 
 \end{document}

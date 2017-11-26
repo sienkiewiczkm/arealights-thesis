@@ -1,7 +1,7 @@
 \documentclass[../main.tex]{subfiles}
 
 \begin{document}
-\section{Liniowo przekształcony rozkład kosinusowy}
+\chapter{Liniowo przekształcony rozkład kosinusowy}
 
 Do rozwiązania problemu świateł powierzchniowych można podejść w inny sposób,
 autorzy \cite{ltc_heitz} zaproponowali znalezienie przybliżenie wyrażenia
@@ -258,7 +258,7 @@ ale powoduje to problemy z interpolacją między poszczególnymi przekształceni
 w stanach pośrednich, w prezentacji \cite{LTCJourneyPresentation} można znaleźć
 wyjaśnienie i przykłady problemów niesionych przez te rozwiązanie.
 
-\subsection{Dopasowywanie rozkładu}
+\section{Dopasowywanie rozkładu}
 
 W celu dopasowania przekształcenia liniowego dla danych $\alpha$
 i $\theta$ wykorzystamy algorytm pływającego sympleksu \cite{NelderMead65}.
@@ -376,7 +376,7 @@ Wprowadzimy dodatkowe założenie, że parametry $a$ i $b$ są dodatnie, ze wzgl
 na to, że ujemny parametr będzie oznaczał odbicie lustrzane względem osi.
 W ten sposób również zagwarantujemy sobie poprawność znalezionego rozwiązania.
 
-\subsubsection{Metoda pływającego sympleksu}
+\section{Metoda pływającego sympleksu}
 
 Zdefiniujmy nasz problem w postaci problemu optymalizacyjnego. Chcielibyśmy
 zminimalizować funkcję $f(a,b,c)$, będącą miarą różnicy (błędu) absolutnej
