@@ -1,0 +1,89 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\section{Wstęp}
+
+W początkach lat 2000 najpopularniejszym modelem wykorzystywanym w grach był
+model Blinna-Phonga, który nie wymagał dużej mocy obliczeniowej do oświetlenia
+nawet złożonych scen.
+
+Model Blinna możemy opisać wzorem:
+
+$$
+I(p) = k_a I_a + \sum_{m \in L} \left( {
+    k_d (L_m \cdot N) +
+    k_s (R_m \cdot V)^{\alpha} i_{m,s}
+} \right)
+$$
+
+Jak widać model bierze pod uwagę poniższe stałe opisujące materiał:
+- $k_a$ - współczynnik odbicia światła otoczenia
+- $k_d$ - współczynnik odbicia światła rozproszonego
+- $k_s$ - współczynnik odbicia światła lustrzanego
+
+Powyższe stałe zwykle zachowane są w postaci tekstury i wykorzystane prez kartę
+graficzną przy cieniowaniu konkretnego punktu.
+
+\subsection{PBR - raz dla każdego oświetlenia}
+
+Jednym z problemów prostych modeli oświetlenia jest to, że bardzo często nie
+wyglądają one naturalnie w różnych warunkach oświetlenia.
+
+Jak widać, kolor odbicia zależy w bardzo dużym stopniu od artysty i jego
+wyobrażenia o otoczeniu. Czasem obiekt, dla którego stworzone są tekstury
+wygląda bardzo dobrze w jednym otoczeniu, by w drugim wyglądać nienaturalnie.
+
+Zbudowany model może bardzo dobrze wyglądać na zewnątrz pośród trawy, lecz
+w słabo oświetlonej jaskini nie  będzie wyglądał naturalnie.
+
+Artysta nie musi zgadywać jaki kolor będzie odbity
+
+Podejście bazowane na fizyce umożliwia ominięcie etapu "wyobrażenia" jak to ma
+wyglądać, a jedynie opisać materiał z którego zbudowany jest obiekt, a resztę
+pozostawić równaniom.
+
+\subsection{Podstawowe zasady PBR}
+
+Kolejnym problemem prostych modeli jest brak zachowania podstawowych zasad
+fizycznych, a mianowicie:
+
+brak zachowania energii, punkt potrafi odbić więcej energii niż do niego
+dociera (czynnik odpowiedzialny za odbicie rozproszone nie jest związane
+z odbiciem lustrzanym)
+
+brak zachowania symetrii, tzn. inna ilość energii jest odbita po zamianie
+kierunku obserwacji i kierunku padania wiązki światła.
+
+Z tych powodów rozpoczęto poszukiwanie modeli możliwych fizycznie (*plausible*).
+
+Zbudowano modele takie jak:
+- General Trowbridge-Reitz (GTR)
+- jakies inne?
+
+W tych modelach jednak, ze względu na koszt obliczeniowy światła i w tych
+modelach pozostały teoretyczne źródła punktowe.
+
+Do uzyskania fotorealistycznego rezultatu nie wystarczy skompresować świateł do
+jednego punktu.
+
+Naturalne światła występujące w przyrodzie zawsze mają pewną niezerową
+powierzchnię.
+
+Budując fizycznie poprawny model, ważnym jest, aby uwzględnić kształt źródła
+światła (jego powierzchnię).
+
+Wiele źródeł sugeruje, że artyści budujący sceny w grach unikają stosowania
+materiałów o dużej refleksywności ze względu na nienaturalne odbicia źródeł
+punktowych \cite{pbr_frostbite} \cite{pbr_ue4}.
+
+Do uzyskania większej jakości obrazu wymagane jest porzucenie tego przybliżenia
+i opracowanie techniki umożliwiającej obliczenie wpływ światła na obserwatora
+wyemitowanego przez światło o pewnej powierzchni.
+
+Przetestowane metody:
+- przybliżenie powierzchni wieloma światłami punktowymi
+- przyrostowa metoda Monte-Carlo
+- liniowo transformowane cosinusy
+- punkt reprezentatywny (Unreal)
+
+\end{document}

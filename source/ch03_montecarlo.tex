@@ -1,0 +1,174 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\section{Metoda Monte Carlo}
+
+Równanie renderingu (ang. *render equation*) w danym punkcie ma postać:
+
+$$
+L_o(\omega_o) = \int_{\Omega} {
+    L(\omega_{l})
+    f_r(\omega_{v}, \omega_{l})
+    \cos \theta_{l}
+    d\omega_{l}
+}
+$$
+
+Większość obecnie produkowanych silników do gier używa uproszczenia
+polegającego na zastosowaniu świateł punktowych, stąd natężenie światła
+przychodzącego jest niezerowe tylko w kierunkach będących znormalizowanymi
+wektorami między oświetlanym punktem a każdym z aktywnych świateł w scenie.
+Powoduje to redukcję całki równania oświetlenia do sumy skończonej:
+
+$$ L_o = \sum_{l \in L} L(\omega_l) f_r(\omega_v, \omega_l)\cos \theta_l $$
+
+Obliczenie powyższej sumy, nie jest wyzwaniem dla obecnych kart graficznych
+nawet dla większej liczby świateł, szczególnie przy zastosowaniu specjalnych
+technik zmniejszających wymaganą liczbę operacji do minimum, np. *deferred
+shading*.
+
+W przypadku świateł zajmujących ciągły fragment dziedziny sferycznej, całka nie
+może zostać w bezpośredni sposób uproszczona do postaci sumy skończonej bez
+utraty dokładności. Niestety również dla większośći funkcji $L$, $\rho$
+rozwiązanie dokładne nie będzie możliwe do znalezienia w ograniczonym czasie
+wymaganym do zachowania płynności aplikacji.
+
+Metody przybliżające wartość całki zostaną opisane w kolejnych rozdziałach,
+jednak wiedza na temat rozwiązania dokładnego przyda nam się do zrozumienia
+kolejnych metod.
+
+\subsection{Metoda Monte Carlo}
+
+Całkowanie funkcji renderingu
+
+$$
+\int{
+    L_i(l)
+    \rho(l,v)
+    \cos \theta_{l}
+    \:dl
+} $$
+
+nie jest prostym zadaniem do wykonania. Z pomocą przychodzi metoda przybliona
+Monte Carlo bazująca na rachunku prawdopodobieństwa i prawie wielkich liczb.
+
+Metoda dokładnie opisana jest w publikacjach \cite{MonteCarloAnderson}
+\cite{Veach}.
+
+Definicje zmiennych losowych? Może to przesada.
+
+Definicja dystrybuanty (ang. *cumulative distribution function, CDF*):
+
+$$
+P(x) = Pr \{ X \leq x \}
+$$
+
+Definicja funkcji gęstości prawopodobieństwa (ang. *probability density
+function, PDF*):
+
+$$
+f_{X}(x) = \frac{dP}{dx}(x)
+$$
+
+Weżmy funkcję gęstości prawdopobieństwa $f_X$ (ang. *probability density
+function*) ciągłej zmiennej losowej $X$. Wartość oczekiwana funkcji $g$ na
+ciągłej zmiennej losowej $X$ wynosi:
+
+$$
+\mathbf{E}(g(x)) =
+\int_{X}{
+    g(x) f_{X}(x)
+    \:dx
+}
+$$
+
+Estymatorem Monte Carlo (?) przybliżającym wartość $\mathbb{E}(g(x))$ nazywamy:
+
+$$
+\widetilde{g_n}(x) =
+    \frac{1}{n}
+    \sum_{i=1}^{n}g(x_i)
+$$
+
+gdzie, $x=(x_1, \ldots, x_n)$ jest zbiorem $n$ próbek zmiennej losowej $X$.
+
+\subsection{Metoda iteracyjna}
+
+Metoda Monte-Carlo ze względu na swoją złożoność obliczeniową nie umożliwia
+uzyskania rezultatu w czasie rzeczywistym. Możliwość operowania sceną,
+precyzyjnego ustawienia kamery i obiektów nie jest łatwe w takim środowisku.
+Czasami nie potrzebujemy również bardzo dużej szczegółowości, czasem wystarczy
+nam konkretna ilość iteracji do znalezienia problemu i głównych różnic.
+
+Wygodnym komromisem jest podzielenie obliczeń na wiele etapów, z których każdy
+może zostać wyświetlony jako częściowy podgląd.
+
+Spróbujmy zbudować ciąg podsum Monte-Carlo:
+
+$$
+I_n = \frac{1}{n} \sum_{i=1}^{n} f(x_i)
+$$
+$$
+I_{n+1} = \frac{1}{n+1} \sum_{i+1}^{n+1}f(x_i)
+= \frac{n}{(n+1)n} \sum_{i=1}^{n}f(x_i) + \frac{1}{n+1}f(x_{n+1})
+= \frac{n}{n+1} I_{n} + \frac{1}{n+1}f(x_{n+1})
+$$
+
+Dodatkowy czas potrzebny na przygotowanie ramki, policzenie sumy ważonej
+i wyświetlenie rezultatu na ekranie sprawia, że uzyskamy szybszą zbieżność bez
+zauważalnego spadku wydajności przez zgrupowanie próbkek w pakiety, które mogą
+zostać potencjalnie policzone jednocześnie. Okazuje się, że rozpisanie
+analogicznego równania dla paczek danego, stałego rozmiaru jest trywialny:
+
+$$
+I_{(m+1)n} = \frac{1}{(m+1)n} \sum_{i=1}^{(m+1)n} f(x_i)
+= \frac{1}{(m+1)n} \sum_{i=1}^{mn} f(x_i)
+    + \frac{1}{(m+1)n} \sum_{i=mn+1}^{(m+1)n} f(x_i) =
+$$
+$$
+= \frac{m}{(m+1)mn} \sum_{i=1}^{mn} f(x_i)
+    + \frac{1}{(m+1)n} \sum_{i=mn+1}^{(m+1)n} f(x_i)
+= \frac{m}{m+1}I_{mn}
+    + \frac{1}{m+1} \left(
+        \frac{1}{n} \sum_{i=mn+1}^{(m+1)n} f(x_i)
+    \right)
+$$
+
+Powyższe obliczenie sumy ważonej może zostać zrealizowane za pomocą sprytnie
+zbudowanego łańcucha *framebufferów* i obliczone za pomocą wspartego sprzętowo
+mechanizmu łączenia kolorów (ang. *blending*). Obecna partia musi zostać
+obliczona do jednego z buforów oraz skopiowana z włączonym *blendingiem* do
+drugiego bufora. Można zastosować uproszczenie, w którym wykorzystamy tylko
+jeden bufor, ale czasami ze względu na istnienie wielu świateł i wybraną
+technikę (np. *deferred shading*) może być koniecznie zastosowanie dwóch
+buforów.
+
+\begin{lstlisting}
+total_batches = 0
+partial_result = create_framebuffer<float>()
+current_result = create_framebuffer<float>()
+clear_framebuffer(current_result)
+for i = 1..max_batches:
+    clear_framebuffer(partial_result)
+    set_framebuffer(partial_result)
+    render_scene_montecarlo(num_samples)
+
+    set_blend(add)
+    set_src_const(i / )
+
+    .. opisac algorytm dalej albo skpiowac z kodu ..
+\end{lstlisting}
+
+\subsection{Importance Sampling}
+
+\subsection{Low-discrepancy sequence}
+
+Ciągi o niskim *discrepancy* są bardzo istotne w generowaniu próbek używanych
+do importance samplingu.
+
+Niestety, komputerowe generowanie wartości z przedziału $(0,1)$ w większości
+przypadków nie da nam wystarczająco jednakowej
+
+\subsubsection{Halton sequence}
+
+\end{document}
