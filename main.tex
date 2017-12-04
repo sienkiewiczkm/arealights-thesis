@@ -1,5 +1,10 @@
 \documentclass[pl]{minipw/minipw}
 
+% https://tex.stackexchange.com/a/166775
+\usepackage{babel}
+
+\usepackage{url}
+
 \usepackage{polski}
 \usepackage{xltxtra}
 
@@ -18,9 +23,14 @@
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
 \usetikzlibrary{arrows.meta,angles,quotes}
+\usetikzlibrary{intersections}
+\usetikzlibrary{babel}
 
 \usepackage{fontspec}
 \usepackage{fontawesome}
+
+\usepackage{graphicx}
+\graphicspath{ {illustrations/} }
 
 %-------------------------------------------------------------------------------
 % Konfiguracja klasy `minipw`
@@ -59,7 +69,7 @@
 \cleardoublepage
 \pagestyle{fancy}
 
-\subfile{source/ch01_introduction}
+%\subfile{source/ch01_introduction}
 \subfile{source/ch02_pbr}
 \subfile{source/ch03_montecarlo}
 \subfile{source/ch04_ltc}
