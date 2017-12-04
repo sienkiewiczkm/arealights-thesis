@@ -241,29 +241,7 @@ powierzchnię.
 
 \begin{figure}[h]
   \centering
-  \begin{tikzpicture}
-    \draw [thick, name path=surface]
-      (-2.5,0.8) -- (-2.0,0.4) -- (-1.5,0.7) -- (-1.0,0.2) -- (-0.5,0.5) --
-      (0.0,0.1) --
-      (0.5,0.8) -- (1.0,0.2) -- (1.5,0.8) -- (2.0,0.7) -- (2.5,0.3);
-
-		\foreach \i in {-3.00,-2.50,...,1.5} {
-			\coordinate (rayOrigin) at ($ (\i,0)+(40:3) $);
-			\coordinate (rayTarget) at (\i,0);
-
-			\path [name path=ray] (rayOrigin)--(rayTarget);
-			\draw [name intersections={of=surface and ray, by=x, sort by=ray}];
-
-			\draw [dotted, thick, orange] (rayOrigin)--(rayTarget);
-			\draw [very thick, orange] (rayOrigin)--(x);
-		}
-
-    \draw [thick, name path=surface]
-      (-2.5,0.8) -- (-2.0,0.4) -- (-1.5,0.7) -- (-1.0,0.2) -- (-0.5,0.5) --
-      (0.0,0.1) --
-      (0.5,0.8) -- (1.0,0.2) -- (1.5,0.8) -- (2.0,0.7) -- (2.5,0.3);
-
-  \end{tikzpicture}
+  \includegraphics{illustrations/pbr/geometry_shadowing.pdf}
   \vspace{0.25cm}
   \caption{Samozacienianie wewnątrz mikropowierzchni}
 	\label{fig:GeometricShadowing}
@@ -287,30 +265,31 @@ relację są:
 	\caption{Odwrócony współczynnik Fresnela, aproksymacja Schlicka}
 \end{figure}
 
-Modele GTR (General Trowbridge-Reitz) i inne bazują na podejściu
-mikropowierzchni z których każda zachowuje się jak powierzchnia idealna. Modele
-te, szacują statystycznie jaka część promieni przybywająca z kierunku $w_i$
-zostanie odbita w zadanym kierunku $w_o$. Funkcję tą, którą dalej będziemy
-nazywać funkcją *BRDF* (ang. *bidirectional reflectance distribution
-function*).
+Popularne modele zgodne z teorią fizyczną biorą pod uwagę powyższe zjawiska i
+poprzez modelowanie powierzchni mikropowierzchniami, gdzie każda zachowuje się
+jak powierzchnia idealnie płaska. Modele te, szacują statystycznie jaka część
+promieni przybywająca z kierunku $w_i$ zostanie odbita w zadanym kierunku
+$w_o$. Funkcję tą, którą dalej będziemy nazywać funkcją \textit{BRDF} (ang.
+\textit{bidirectional reflectance distribution function}).
 
-Całość odbitego światła w kierunku $w_o$ oznaczymy przez:
+Zakładając, że funkcja \textit{BRDF} $f_r$ jest znana to całość odbitego
+światła w kierunku $w_o$ równa będzie:
 
-$$
+\[
 L_0 = \int_{\Omega} {
     f_r(p, \omega_i, \omega_o)
     L_i(w_i)
     (n \cdot \omega_i)
     d \omega_i
 }
-$$
+\]
 
-Powyższe równanie nazywamy równaniem renderingu (ang. *render equatiton*).
+Powyższe równanie nazywamy równaniem renderingu (ang. \textit{render equatiton}).
 
 \section{Podstawowe pojęcia radiometryczne}
 
 Rozpocznijmy od podstawowego budulca wiązki światła - fotonu. Energia fotonu
-o długości fali $\lambda$ może zostać policzona ze wzoru
+o długości fali $\lambda$ może zostać policzona ze wzoru:
 
 $$ Q = \frac{hc}{\lambda} $$
 
@@ -383,12 +362,19 @@ obszar zawierający obiekt $G$. Miarą kąta planarnego jest *radian* (rad).
 \end{figure}
 
 Kąt bryłowy jest rozszerzeniem kąta planarnego do trzech wymiarów. Kątem
-bryłowym $s$ nazywamy powiechnię rzutu trójwymiarowego obiektu geometrycznego
-$G$ na sferę jednostkową o środku w punkcie $p$. Kąt bryłowy mierzony jest
-w *steradianach* (sr). Kąt bryłowy całej sfery jednostkowej wynosi
+bryłowym $A$ nazywamy powiechnię rzutu trójwymiarowego obiektu geometrycznego
+$G$ na sferę jednostkową o środku w punkcie $p$. Kąt bryłowy mierzony jest w
+\textit{steradianach} (\textit{sr}). Kąt bryłowy całej sfery jednostkowej
+wynosi
   $4\pi \:{sr}$.
 
-***(obrazek kąta bryłowego)***
+% Rysunek kąta bryłowego
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=5cm]{pbr/solid_angle.png}
+  \caption{Kąt bryłowy powierzchni}
+  \label{fig:SolidAngle}
+\end{figure}
 
 Kolejną miarą energii jest *intensywność*. Intensywność jest miarą rozkładu
 gęstości mocy światła na kierunkach cite p.~328 pbrt. Warto na wstępie
