@@ -5,12 +5,14 @@
 
 \section{Wstęp}
 
-W początkach lat 2000 najpopularniejszym modelem wykorzystywanym w grach był
-model Blinna-Phonga, który nie wymagał dużej mocy obliczeniowej do oświetlenia
-nawet złożonych scen. Model ten możemy opisać prostym równaniem:
+W początkach lat 2000 ze względu na ograniczenia techniczne najpopularniejszym
+modelem wykorzystywanym w grach był model Blinna-Phonga, który nie wymagał
+dużej mocy obliczeniowej do oświetlenia nawet złożonych scen. Model ten
+korzystał z kilku podstawowych zasad geometrycznych do opisu oświetlenia.
+Równanie Blinna-Phonga opisane jest prostym równaniem:
 
 \[
-	I(p) = k_a I_a +
+	I(p) = k_e + k_a I_a +
 		\sum_{m \in L} \left( {
 			k_d \max\left({ L_m \cdot H, 0 }\right) +
 			k_s (R_m \cdot V)^{\alpha} i_{m,s}
@@ -19,43 +21,73 @@ nawet złożonych scen. Model ten możemy opisać prostym równaniem:
 
 gdzie $ H = \frac{V+L}{||V+L||} $.
 
-Jak widać model bierze pod uwagę poniższe stałe opisujące materiał:
+W równaniu pojawiają się pewne dobrane przez artystę stałe materiałowe
+opisujące dany punkt na powierzchni, a mianowicie:
 
 \begin{itemize}
-\item $k_a$ - współczynnik odbicia światła otoczenia
-\item $k_d$ - współczynnik odbicia światła rozproszonego
-\item $k_s$ - współczynnik odbicia światła lustrzanego
+\item $k_e$ - współczynnik będący ilością światła wyemitowanego w punkcie,
+  opisuje on ilość wysłanej energii z punktu, wartość ta nie jest zależna
+  od żadnego innego czynnika, współczynnik ten może pomóc w modelowaniu
+  żarzącego się metalu, diód na urządzeniach elektronicznych itp.
+
+\item $k_a$ - współczynnik odbicia światła otoczenia określa jaka część swiatła
+  pochodzącego z otoczenia jest odbita do obserwatora, w starszych grach źródłem
+  światła z otoczenia były tzw. mapy środowiskowe (ang. \textit{environment
+  maps});
+
+\item $k_d$ - współczynnik odbicia światła rozproszonego określa ilość światła
+  odbitego równomiernie w każdym kierunku (ilość odebranego światła przez
+  obserwatora jest niezależna od kąta obserwacji), wartość ta opisuje generalnie
+  kolor materiału
+
+\item $k_s$ - współczynnik odbicia światła lustrzanego, opisuje on kolor światła
+  odbitego od powierzchni, decyduje on o kolorze refleksów
+
 \end{itemize}
 
 Jak widać, powyższe stałe są tak naprawde kolorami różnych typów interakcji
-wiązki światła z powierzchnią. Kolor odbicia zależy w bardzo dużym stopniu od
-artysty i jego wyobrażenia o zachowaniu światła w danym środowisku, nie wynika
-on jasno z właściwości materiału, lecz zwykłego domysłu jak poszukiwany
-materiał się zachowa i w jaki sposób będzie połyskiwał. Doprowadza to sytuacji,
-w których obiekt, dla którego stworzone są tekstury może wyglądać bardzo dobrze
-w jednym otoczeniu, by w drugim wyglądać nienaturalnie: zaprojektowany model
-wraz z mapami może bardzo dobrze prezentować się na zewnątrz pośród trawy, lecz
-w słabo oświetlonej jaskini nie będzie sprawiał wrażenia naturalnego, wrażenia
-istnienia w i razem z tym miejscem. Zatem jednym z głównych problemów prostych
-modeli oświetlenia jest to, że bardzo często nie wyglądają one naturalnie w
-różnych warunkach oświetlenia.
+wiązki światła z pewnych źródeł z powierzchnią. Kolor odbicia zależy w bardzo
+dużym stopniu od artysty i jego wyobrażenia o zachowaniu światła w danym
+środowisku, nie wynika on jasno z właściwości materiału, lecz zwykłego domysłu
+jak poszukiwany materiał się zachowa i w jaki sposób będzie połyskiwał.
+
+Doprowadza to sytuacji, w których obiekt, dla którego stworzone są tekstury
+może wyglądać bardzo dobrze w jednym otoczeniu, by w drugim wyglądać
+nienaturalnie: zaprojektowany model wraz z mapami może bardzo dobrze
+prezentować się na zewnątrz pośród trawy, lecz w słabo oświetlonej jaskini nie
+będzie sprawiał wrażenia naturalnego, wrażenia istnienia w i razem z tym
+miejscem. Zatem jednym z głównych problemów prostych modeli oświetlenia jest
+to, że bardzo często nie wyglądają one naturalnie w różnych warunkach
+oświetlenia.
 
 Podejście PBR wychodzi naprzeciw oczekiwaniom i rozwiązuje ten problem tworząc
 podejścia tworzenia sceny w którym operujemy na faktycznym opisie materii, nie
 na domysłach i zmyśle artystycznym, przekładając odpowiedzialność za poprawny
-wygląd w dowolnej scenie na modele matematyczne.
+wygląd w dowolnej scenie na modele matematyczne. Opis staje się niezależny od
+oświetlenia co jest dużym zyskiem w procesie produkcyjnym.
 
 Kolejnym problemem prostych modeli oświetlenia jest brak zachowania
 podstawowych zasad fizycznych, w tym zasady zachowania energii. Ze względu na
-prostą strukturę równania Blinna-Phonga, nie jest możliwa kontrola jaka część
-energii zostaje rozproszona, a jaka odbita. Bez ingerencji artysty (lub
-programisty) często dochodzi do sytuacji w której refleksy są prześwietlone w
-wyniku "wygenerowania" energii przez obszar powierzchni - w miejscu w którym
-więcej światła ulega odbiciu, mniej światła może może ulec rozproszeniu. Model
-nie bierze tego zjawiska pod uwagę przez co powstają nienaturalne refleksy.
+prostą strukturę równania Blinna-Phonga, nie jest możliwa precyzyjna kontrola
+jaka część energii zostaje rozproszona, a jaka odbita. Bez ingerencji artysty
+(lub programisty) często dochodzi do sytuacji w której refleksy są
+nienaturalne, prześwietlone w wyniku wygenerowania energii przez obszar
+powierzchni. Jest to skutkiem braku ograniczenia, że suma energii wychodzącej
+musi być mniejsza od energii przychodzącej (ignorując zjawisko emisji światła
+przez rozżarzony metal, żarówki i inne). W obszarze w którym więcej światła
+ulega odbiciu, mniej światła może może ulec rozproszeniu.
 
-Model Blinna-Phonga również nie jest w stanie obsłużyć wielu materiałów,
-w tym metali, które cechują się pełną absorpcją światła załamanego.
+Model Blinna-Phonga również nie jest w stanie realistycznie obsłużyć wielu
+typów materiałów, w tym metali, które cechują się pełną absorpcją światła
+załamanego. W takim przypadku dokładny model zachowania światła odbitego ma
+bardzo duże znaczenie dla końcowego wyglądu sceny.
+
+Minusem bardziej zaawansowanych modeli oświetlenia jest ich zapotrzebowanie na
+moc obliczeniową. Przeprowadzenie wymaganych obliczeń wymaga kilkukrotnie
+większej ilości operacji, modele opisane w tym rozdziale w większości powstały
+w latach 80, jednak ich użycie nie było możliwe przez wiele lat w aplikacjach
+czasu rzeczywistego. Obecny sprzet jednak pozwala nam na zastosowanie ich bez
+dużego kosztu wydajności.
 
 \section{Analiza geometryczna wiązki światła}
 
