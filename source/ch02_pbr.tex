@@ -91,32 +91,58 @@ dużego kosztu wydajności.
 
 \section{Analiza geometryczna wiązki światła}
 
-Rozważania na temat modelu zgodnego z fizyką rozpoczniemy od zrozumienia natury
-wiązki światła. Sposób w jaki wiązka światła zachowuje się po zderzeniu z
-idealnie równą powierzchnią jest fundamentem całej dziedziny metod poprawnych
-fizycznie.
+Rozważania na temat modelu zgodnego z fizyką rozpoczniemy od analizy natury
+wiązki światła. Zrozumienie sposobu w jaki wiązka światła zachowuje się po
+zderzeniu z idealnie równą powierzchnią jest fundamentem całej dziedziny metod
+poprawnych fizycznie.
 
-Wiązka światła uderzająca w powierzchnię rozdziela się na dwie części, poprzez
-dwa zjawiska: odbicie oraz refrakcję.
+Światło jest falą o pewnej długości $\lambda$, fale o różnej długości tworzą
+wiązkę światła. Widmo optyczne (spektrum) jest rozkładem długości fal danej
+wiązki. Naturalne wiązki światła posiadają nieskończoną ilość długości fal,
+jednak w grafice komputerowej stosuje się przybliżenie trzema długościami fal
+które odpowiadają trzem kolorom: czerwonemu (ang. red, R), zielonemu (ang.
+green, G) i niebieskiemu (ang. blue, B).
 
-Część energii wiązki światła odbija się, jest ona wysłana na zewnątrz obiektu
-bez wchodzenia w jego materię.
+Światło może poruszać się w różnego rodzaju ośrodkach w powietrzu, soku, mleku,
+skórze czy plastiku.
+
+Najprostszym medium jest medium jednorodne, które ma jednorodną strukturę
+wewnętrzną (atomową) na skutek czego prędkość światła w każdym punkcie i w
+każdym kierunku jest jednakowa. W takim przypadku światło w ośrodku porusza się
+w linii prostej, przykładem może być próżnia. Mimo braku zmiany kierunku w
+niektórych ośrodkach które możemy uważać za jednorodne następuje utrata energii
+na skutek absorpcji wynikającej ze zderzeń z atomami materii.
+
+Ośrodkiem niejednorodnym nazywamy ośrodek o niejednorodnej strukturze, w którym
+prędkość światła jest zależna od kierunku lub badanego miejsca. Ze względu na
+to, światło jest załamywane i w mocno niejednorodnych strukturach jest
+wymieszane co objawia się wymieszaniem światła (światło biegnie w losowych
+kierunkach).
+
+Wiązka światła podczas zderzenia z powierzchnią rozdziela się na dwie części:
+część odbitą od powierzchni oraz załamaną - część ze zmienionym kierunkiem ale
+wchodzącym do nowego ośrodka.
 
 Część energii, która została uległa refrakcji wchodzi wgłąb obiektu, gdzie
 zachodzą kolejne kolizje z atomami materii, przez co znów dochodzi do
 powyższego zjawiska, tym razem we wnętrzu obiektu. Część tego światła może
 wydostać się z obiektu i dotrzeć do obserwatora, pozostała część zostanie
-pochłonięta i zamieniona na inne rodzaje energii np. ciepło. Zauważmy, że
-energia która dociera do obserwatora musi być mniejsza lub równa energii wiązki
-światła - ta właściwość jest jednym z filarów podejścia fizycznie poprawnego.
+pochłonięta i zamieniona na inne rodzaje energii np. ciepło. Zauważmy, że w
+przypadku braku emisji energii energia która dociera do obserwatora musi być
+mniejsza lub równa energii wiązki światła - ta właściwość jest jednym z filarów
+podejścia fizycznie poprawnego. W przypadku metali jednak, światło które trafi
+do wnętrza takiego obiektu zostaje bardzo szybko zaabsorbowane. Energia światła
+zostaje zamieniona na inny jej rodzaj przez wolne elektrony w strukturze
+metalu.
 
 W modelach matematycznych wymienionych w tej pracy zakładamy, że ponowne
 wyjście energii która była poddana refrakcji następuje w tym samym punkcie, w
-którym promień zderzył się z powierzchnią (rys.
-\ref{fig:ReflectionRefraction}). Istnieją techniki które biorą pod uwagę
-możliwość ucieczki energii w innym miejscu, ale skomplikowałyby one rozważania
-na których skupia się ta praca.  (Subsurface scattering, renderowanie skóry
-itd.)
+którym promień zderzył się z powierzchnią (rys. \ref{fig:ReflectionRefraction}).
+
+Istnieją techniki które biorą pod uwagę możliwość ucieczki energii w innym
+miejscu, ale skomplikowałyby one rozważania na których skupia się ta praca
+(rozproszenie podpowierzchniowe wykorzystywane do renderowanie skóry, wosku i
+innego tego typu materiałów).
 
 \begin{figure}[ht]
   \centering
@@ -152,7 +178,6 @@ itd.)
     \draw pic[draw=black, <->, "$\beta$", angle eccentricity=1.5]
 			{angle = refraction--orig--invnormal};
 
-
     \node at (2.8,+0.25) {$n_1$};
     \node at (2.8,-0.25) {$n_2$};
 
@@ -162,22 +187,27 @@ itd.)
   \caption{Przybliżony model interakcji wiązki światła z powierzchnią}
 \end{figure}
 
-\textbf{Prawo odbicia} mówi, że kąty padania wiązki światła $\theta_i$ i jej
-odbicia $\theta_r$ od płaszczyznę są równe ($\theta_i = \theta_r$);
+Do określenia tego jak i ile światła ulegnie odbiciu lub załamaniu będziemy
+potrzebować kilku podstawowych praw fizycznych:
 
-\textbf{Prawo Snella} opisuje zmianę kierunku promienia światła przy przejściu
-przez granicę dwoma jednorodnymi ośrodkami o współczynnikach załamania $n_i$
-poniższym równaniem:
+\textbf{Prawo odbicia.}
+  Kąty padania wiązki światła $\alpha_i$ i jej odbicia $\alpha_r$ od
+  płaszczyznę są równe ($\alpha_i = \alpha_r$).
 
-\begin{displaymath}
-  \frac{\sin\alpha}{\sin\beta} =
-    \frac{n_2}{n_1} = n_{21}
-\end{displaymath}
+\textbf{Prawo Snella.}
+  Zmiana kierunku promienia światła przy przejściu przez granicę dwóch ośrodków
+  jednorodnych o współczynnikach załamania $n_1, n_2$ opisana jest równaniem:
 
-\textbf{Równania Fresnela} (ang. \textit{Fresnel equations}) opisują stosunek
-energii światła odbitego do światła załamanego, równania Fresnela również
-opisują przesunięcie fazowe fali światła, ale nie będziemy tego brali pod
-uwagę.
+  \begin{displaymath}
+    \frac{\sin\alpha}{\sin\beta} =
+      \frac{n_2}{n_1} = n_{21}
+  \end{displaymath}
+
+\textbf{Równania Fresnela.}
+  Stosunek energii wiązki światła odbietgo do światła załamanego opisany jest
+  równaniami Fresnela będących rozwiązaniem równań Maxwella dla fal świetlnych
+  przechodzących przez jednorodne ośrodki o różnych współczynnikach załamania
+  przez idealnie płaską granicę.
 
 % Rysunek odbicia z płaską powierzchnią (model uproszczony)
 \begin{figure}[h]
@@ -205,10 +235,23 @@ uwagę.
   \label{fig:ReflectionRefraction}
 \end{figure}
 
-W naturze żaden materiał jest idealnym lustrem, w odpowiednio dużym
-przybliżeniu zauważymy nierówności niedostrzegalne gołym okiem, a w odniesieniu
-do grafiki komputerowej nierówności są dużo mniejsze od pojedynczego piksela
-(rys. \ref{fig:Microstructure}).
+W naturze mało, który materiał jest optycznie idealnym lustrem (tak abyśmy
+mogli zastosować tutaj uproszczone równania Fresnela), w odpowiednio dużym
+przybliżeniu zauważymy nierówności niedostrzegalne gołym okiem, a jednocześnie
+wpływające na ogólny wygląd powierzchni (rys. \ref{fig:Microstructure}). Im
+większa jest nierówność powierzchni tym większy jest obszar do którego ta
+wiązka dociera. W związku z tym światło się bardziej miesza i refleksy są mniej
+wyraźne.
+
+Warto zauważyć, że nawet jeżeli wiązka światła odbija się w kierunku
+obserwatora nie oznacza to, że wyjdzie z otoczenia powierzchni i trafi do
+obserwatora. Mała nierówność może spowodować zasłonięcie obserwatora z
+perspektywy tego punktu i odbić się ponownie w zupełnie innym kierunku. Modele
+bazujące na mikropowierzchniach nie biorą pod uwagę odbić wielokrotnych.
+
+Możliwa jest również sytuacja odwrotna, w której dany punkt może być
+teoretycznie zobaczony przez obserwatora, ale światło nie dociera do tego
+punktu na skutek przysłaniania źródła światła.
 
 \begin{figure}[h]
   \centering
@@ -245,80 +288,7 @@ do grafiki komputerowej nierówności są dużo mniejsze od pojedynczego piksela
 	\label{fig:Microstructure}
 \end{figure}
 
-Zdefiniujmy teraz kilka funkcji, które pomogą nam w wymodelowaniu powyższych
-zjawisk.
-
-Funkcja rozkładu normalnych (ang. \textit{Normal Distribution Function, NDF})
-opisuje rozkład normalnych mikropowierzchni na pewnej powierzchni o
-współczynniku $\alpha$. Każda funkcja rozkładu normalnych w postaci
-znormalizowanej spełnia warunek \cite{NDFReed}:
-
-\[
-  \int_{\omega} {
-    D(\omega_i)
-    (n \cdot \omega_i)
-    d \omega_i
-  } = 1
-\]
-
-Przyciemnienie geometryczne (ang. \textit{Geometric Shadowing}) odpowiada za
-zjawiska rzucania cieni w obrębie mikropowierzchni, w związku z czym światło
-które pada pod pewnym kątem nie odbija się od całości powierzchni (ang.
-\textit{shadowing}, rys. \ref{fig:GeometricShadowing}) oraz zasłaniania
-promieni odbitych od powierzchni zmierzających do obserwatora przez inne
-elementy tej powierzchni w związku z czym światło odbite nie dociera w całości
-do obserwatora. W realnym świecie promień po takim zderzeniu nie znika, ale
-uproszczone modele traktują takie zachowanie jako absorpcję światła przez
-powierzchnię.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics{illustrations/pbr/geometry_shadowing.pdf}
-  \vspace{0.25cm}
-  \caption{Samozacienianie wewnątrz mikropowierzchni}
-	\label{fig:GeometricShadowing}
-\end{figure}
-
-Współczynnik Fresnela opisuje stosunek światła odbitego do światła załamanego
-na danej powierzchni pod danym kątem. Popularnymi modelami opisującymi tą
-relację są:
-
-\begin{itemize}
-\item aproksymacja Schlicka: $F = F_0 + (1 - F_0)(1-V \cdot H)^5$
-\item aproksymacja \textit{Spherical Gaussian} \cite{SphericalGaussianLegarde}:
-	$ F = F_0 +(1−F_0) 2^{
-		\left(−5.55473\left(V \cdot H\right)−6.98316\right) (V \cdot H)
-	} $
-\end{itemize}
-
-\begin{figure}[ht]
-	\centering
-  \includegraphics[width=3cm]{pbr/fresnel}
-	\caption{Odwrócony współczynnik Fresnela, aproksymacja Schlicka}
-\end{figure}
-
-Popularne modele zgodne z teorią fizyczną biorą pod uwagę powyższe zjawiska i
-poprzez modelowanie powierzchni mikropowierzchniami, gdzie każda zachowuje się
-jak powierzchnia idealnie płaska. Modele te, szacują statystycznie jaka część
-promieni przybywająca z kierunku $w_i$ zostanie odbita w zadanym kierunku
-$w_o$. Funkcję tą, którą dalej będziemy nazywać funkcją \textit{BRDF} (ang.
-\textit{bidirectional reflectance distribution function}).
-
-Zakładając, że funkcja \textit{BRDF} $f_r$ jest znana to całość odbitego
-światła w kierunku $w_o$ równa będzie:
-
-\[
-L_0 = \int_{\Omega} {
-    f_r(p, \omega_i, \omega_o)
-    L_i(w_i)
-    (n \cdot \omega_i)
-    d \omega_i
-}
-\]
-
-Powyższe równanie nazywamy równaniem renderingu (ang. \textit{render equatiton}).
-
-\section{Podstawowe pojęcia radiometryczne}
+\subsection{Podstawowe pojęcia radiometryczne}
 
 Rozpocznijmy od podstawowego budulca wiązki światła - fotonu. Energia fotonu
 o długości fali $\lambda$ może zostać policzona ze wzoru:
@@ -327,11 +297,11 @@ $$ Q = \frac{hc}{\lambda} $$
 
 gdzie $h$ jest stałą Plancka a $c$ prędkością światła.
 
-Strumień promieniowania (inaczej moc promieniowania, ang. *radiant flux*) to
-całkowita ilość energii przechodząca przez określoną powierzchnię w czasie
-jednostkowym. Powyższe pojęcie dotyczy wszystkich fal elektromagmetycznych,
-zatem jest ono poprawne również dla światła. Jednostką strumienia
-promieniowania jest Watt ($\text{W}$).
+Strumień promieniowania (inaczej moc promieniowania, ang. \textit{radiant
+flux}) to całkowita ilość energii przechodząca przez określoną powierzchnię w
+czasie jednostkowym. Powyższe pojęcie dotyczy wszystkich fal
+elektromagmetycznych, zatem jest ono poprawne również dla światła. Jednostką
+strumienia promieniowania jest Watt ($\text{W}$).
 
 $$
 \Phi = \lim_{\Delta t \rightarrow 0}{
@@ -339,7 +309,7 @@ $$
 }
 $$
 
-Irradiancją nazywamy strumień promieniowania na jednostkę powierzchni.
+Irradiancją nazywamy strumień promieniowania na jednostkę powierzchni:
 
 $$
 E(p) =
@@ -358,8 +328,17 @@ $$
 
 W tym miejscu warto zauważyć, że jeżeli powierzchnia $A$ jest nachylona do
 strumienia światła $\Phi$ pod pewnym kątem $\alpha$ to irradiancja zmienia się
-proporcjonalnie do czynnika $\cos \alpha$. Wynika to z geometrii **!dodać
-rysunek będący dowodem geometrycznym!**.
+proporcjonalnie do czynnika $\cos \alpha$. Wynika to z geometrii: obszar na
+który padają promienie emitowane przez źródło światła w kierunku prostopadłym
+do jego powierzchni jest zależny od kąta pod którym nachylona jest
+powierzchnia (rys. \ref{fig:SourceLightAngle}).
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=3cm]{pbr/sourcelightangle.png}
+  \caption{Wpływ kąta na powierzchnię na które oddziaływuje światło}
+  \label{fig:SourceLightAngle}
+\end{figure}
 
 W przypadku jednorodnym irradiancję możemy zdefiniować jako średnią moc
 promieniowania na pewnej skonczonej powierzchni $A$:
@@ -408,11 +387,11 @@ wynosi
   \label{fig:SolidAngle}
 \end{figure}
 
-Kolejną miarą energii jest *intensywność*. Intensywność jest miarą rozkładu
-gęstości mocy światła na kierunkach cite p.~328 pbrt. Warto na wstępie
-zauważyć, że intensywność ma sens tylko i wyłącznie dla teoretycznych świateł
-punktowych ze względu na sposób pomiaru kąta. Wartość tą możemy zdefiniować w
-następujący sposób:
+Kolejną miarą energii jest \textbf{intensywność}. Intensywność jest miarą
+rozkładu gęstości mocy światła na kierunkach \cite[p. 328]{pbrt}. Warto na
+wstępie zauważyć, że intensywność ma sens tylko i wyłącznie dla teoretycznych
+świateł punktowych ze względu na sposób pomiaru kąta. Wartość tą możemy
+zdefiniować w następujący sposób:
 
 $$
 I = \lim_{\Delta\omega \rightarrow 0} {
@@ -445,54 +424,130 @@ L(p, \omega) = \lim_{\Delta\omega \rightarrow 0} {
 $$
 
 Bardzo ważną obserwacją jest to, że radiancja nie jest mierzona względem
-irradiancji powierzchni na której leży $p$, ma to na celu wyeliminowanie
-czynnika $\cos \alpha$ z definicji cite:3, p.339. Jednstką radiancji jest "flux
-density" na jednostkę powierzchni na jednostkę kąta bryłowego.
+irradiancji powierzchni na której leży punkt $p$, ma to na celu wyeliminowanie
+czynnika $\cos \alpha$ z definicji \cite[p. 339]{pbrt}. Jednstką radiancji
+jest gęstość energii na jednostkę powierzchni na jednostkę kąta bryłowego.
+Radiancję możemy interpretować jako ilość światła wzdłuż jednego promienia.
+Radiancja jak i inne miary jest funkcją długości fali.
 
-\section{Reflectance equation}
+\subsection{BRDF}
 
-BRDF $f_r(p, \omega_o, \omega_i)$
+Zdefiniujmy teraz kilka funkcji, które pomogą nam w precyzyjnym wymodelowaniu
+powyższych zjawisk.
 
-- $\omega_i$ - kierunek przychodzący (od światła)
-- $\omega_o$ - kierunek wychodzący (do oka)
+Funkcja rozkładu normalnych (ang. \textit{Normal Distribution Function, NDF})
+opisuje rozkład normalnych mikropowierzchni na pewnej powierzchni o
+współczynniku $\alpha$. Konkretniej, funkcja \textit{NDF} $D(h)$ określa
+gęstość mikropowierzchni skierowanych w kierunku $h$, które potencjalnie mogą
+odbić światło w kierunku obserwatora (chyba, że zostanie przysłonięte lub
+całość światła zostanie załamana).
 
-*Light transport equation / Reflectance equation*:
+Każda funkcja rozkładu normalnych w postaci znormalizowanej spełnia warunek
+\cite{NDFReed}:
 
-$$
-L_o(p, \omega_o) =
-  L_e(p, \omega_o) +
-  \int_{\mathbb{S}^2} {
-    f(p, \omega_o, \omega_i)
-    L_i(p, \omega_i)
-    \cos \theta_i
-    d\omega_i
-  }
-$$
-
-- $f$ - BSDF
-- $L_e$ - wyemitowana radiancja z punktu $p$ w kierunku $\omega_o$
-
-$$
-L_o(\omega_v) = \int_{\Omega} {
-    f_r(\omega_l, \omega_v)
-    L_i(\omega_l)
-    (n \cdot l)
+\[
+  \int_{\omega} {
+    D(\omega_i)
+    (n \cdot \omega_i)
     d \omega_i
-}
-$$
+  } = 1
+\]
 
-Warunki PBR
+Zaciemnianie geometryczne (ang. \textit{Geometric Shadowing}) odpowiada za
+wspomniane wcześniej zjawiska rzucania cieni w obrębie mikropowierzchni, w
+związku z czym światło które pada pod pewnym kątem nie odbija się od całości
+powierzchni (ang. \textit{shadowing}, rys. \ref{fig:GeometricShadowing}) oraz
+zasłaniania promieni odbitych od powierzchni zmierzających do obserwatora przez
+inne elementy tej powierzchni w związku z czym światło odbite nie dociera w
+całości do obserwatora (ang. \textit{masking}). W realnym świecie promień po
+takim zderzeniu nie znika, ale uproszczone modele traktują takie zachowanie
+jako absorpcję światła przez powierzchnię.
 
-1. Odwracalność (ang. reciprocity):
+Współczynnik związany z zaciemnianiem geometrycznym oznaczymy przez $G(l,v,h)$.
+Wartość funkcji $G$ określa nam procent powierzchni skierowanych w kierunku
+$h$, które nie są zaciemnione lub zasłonięte.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{illustrations/pbr/geometry_shadowing.pdf}
+  \vspace{0.25cm}
+  \caption{Samozacienianie wewnątrz mikropowierzchni}
+	\label{fig:GeometricShadowing}
+\end{figure}
+
+Współczynnik Fresnela opisuje stosunek światła odbitego do światła załamanego
+na danej powierzchni pod danym kątem.
+
+Wartość tą opisuje funkcja $F(l,h)$, której wartość będzie odpowiadać
+procentowi światła, które zostało odbite. Zatem wartość tego współczynnika musi
+znajdować się w przedziale $[0,1]$. Ze względu na złożoność równań Fresnela
+koniecznym jest korzystanie z postaci przybliżonej. Popularnymi modelami
+opisującymi tą relację są:
+
+\begin{itemize}
+\item aproksymacja Schlicka: $F = F_0 + (1 - F_0)(1-V \cdot H)^5$,
+\item aproksymacja \textit{Spherical Gaussian} \cite{SphericalGaussianLegarde}:
+	$ F = F_0 +(1−F_0) 2^{
+		\left(−5.55473\left(V \cdot H\right)−6.98316\right) (V \cdot H)
+	} $
+\end{itemize}
+
+\begin{figure}[ht]
+	\centering
+  \includegraphics[width=3cm]{pbr/fresnel}
+	\caption{Odwrócony współczynnik Fresnela, aproksymacja Schlicka}
+\end{figure}
+
+Powyższe definicje umożliwają nam zbudowanie ogólnego modelu fizycznego
+biorącego pod uwagę podstawowe zjawiska zachodzące w mikropowierzchniach
+będących powierzchniami idealnie płaskimi.
+
+Modele te, szacują statystycznie jaka część promieni przybywająca z kierunku
+$w_i$ zostanie wysłana w zadanym kierunku $w_o$. Funkcję tę będziemy nazywać
+funkcją \textit{BRDF} (ang. \textit{bidirectional reflectance distribution
+function}).
+
+Aby funkcja BRDF była fizycznie możliwa musi spełniać dwa warunki. Po pierwsze,
+funkcja BRDF musi być niezależna od kolejności parametrów, odwrócenie
+wszystkich kierunków promieni powinno dać nam dokładnie ten sam wynik (ang.
+\textit{reciprocity}):
 	$f_r(\omega_l, \omega_v) = f_r(\omega_v, \omega_l)$
 
-2. Zachowanie energii
+Po drugie, funkcja BRDF nie może emitować więcej światła niż otrzymuje tzn.:
 
 $$
-\forall_{\omega_l}, \int_{\Omega} {
+\forall_{\omega_l} \int_{\Omega} {
     f_r(\omega_l, \omega_v)
-    (n \cdot \omega_v) d\omega_o
+    (n \cdot \omega_v) d\omega_o \leq 1
 }
 $$
+
+Funkcja BRDF zawiera część refleksyjną oraz część rozproszoną, większość modeli
+rozdziela je korzystając z równań Fresnela i opisuje w różny sposób.
+
+Część refleksyjna dla modeli korzystających z mikropowierzchni zapisana ogólnie
+wygląda w sposób następujący:
+
+\begin{displaymath}
+  f_{\mu} = \frac{
+    F(l,h) G(l,v,h) D(h)
+  }{
+    4 (n \cdot l) (n \cdot v)
+  }
+\end{displaymath}
+
+Zakładając, że konkretna funkcja \textit{BRDF} $f_r$ jest znana to całość
+odbitego światła w kierunku $w_o$ równa będzie:
+
+\[
+L_0 = \int_{\Omega} {
+    f_r(p, \omega_i, \omega_o)
+    L_i(w_i)
+    (n \cdot \omega_i)
+    d \omega_i
+}
+\]
+
+Powyższe równanie nazywamy równaniem renderingu (ang. \textit{render equation}).
 
 \end{document}
