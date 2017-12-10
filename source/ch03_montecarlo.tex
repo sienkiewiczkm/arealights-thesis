@@ -1,26 +1,28 @@
 \documentclass[../main.tex]{subfiles}
 
 \begin{document}
-\chapter{Metoda Monte Carlo}
+\chapter{Rozwiązywanie równania renderingu}
 
-Równanie renderingu (ang. \textit{render equation}) ma postać:
+\section{Wstęp}
 
-$$
-L_o(\omega_o) = \int_{\Omega} {
+Równanie renderingu (ang. \textit{render equation}) zawiera całkę postaci:
+
+\[
+  \int_{\Omega} {
     L(\omega_{l})
     f_r(\omega_{v}, \omega_{l})
     \cos \theta_{l}
     d\omega_{l}
-}
-$$
+  }
+\]
 
 Większość obecnie produkowanych silników do gier używa uproszczenia
 polegającego na zastosowaniu świateł punktowych, stąd natężenie światła
 przychodzącego jest niezerowe tylko w kierunkach będących znormalizowanymi
 wektorami między oświetlanym punktem a każdym z aktywnych świateł w scenie.
-Powoduje to redukcję całki równania oświetlenia do sumy skończonej:
+Powoduje to, że możemy zredukować powyższą całkę do sumy skończonej:
 
-$$ L_o = \sum_{l \in L} L(\omega_l) f_r(\omega_v, \omega_l)\cos \theta_l $$
+\[ \sum_{l \in L} L(\omega_l) f_r(\omega_v, \omega_l)\cos \theta_l \]
 
 Obliczenie powyższej sumy, nie jest wyzwaniem dla obecnych kart graficznych
 nawet dla większej liczby świateł, szczególnie przy zastosowaniu specjalnych
@@ -29,68 +31,74 @@ technik zmniejszających wymaganą liczbę operacji do minimum, np.
 
 W przypadku świateł zajmujących ciągły fragment dziedziny sferycznej, całka nie
 może zostać w bezpośredni sposób uproszczona do postaci sumy skończonej bez
-utraty dokładności. Niestety również dla większośći funkcji $L$, $\rho$
+utraty dokładności. Niestety również dla większośći funkcji $L$, $f_r$
 rozwiązanie dokładne nie będzie możliwe do znalezienia w ograniczonym czasie
 wymaganym do zachowania płynności aplikacji.
 
-Metody przybliżające wartość całki zostaną opisane w kolejnych rozdziałach,
-jednak wiedza na temat rozwiązania dokładnego przyda nam się do zrozumienia
-kolejnych metod.
+Metody stosujące niebezpośrednie podejście do wyznaczenia przybliżenia wartości
+tej całki zostaną opisane w kolenyhch rozdziałach. Wiedza na temat uzyskania
+przybliżenia oryginalnej całki przyda nam się do ich zrozumienia oraz
+weryfikacji poprawności.
 
 \section{Metoda Monte Carlo}
 
-Całkowanie funkcji renderingu
+Całkowanie czynnika równania renderingu:
 
 $$
-\int{
+\int_{\Omega} {
     L_i(l)
     \rho(l,v)
     \cos \theta_{l}
     \: dl
 } $$
 
-nie jest prostym zadaniem do wykonania. Z pomocą przychodzi metoda przybliona
-Monte Carlo bazująca na rachunku prawdopodobieństwa i prawie wielkich liczb.
+\noindent nie jest prostym zadaniem do wykonania. Z pomocą przychodzi metoda
+przybliona Monte Carlo bazująca na rachunku prawdopodobieństwa i prawie
+wielkich liczb. Metoda dokładnie opisana jest w publikacjach
+\cite{MonteCarloAnderson}\cite{Veach}.
 
-Metoda dokładnie opisana jest w publikacjach \cite{MonteCarloAnderson}
-\cite{Veach}.
-
+\vspace{1cm}
 \todo[inline]{Definicje zmiennych losowych? Może to przesada.}
+\vspace{1cm}
 
-Definicja dystrybuanty (ang. \textit{cumulative distribution function},
-\textit{CDF}):
-
-$$
-P(x) = Pr \{ X \leq x \}
-$$
-
-Definicja funkcji gęstości prawopodobieństwa (ang. \textit{probability density
-function}, \textit{PDF}):
+Dystrybuanta (ang. \textit{cumulative distribution function}, \textit{CDF})
+wyznacza prawodpodobieństwo, że zdarzenie losowe $\mathbb{X}$, które zachodzi
+ma wartość $\eta$ nie przekraczającą $x$.
 
 $$
-f_{X}(x) = \frac{dP}{dx}(x)
+F(x) = P(\mathbb{X} \leq x)
 $$
 
-Weżmy funkcję gęstości prawdopobieństwa $f_X$ ciągłej zmiennej losowej $X$.
-Wartość oczekiwana funkcji $g$ na ciągłej zmiennej losowej $X$ wynosi:
+Funkcją gęstości prawopodobieństwa (ang. \textit{probability density
+function}, \textit{PDF}) nazywamy pochodną dystrybuanty:
 
 $$
-\mathbf{E}(g(x)) =
-\int_{X}{
-    g(x) f_{X}(x)
-    \:dx
+f_{\mathbb{X}}(x) = \frac{dF}{dx}(x)
+$$
+
+Weżmy funkcję gęstości prawdopobieństwa $f_{\mathbb{X}}$ ciągłej zmiennej
+losowej $\mathbb{X}$. Wartość oczekiwana funkcji $g$ na ciągłej zmiennej
+losowej $\mathbb{X}$ wynosi:
+
+$$
+\mathbb{E}(g(x)) =
+\int_{\mathbb{X}}{
+  g(x) f_{\mathbb{X}}(x)
+  \: dx
 }
 $$
 
-Estymatorem Monte Carlo przybliżającym wartość $\mathbb{E}(g(x))$ nazywamy:
+Estymatorem Monte Carlo przybliżającym wartość $\mathbb{E}(g(x))$ opartym na
+prawie wielkich liczb nazywamy:
 
-$$
+\[
 \widetilde{g_n}(x) =
-    \frac{1}{n}
-    \sum_{i=1}^{n}g(x_i)
-$$
+  \frac{1}{n}
+  \sum_{i=1}^{n}g(x_i)
+\]
 
-gdzie, $x=(x_1, \ldots, x_n)$ jest zbiorem $n$ próbek zmiennej losowej $X$.
+\noindent gdzie, $x=(x_1, \ldots, x_n)$ jest zbiorem $n$ próbek zmiennej
+losowej $\mathbb{X}$. \todo{Jak generować próbki Monte-Carlo?}
 
 \section{Metoda iteracyjna}
 
@@ -101,18 +109,17 @@ Czasami nie potrzebujemy również bardzo dużej szczegółowości, czasem wysta
 nam konkretna ilość iteracji do znalezienia problemu i głównych różnic.
 
 Wygodnym komromisem jest podzielenie obliczeń na wiele etapów, z których każdy
-może zostać wyświetlony jako częściowy podgląd.
+może zostać wyświetlony jako częściowy podgląd. Dłuższy czas oczekiwania bez
+zmian w scenie pozwala nam uzyskać większą jakość.
 
 Spróbujmy zbudować ciąg podsum Monte-Carlo:
 
-$$
-I_n = \frac{1}{n} \sum_{i=1}^{n} f(x_i)
-$$
-$$
-I_{n+1} = \frac{1}{n+1} \sum_{i+1}^{n+1}f(x_i)
-= \frac{n}{(n+1)n} \sum_{i=1}^{n}f(x_i) + \frac{1}{n+1}f(x_{n+1})
-= \frac{n}{n+1} I_{n} + \frac{1}{n+1}f(x_{n+1})
-$$
+\[ I_n = \frac{1}{n} \sum_{i=1}^{n} f(x_i) \]
+\[
+  I_{n+1} = \frac{1}{n+1} \sum_{i+1}^{n+1}f(x_i)
+    = \frac{n}{(n+1)n} \sum_{i=1}^{n}f(x_i) + \frac{1}{n+1}f(x_{n+1})
+    = \frac{n}{n+1} I_{n} + \frac{1}{n+1}f(x_{n+1})
+\]
 
 Dodatkowy czas potrzebny na przygotowanie ramki, policzenie sumy ważonej
 i wyświetlenie rezultatu na ekranie sprawia, że uzyskamy szybszą zbieżność bez
@@ -139,21 +146,82 @@ musi zostać obliczona do jednego z buforów oraz skopiowana z włączonym
 mieszaniem kolorów do drugiego bufora. Można zastosować uproszczenie, w którym
 wykorzystamy tylko jeden bufor, ale czasami ze względu na istnienie wielu
 świateł i wybraną technikę (np. \textit{deferred shading}) może być koniecznie
-zastosowanie dwóch buforów.
+zastosowanie dwóch buforów. \todo{A nie bufor dla każdego światła osobno?}
 
 \section{Importance Sampling}
 
-\todo[inline]{Napisać coś o Importance Samplingu, źródła: Veach, MC Stamford notes}
+Importance Sampling jest jedną z metod ograniczania wariancji metody
+Monte-Carlo. Innymi słowy, zastosowanie tej techniki poprawnie powinno
+skrócić czas w którym ciąg zbiegnie do odpowiednio bliskiej wartości całki.
+
+Publikacje \cite{Veach}\cite{MonteCarloAnderson} sugerują zastosowanie innej
+techniki generowania próbek, tak aby większość z nich była generowana w
+miejsach które są istotne dla wyniku.
+
+Mając funkcję gęstości zmiennej losowej $\mathbb{X}$ $h(x)$ na której potrafimy
+całkować, wyznaczać jej wartość w punkcie oraz jest prawie proporcjonalna do
+całkowanej funkcji $g(x)$ możemy przepisać:
+
+\[
+  \int_{x \in \mathbb{A}} { g(x) dx } =
+  \int_{x \in \mathbb{A}} { g(x) \frac{h(x)}{h(x)} dx } =
+  \int_{x \in \mathbb{A}} { \frac{g(x)}{h(x)} h(x) dx } =
+  \mathbb{E}\left({ \frac{g(x)}{h(x)} }\right)
+\]
+
+Aby funkcja $h(x)$ była użyteczna, musi spełniac kilka warunków:
+
+\begin{itemize}
+
+  \item obliczenia dotyczące funkcji $h$ muszą być łatwo realizowalne,
+    obliczenie wartości funkcji, jej całki musi być możliwe bez wykorzystania
+    metody Monte-Carlo
+
+  \item symulowanie próbek z rozkładu $h$ musi być realizowalne
+
+  \item $h(x) > 0$ dla $g(x) \neq 0$
+
+  \item $h(x)$ musi być możliwie proporcjonalne do $|g(x)|$, inaczej wariancja
+    zamiast zmaleć, wzrośnie
+
+\end{itemize}
+
+\section{Multiple Importance Sampling}
+
+\cite{pbrt}
 
 \subsection{Multi-sample model}
+
+\[
+  F = \sum_{i=1}^{n} \frac{1}{n_i} \sum_{j=1}^{n_i} w_{i}(X_{i,j}) \frac{
+    f(X_{i,j})
+  }{
+    p_{i}(X_{i,j})
+  }
+\]
+
 \subsection{Balance heuristics}
 
-\section{Low-discrepancy sequence}
+\[
+  w_{i}(x) = \frac{
+    n_{i} p_{i}(x)
+  }{
+    \sum_{k} {
+      n_{k} p_{k}(x)
+    }
+  }
+\]
 
-Ciągi o niskim \fbox{\textit{discrepancy}} są bardzo istotne w generowaniu
-próbek używanych do importance samplingu.
+\section{Generowanie próbek}
 
-\subsection{Halton sequence}
-\subsection{Hammersley set}
+\subsection{Ciągi o niskiej rozbieżności}
+
+Podstawowym elementem generowania próbek jest równomierne generowanie $N$ próbek
+w pewnej kostce $[0,1]^{n}$. Równomierne wygenerowanie próbek pozwala nam na
+przewidywalne pokrycie dziedziny w sposób jak najbardziej równomierny.
+
+\textbf{Ciąg Haltona}
+
+\textbf{Zbiór Hammersleya}
 
 \end{document}
