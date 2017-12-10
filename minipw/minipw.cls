@@ -32,16 +32,27 @@
 
 %------------------------------------------------------------------------------%
 \RequirePackage{geometry}
+%\geometry{
+%  inner=20mm,
+%  outer=20mm,
+%  bindingoffset=10mm,
+%  top=25mm,
+%  bottom=25mm,  % 20mm
+%  %includeheadfoot
+%}
+
+% TODO: This needs to be adjusted before submitting!
 \geometry{
+  paperwidth=240mm, % standard A4 (210 x 297)
   inner=20mm,
-  outer=20mm,
+  outer=50mm,
   bindingoffset=10mm,
   top=25mm,
   bottom=25mm,  % 20mm
   %includeheadfoot
 }
 
-\linespread{1.5}
+\linespread{1.3}
 %interlinia, zalecana przez Rektora 1.15, ale często kiedy w tekście jest dużo symboli typu suma lub całka, to one się po prostu nie mieszczą w linii; dlatego domyślnie 1.5 (ale więcej to już przesada, standard to 1.2 - 1.5)
 
 % localsize pozwala zmieniać rozmiar czcionki w wybranym  środowisku

@@ -3,7 +3,7 @@
 \begin{document}
 \chapter{Metoda Monte Carlo}
 
-Równanie renderingu (ang. *render equation*) w danym punkcie ma postać:
+Równanie renderingu (ang. \textit{render equation}) ma postać:
 
 $$
 L_o(\omega_o) = \int_{\Omega} {
@@ -24,8 +24,8 @@ $$ L_o = \sum_{l \in L} L(\omega_l) f_r(\omega_v, \omega_l)\cos \theta_l $$
 
 Obliczenie powyższej sumy, nie jest wyzwaniem dla obecnych kart graficznych
 nawet dla większej liczby świateł, szczególnie przy zastosowaniu specjalnych
-technik zmniejszających wymaganą liczbę operacji do minimum, np. *deferred
-shading*.
+technik zmniejszających wymaganą liczbę operacji do minimum, np.
+\textit{deferred shading}.
 
 W przypadku świateł zajmujących ciągły fragment dziedziny sferycznej, całka nie
 może zostać w bezpośredni sposób uproszczona do postaci sumy skończonej bez
@@ -46,7 +46,7 @@ $$
     L_i(l)
     \rho(l,v)
     \cos \theta_{l}
-    \:dl
+    \: dl
 } $$
 
 nie jest prostym zadaniem do wykonania. Z pomocą przychodzi metoda przybliona
@@ -55,24 +55,24 @@ Monte Carlo bazująca na rachunku prawdopodobieństwa i prawie wielkich liczb.
 Metoda dokładnie opisana jest w publikacjach \cite{MonteCarloAnderson}
 \cite{Veach}.
 
-Definicje zmiennych losowych? Może to przesada.
+\todo[inline]{Definicje zmiennych losowych? Może to przesada.}
 
-Definicja dystrybuanty (ang. *cumulative distribution function, CDF*):
+Definicja dystrybuanty (ang. \textit{cumulative distribution function},
+\textit{CDF}):
 
 $$
 P(x) = Pr \{ X \leq x \}
 $$
 
-Definicja funkcji gęstości prawopodobieństwa (ang. *probability density
-function, PDF*):
+Definicja funkcji gęstości prawopodobieństwa (ang. \textit{probability density
+function}, \textit{PDF}):
 
 $$
 f_{X}(x) = \frac{dP}{dx}(x)
 $$
 
-Weżmy funkcję gęstości prawdopobieństwa $f_X$ (ang. *probability density
-function*) ciągłej zmiennej losowej $X$. Wartość oczekiwana funkcji $g$ na
-ciągłej zmiennej losowej $X$ wynosi:
+Weżmy funkcję gęstości prawdopobieństwa $f_X$ ciągłej zmiennej losowej $X$.
+Wartość oczekiwana funkcji $g$ na ciągłej zmiennej losowej $X$ wynosi:
 
 $$
 \mathbf{E}(g(x)) =
@@ -82,7 +82,7 @@ $$
 }
 $$
 
-Estymatorem Monte Carlo (?) przybliżającym wartość $\mathbb{E}(g(x))$ nazywamy:
+Estymatorem Monte Carlo przybliżającym wartość $\mathbb{E}(g(x))$ nazywamy:
 
 $$
 \widetilde{g_n}(x) =
@@ -120,55 +120,40 @@ zauważalnego spadku wydajności przez zgrupowanie próbkek w pakiety, które mo
 zostać potencjalnie policzone jednocześnie. Okazuje się, że rozpisanie
 analogicznego równania dla paczek danego, stałego rozmiaru jest trywialny:
 
-$$
-I_{(m+1)n} = \frac{1}{(m+1)n} \sum_{i=1}^{(m+1)n} f(x_i)
-= \frac{1}{(m+1)n} \sum_{i=1}^{mn} f(x_i)
-    + \frac{1}{(m+1)n} \sum_{i=mn+1}^{(m+1)n} f(x_i) =
-$$
-$$
-= \frac{m}{(m+1)mn} \sum_{i=1}^{mn} f(x_i)
-    + \frac{1}{(m+1)n} \sum_{i=mn+1}^{(m+1)n} f(x_i)
-= \frac{m}{m+1}I_{mn}
+\begin{align*}
+  I_{(m+1)n} &= \frac{1}{(m+1)n} \sum_{i=1}^{(m+1)n} f(x_i)
+  = \frac{1}{(m+1)n} \sum_{i=1}^{mn} f(x_i)
+    + \frac{1}{(m+1)n} \sum_{i=mn+1}^{(m+1)n} f(x_i) = \\
+  &= \frac{m}{(m+1)mn} \sum_{i=1}^{mn} f(x_i)
+    + \frac{1}{(m+1)n} \sum_{i=mn+1}^{(m+1)n} f(x_i) \\
+  &= \frac{m}{m+1}I_{mn}
     + \frac{1}{m+1} \left(
         \frac{1}{n} \sum_{i=mn+1}^{(m+1)n} f(x_i)
     \right)
-$$
+\end{align*}
 
 Powyższe obliczenie sumy ważonej może zostać zrealizowane za pomocą sprytnie
-zbudowanego łańcucha *framebufferów* i obliczone za pomocą wspartego sprzętowo
-mechanizmu łączenia kolorów (ang. *blending*). Obecna partia musi zostać
-obliczona do jednego z buforów oraz skopiowana z włączonym *blendingiem* do
-drugiego bufora. Można zastosować uproszczenie, w którym wykorzystamy tylko
-jeden bufor, ale czasami ze względu na istnienie wielu świateł i wybraną
-technikę (np. *deferred shading*) może być koniecznie zastosowanie dwóch
-buforów.
-
-\begin{lstlisting}
-total_batches = 0
-partial_result = create_framebuffer<float>()
-current_result = create_framebuffer<float>()
-clear_framebuffer(current_result)
-for i = 1..max_batches:
-    clear_framebuffer(partial_result)
-    set_framebuffer(partial_result)
-    render_scene_montecarlo(num_samples)
-
-    set_blend(add)
-    set_src_const(i / )
-
-    .. opisac algorytm dalej albo skpiowac z kodu ..
-\end{lstlisting}
+zbudowanego łańcucha \textit{framebufferów} i obliczone za pomocą wspartego
+sprzętowo mechanizmu łączenia kolorów (ang. \textit{blending}). Obecna partia
+musi zostać obliczona do jednego z buforów oraz skopiowana z włączonym
+mieszaniem kolorów do drugiego bufora. Można zastosować uproszczenie, w którym
+wykorzystamy tylko jeden bufor, ale czasami ze względu na istnienie wielu
+świateł i wybraną technikę (np. \textit{deferred shading}) może być koniecznie
+zastosowanie dwóch buforów.
 
 \section{Importance Sampling}
 
+\todo[inline]{Napisać coś o Importance Samplingu, źródła: Veach, MC Stamford notes}
+
+\subsection{Multi-sample model}
+\subsection{Balance heuristics}
+
 \section{Low-discrepancy sequence}
 
-Ciągi o niskim *discrepancy* są bardzo istotne w generowaniu próbek używanych
-do importance samplingu.
-
-Niestety, komputerowe generowanie wartości z przedziału $(0,1)$ w większości
-przypadków nie da nam wystarczająco jednakowej
+Ciągi o niskim \fbox{\textit{discrepancy}} są bardzo istotne w generowaniu
+próbek używanych do importance samplingu.
 
 \subsection{Halton sequence}
+\subsection{Hammersley set}
 
 \end{document}

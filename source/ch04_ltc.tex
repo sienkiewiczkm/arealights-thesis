@@ -37,8 +37,8 @@ pod odpowiednio dużym kątem. Odpowiedź zostaje rozciągnięta wzdłuż jednej
 osi formując kształt eliptyczny.
 
 Drugim jest to, że w takiej samej sytuacji zwiększając chropowatość materiału
-rozkład będzie się rozszerzał i deformował skośnie (ang. *skewness*) powodując,
-że jest on bardziej rozproszony bliżej normalnej.
+rozkład będzie się rozszerzał i deformował skośnie (ang. \textit{skewness})
+powodując, że jest on bardziej rozproszony bliżej normalnej.
 
 Autorzy pracy \cite{ltc_heitz} postanowili najpierw uprościć problem jeszcze
 bardziej i znaleźć taki rozkład, który można całkować niezależnie w czasie
@@ -58,8 +58,8 @@ definiuje całkowite prawdpodobieństwo, że próbka wygenerowana z rozkładu $D
 przetnie wielokąt $P$.
 
 Najprostszą, już wcześniej wspomnianą metodą nie nadającą się zbytnio do
-zastosowań real-time jest metoda Monte-Carlo wykorzystująca *importance
-sampling* polegający na wybraniu losowego wektora z rozkładu $D$ i sprawdzenia
+zastosowań real-time jest metoda Monte-Carlo wykorzystująca \textit{importance
+sampling} polegający na wybraniu losowego wektora z rozkładu $D$ i sprawdzenia
 istnienia punktu przecięcia tego promienia z wielokątem. Dla odpowiednio dużej
 liczby próbek stosunek trafień do ilości przetestowanych promieni będzie
 przybliżał naszą szukaną całkę.
@@ -97,7 +97,9 @@ postaci możemy szybko obliczyć oraz przekształcenie $M^{-1}$ przybliżające
 rozkład docelowy rozkładem bazowym, to wykorzystując powyższą właściwość możemy
 przybliżyć wartość całki rozkładu docelowego na wielokącie sferzycznym.
 
-\textit{TODO: Obrazek przekształceń}
+\begin{figure}[ht]
+\missingfigure{Obrazek kilku przekształceń rozkładu LTC}
+\end{figure}
 
 Kolejnym zadaniem jest wybór rozkładu bazowego, który po przekształceniu
 liniowym da nam oczekiwany rozkład spełniający założenia postawione na
@@ -105,12 +107,13 @@ samym początku.
 
 Rozpocznijmy poszukiwania od najprostszego rozwiązywalnego rozkładu, a
 mianowicie rozkładu jednorodnego. Jeżeli rozkład $D$ przyjmuje taką samą
-wartość w każdym punkcie to całka na wielokącie sferycznym (ang. *spherical
-polygon*) jest równoważna kątowi bryłowemu (ang. *solid angle*) przemnożonym
-przez odpowiedni stały współczynnik, a na to istnieje wzór jawny opisany w
-\cite{Arvo} \cite{Snyder} (Girard's theorem). Bardzo podobnie sytuacja wygląda
-z półsferą, z tym że wielokąt musi zostać przycięty do horyzontu. Rozkład
-jednorodny opisany na półsferze możemy opisać wzorem:
+wartość w każdym punkcie to całka na wielokącie sferycznym (ang.
+\textit{spherical polygon}) jest równoważna kątowi bryłowemu (ang.
+\textit{solid angle}) przemnożonym przez odpowiedni stały współczynnik, a na to
+istnieje wzór jawny opisany w \cite{Arvo} \cite{Snyder} (Girard's theorem).
+Bardzo podobnie sytuacja wygląda z półsferą, z tym że wielokąt musi zostać
+przycięty do horyzontu. Rozkład jednorodny opisany na półsferze możemy opisać
+wzorem:
 
 $$
 D_0(\omega_o=(x_0, y_0, z_0)) = \begin{cases}
@@ -122,8 +125,9 @@ $$
 Niestety, oba rozkłady nie są w stanie modelować żadnych ciekawych zjawisk
 ze względu na niezmienną naturę.
 
-Nieco bardziej skomplikowanym rozkładem jest przycięty rozkład kosinusowy
-(ang. *diffuse*, *Lambertian distribution*, *cosine distribution*).
+Nieco bardziej skomplikowanym rozkładem jest przycięty rozkład kosinusowy (ang.
+\textit{diffuse}, \textit{Lambertian distribution}, \textit{cosine
+distribution}).
 
 $$
 D_0(\omega_o=(x_0, y_0, z_0)) = \begin{cases}
@@ -168,11 +172,13 @@ $$
 
 Istnieją również inne potencjalne rozkłady bazowe, ale niestety
 w większości przypadków nie nadają się one do tego zastosowania. Rozkłady
-opisywane przez *spherical gaussian* nie posiadają wzoru jawnego, rozkład
+opisywane przez \textit{spherical gaussian} nie posiadają wzoru jawnego, rozkład
 Phong’a posiada wzór jawny, jednak zmienna złożoność zależna liniowo od
-wykładnika sprawia, że metoda jest niepraktyczna. ***?: Dodatkowo z natury
-rozkład Phong’a w postaci nieprzetransformowanej nie modeluje poprawnie
-zachowań światła przy dużym kącie padania wiązki światła.***
+wykładnika sprawia, że metoda jest niepraktyczna.
+
+\todo[inline]{Dodatkowo z natury rozkład Phong’a w postaci
+nieprzetransformowanej nie modeluje poprawnie zachowań światła przy dużym kącie
+padania wiązki światła.}
 
 Z powyższych rozważań, wynika, że przycięty rozkład cosinusowy jest dobrym
 kandydatem na rozkład bazowy – gładko przechodzi do 0 oraz posiada prosty
@@ -254,7 +260,7 @@ fizycznie poprawnego rozkładu, np. rozkładu GTR (Generalized
 Torrance-Reitz).
 
 Wykorzystamy technikę dopasowywania danych (fitting) przeprowadzoną
-*offline* i wykorzystamy gotowe rezultaty podczas rysowania sceny.
+\textit{offline} i wykorzystamy gotowe rezultaty podczas rysowania sceny.
 
 Poszukiwaną macierzą przekształcającą jest (dokładne wyjaśnienie dlaczego
 wystarczy dalej):
@@ -312,7 +318,7 @@ $$
 
 W przypadku anizotropowym chcielibyśmy przeprowadzać obliczenia w pewnej
 płaszczyźnie ze względu na uproszczenie obliczeń, w naszym przypadku
-założyliśmy że $Y=0$ dla kierunku obserwacji. (**wyjaśnić dokładniej**)
+założyliśmy że $Y=0$ dla kierunku obserwacji. \todo{Wyjaśnić dokładniej.}
 Obliczenie kierunku $\omega_d$ metodą Monte-Carlo może spowodować zajście
 warunku $Y \neq 0$. Dlatego też dokonujemy "przyciągnięcia" wektora do
 osi:
@@ -391,7 +397,7 @@ Wprowadzimy dodatkowe założenie, że parametry $a$ i $b$ są dodatnie, ze wzgl
 na to, że ujemny parametr będzie oznaczał odbicie lustrzane względem osi.
 W ten sposób również zagwarantujemy sobie poprawność znalezionego rozwiązania.
 
-\section{Metoda pływającego sympleksu}
+\subsection{Metoda pływającego sympleksu}
 
 Zdefiniujmy nasz problem w postaci problemu optymalizacyjnego. Chcielibyśmy
 zminimalizować funkcję $f(a,b,c)$, będącą miarą różnicy (błędu) absolutnej
@@ -406,7 +412,9 @@ Oryginalna metoda pływającego sympleksu nie posiada mechanizmu dla ograniczeń
 ale istnieją techniki pozwalające rozwiązać ten problem. W mojej implementacji
 wykorzystałem logarytmiczną wewnętrzną funkcję kary.
 
-% TODO: Czy opisywać algorytm wraz z WFK?
+\todo[inline]{Czy opisywać algorytm wraz z WFK?}
+
+\todo[inline]{Jakieś rysunki dla metody pływającego sympleksu}
 
 \begin{tikzpicture}
 \draw [help lines] (0,0) grid (5,5);
@@ -420,5 +428,9 @@ wykorzystałem logarytmiczną wewnętrzną funkcję kary.
   (4,1) node [right] {$x_3$} --
   (1,2);
 \end{tikzpicture}
+
+\subsection{Wyznaczanie błędu przybliżenia}
+
+\todo[inline]{Wyznaczanie błędu przyblieżenia}
 
 \end{document}
