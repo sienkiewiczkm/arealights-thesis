@@ -490,14 +490,14 @@ niezależna od kolejności parametrów, odwrócenie wszystkich kierunków promie
 powinno dać nam dokładnie ten sam wynik (ang. \textit{reciprocity}):
 
 \[
-  \forall_{\omega_i, \omega_o \in \Omega} \quad
+  \forall{\omega_i, \omega_o \in \Omega} \quad
   f_r(\omega_i, \omega_o) = f_r(\omega_o, \omega_i)
 \]
 
 Po drugie, funkcja BRDF nie może emitować więcej światła niż otrzymuje tzn.:
 
 \[
-  \forall_{\omega_i} \quad
+  \forall{\omega_i} \quad
   \int_{\Omega} {
     f_r(\omega_i, \omega_o)
     (n \cdot \omega_o)
@@ -625,7 +625,7 @@ opisującymi tą relację są:
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=3cm]{pbr/fresnel}
+  \includegraphics[width=5cm]{pbr/fresnel}
   \caption{Odwrócony współczynnik Fresnela, aproksymacja Schlicka}
 \end{figure}
 
@@ -657,5 +657,47 @@ biorącego pod uwagę podstawowe zjawiska zachodzące w mikropowierzchniach
 będących powierzchniami idealnie płaskimi.
 
 \todo[inline]{Dodać część diffuse Cook-Torrance}
+
+\section{Przybliżenie światła powierzchniowego klastrem świateł punktowych}
+
+Pierwszą metodą, która nasuwa się po poznaniu podstaw jest podejśćie
+uproszczone polegające na przybliżeniu klasycznego światła powierzchniowego
+zbiorem świateł punktowych.
+
+Będziemy badać światła powierzchniowe tego typu w formie prostokątnej ze względu
+na łatwość generowania punktów wewnątrz takiego obszaru, kształt ten również
+posiada ostre krawędzie i rogi przez co minusy tej metody będą bardzo widoczne.
+Uogólnienie do dowolnego kształtu nie będzie wpływać na rezultaty jakościowo.
+
+Załóżmy, że mamy światło powierzchniowe o całkowitej energii $\Phi$ o kształcie
+prostokątnym. Wygenerujemy na nim siatkę jednakowych świateł punktowych z
+zastrzeżeniem, że działają one tylko gdy warunek:
+
+\[ n \cdot \omega_i > 0 \]
+
+\noindent zachodzi. To znaczy zakładamy, że światło powierzchniowe jest
+jednostronne.
+
+Siatka punktowa będzie wygenerowana w taki sposób, aby każdy punkt przybliżał
+jednakowy fragment powierzchni światła (rys. \ref{fig:PointLightCluster}).
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=5cm]{pbr/point_light_cluster.jpg}
+  \caption{Klaster świateł punktowych na świetle powierzchniowym}
+  \label{fig:PointLightCluster}
+\end{figure}
+
+Pozostaje nam zdefiniowanie właściwości pojedynczego światła punktowego.
+Dla świateł jednorodnych o całkowitej energii $\Phi$ energia podzieli się
+jednakowo na każdy z punktów. Zatem:
+
+\[
+  \forall\:{
+    0<i<n,\:
+    0<j<m
+  } \quad
+  \Phi_{i,j} = \frac{\Phi}{nm}
+\]
 
 \end{document}

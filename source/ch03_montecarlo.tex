@@ -98,9 +98,124 @@ prawie wielkich liczb nazywamy:
 \]
 
 \noindent gdzie, $x=(x_1, \ldots, x_n)$ jest zbiorem $n$ próbek zmiennej
-losowej $\mathbb{X}$. \todo{Jak generować próbki Monte-Carlo?}
+losowej $\mathbb{X}$.
 
-\section{Metoda iteracyjna}
+\section{Generowanie próbek}
+
+Próbki Monte-Carlo można wybierać w sposób całkowicie losowy, jednak taka
+metoda nie daje nam żadnej gwarancji, że wybrane próbki będą pokrywały
+dziedzinę w sposób równomierny. Z pomocą przychodzą nam ciągi
+\textit{subrandom, quasi-random}\todo{Przetłumaczyć.}, które pokrywają zadaną
+dziedzinę w sposób całkowity i równomierny. Załóżmy, że nasza dziedzina jest
+kostką $n$ wymiarową: $[0,1]^{n}$.
+
+Pierwszą metodą jednorodną jaka się narzuca jest zbudowanie równomiernej siatki
+posiadającej $m$ punktów na boku kostki. Problemem tej metody jest jej
+ograniczoność, zdefiniowaliśmy dokładnie $m^{n}$ punktów, które musimy
+wykorzystać, aby zbiór mógł być uważany za jednorodny, nie możemy punktów
+usuwać ani dodawać.
+
+Ciągi o niskiej rozbieżności są rozwiązaniem tego problemu, są to ciągi
+deterministyczne, które wydają się losowe oraz pokrywają równomiernie całą
+dziedzinę niezależnie od ilości punktów.
+
+Najbardziej znanymi ciągami tego typu są: ciąg Haltona, zbiór Hammersleya,
+ciąg Sobola. W tej pracy zostaną omówione i wykorzystane dwa pierwsze.
+
+\subsection{Ciąg van der Corput'a}
+
+Ciąg van der Corput'a jest jednowymiarowym ciągiem o niskiej rozbieżności
+zdefiniowanym na zbiorze $[0,1]$ zbudowanym poprzez odwrócenie bazy
+reprezentacji w danym systemie o podstawie $b$. Każda liczba całkowita $i$ może
+zostać przedstawiona w pewnej zadanej bazie w sposób następujący:
+
+\[ i = \sum_{j=0}^{\infty} {a_j b^j} \]
+
+Ciąg van der Corputa transformuje powyższą reprezentację $a_k$, dla $n$-tego
+elementu ciągu mamy:
+
+\[ v(n) = \sum_{j=0}^{\infty} {a_j b^{-j-1}} \]
+
+\begin{example}
+
+  Weźmy liczbę $7$ i bazę $2$. Reprezentacja tej liczby może zostać rozpisana
+  jako (bez zer nieznaczących):
+
+  \[ 7 = 1 * 2^0 + 1 * 2^1 + 1 * 2^2 = (111)_{b} \]
+
+  \noindent Zatem:
+
+  \[
+    v_{2}(7)
+      = \frac{1}{2^{1}} + \frac{1}{2^{2}} + \frac{1}{2^{3}}
+      = \frac{1}{2} + \frac{1}{4} + \frac{1}{8}
+      = 0.875
+      \in (0,1)
+  \]
+
+\end{example}
+
+Warto zauważyć, że $\sum_{n=1}^{\infty} \frac{b-1}{b^n} = 1$ dla $b>1$.
+
+Kod realizujący powyższe zadanie może być zapisany w formie:
+
+\begin{lstlisting}[language=c++]
+float VanDerCorput(unsigned int n, unsigned int base) {
+  auto denominator = 1.0f;
+  auto result = 0.0f;
+
+  while (n > 0) {
+    denominator /= base;
+    result += denominator * (n % base)
+    n /= base;
+  }
+
+  return result;
+}
+\end{lstlisting}
+
+Istnieje alternatywne rozwiązanie korzystające z właściwości operacji takiej
+odwrotności. Warto zauważyć, że obie liczby $n$ oraz $v(n)$ zapisane binarnie
+są odbiciem lustrzanym:
+
+\[
+  5 = 1 + 4 = (101.0)_{b} \quad
+  (0.101)_{b} = 0.625 = \frac{1}{2} + \frac{1}{8} = v(5)
+\]
+
+Operacja bitowa tego typu pozwoli na uzyskanie poprawnego wyniku.
+
+\subsection{Ciąg Haltona}
+
+Ciąg Haltona jest uogólnieniem ciągu \textit{van der Corput}'a do wyższych
+wymiarów. Weźmy $n$ wzajemnie względnie pierwszych liczb $b_i$ większych od 1,
+czyli takiego zbioru w którym dla dowolnej pary liczb ich jedynym wspólnym
+dzielnikiem jest 1.
+
+$i$-ty $n$-wymiarowy element ciągu Haltona równy jest:
+
+\[ x(i) = \left( v_{b_0}(i), v_{b_1}(i), \cdots, v_{b_n}(i) \right) \]
+
+\subsection{Zbiór Hammersleya}
+
+Zbiór Hammersleya jest ciągiem bardzo podobnym do ciągu Haltona, również
+korzystającym z ciągu van der Corputa. Chcemy wygenerować $m$ punktów, weźmy
+$n-1$ wzajemnie względnie pierwszych liczb $b_i$ większych od 1. $i$-tym $n$
+wymiarowym elementem ciągu jest:
+
+\[
+  x(i) = \left(
+    \frac{i}{m}, v_{b_0}(i), v_{b_1}(i), \cdots, v_{b_{n-1}}(i)
+  \right)
+\]
+
+\subsection{Generowanie punktów na sferze}
+
+Do wygenerowania punktów na sferze możemy wykorzystać dowolną z przedstawionych
+metod do wygenerowania $v = (\phi, t) \in [0,1]^2$. \todo{Dokończyć.}
+
+
+\section{Przyrostowa metoda Monte-Carlo}
 
 Metoda Monte-Carlo ze względu na swoją złożoność obliczeniową nie umożliwia
 uzyskania rezultatu w czasie rzeczywistym. Możliwość operowania sceną,
@@ -108,7 +223,7 @@ precyzyjnego ustawienia kamery i obiektów nie jest łatwe w takim środowisku.
 Czasami nie potrzebujemy również bardzo dużej szczegółowości, czasem wystarczy
 nam konkretna ilość iteracji do znalezienia problemu i głównych różnic.
 
-Wygodnym komromisem jest podzielenie obliczeń na wiele etapów, z których każdy
+Wygodnym kompromisem jest podzielenie obliczeń na wiele etapów, z których każdy
 może zostać wyświetlony jako częściowy podgląd. Dłuższy czas oczekiwania bez
 zmian w scenie pozwala nam uzyskać większą jakość.
 
@@ -121,11 +236,11 @@ Spróbujmy zbudować ciąg podsum Monte-Carlo:
     = \frac{n}{n+1} I_{n} + \frac{1}{n+1}f(x_{n+1})
 \]
 
-Dodatkowy czas potrzebny na przygotowanie ramki, policzenie sumy ważonej
-i wyświetlenie rezultatu na ekranie sprawia, że uzyskamy szybszą zbieżność bez
-zauważalnego spadku wydajności przez zgrupowanie próbkek w pakiety, które mogą
-zostać potencjalnie policzone jednocześnie. Okazuje się, że rozpisanie
-analogicznego równania dla paczek danego, stałego rozmiaru jest trywialny:
+Dodatkowy czas potrzebny na przygotowanie ramki, policzenie sumy ważonej i
+wyświetlenie rezultatu na ekranie sprawia, że uzyskamy szybszą zbieżność przez
+zgrupowanie próbkek w pakiety, które mogą zostać potencjalnie policzone
+jednocześnie. Okazuje się, że rozpisanie analogicznego równania dla paczek
+danego, stałego rozmiaru jest trywialne:
 
 \begin{align*}
   I_{(m+1)n} &= \frac{1}{(m+1)n} \sum_{i=1}^{(m+1)n} f(x_i)
@@ -146,7 +261,7 @@ musi zostać obliczona do jednego z buforów oraz skopiowana z włączonym
 mieszaniem kolorów do drugiego bufora. Można zastosować uproszczenie, w którym
 wykorzystamy tylko jeden bufor, ale czasami ze względu na istnienie wielu
 świateł i wybraną technikę (np. \textit{deferred shading}) może być koniecznie
-zastosowanie dwóch buforów. \todo{A nie bufor dla każdego światła osobno?}
+zastosowanie dwóch buforów.
 
 \section{Importance Sampling}
 
@@ -211,17 +326,5 @@ Aby funkcja $h(x)$ była użyteczna, musi spełniac kilka warunków:
     }
   }
 \]
-
-\section{Generowanie próbek}
-
-\subsection{Ciągi o niskiej rozbieżności}
-
-Podstawowym elementem generowania próbek jest równomierne generowanie $N$ próbek
-w pewnej kostce $[0,1]^{n}$. Równomierne wygenerowanie próbek pozwala nam na
-przewidywalne pokrycie dziedziny w sposób jak najbardziej równomierny.
-
-\textbf{Ciąg Haltona}
-
-\textbf{Zbiór Hammersleya}
 
 \end{document}
