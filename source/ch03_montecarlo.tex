@@ -102,32 +102,48 @@ losowej $\mathbb{X}$.
 
 \section{Generowanie próbek}
 
-Próbki Monte-Carlo można wybierać w sposób całkowicie losowy, jednak taka
-metoda nie daje nam żadnej gwarancji, że wybrane próbki będą pokrywały
-dziedzinę w sposób równomierny. Z pomocą przychodzą nam ciągi
-\textit{subrandom, quasi-random}\todo{Przetłumaczyć.}, które pokrywają zadaną
-dziedzinę w sposób całkowity i równomierny. Załóżmy, że nasza dziedzina jest
-kostką $n$ wymiarową: $[0,1]^{n}$.
+Próbki Monte-Carlo można wybierać w sposób całkowicie losowy (rys.
+\ref{fig:RandomSamples}, jednak taka metoda nie daje nam żadnej gwarancji, że
+wybrane próbki będą pokrywały dziedzinę w sposób równomierny. Z pomocą
+przychodzą nam ciągi \textit{quasi-losowe}, które pokrywają zadaną dziedzinę w
+sposób całkowity i równomierny. Załóżmy, że nasza dziedzina jest kostką $n$
+wymiarową: $[0,1]^{n}$.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[height=5cm]{montecarlo/random_seq.pdf}
+  \caption{Próbki wygenerowane w sposób losowy (1024 próbek)}
+  \label{fig:RandomSamples}
+\end{figure}
 
 Pierwszą metodą jednorodną jaka się narzuca jest zbudowanie równomiernej siatki
-posiadającej $m$ punktów na boku kostki. Problemem tej metody jest jej
-ograniczoność, zdefiniowaliśmy dokładnie $m^{n}$ punktów, które musimy
-wykorzystać, aby zbiór mógł być uważany za jednorodny, nie możemy punktów
-usuwać ani dodawać.
+posiadającej $m$ punktów na boku kostki. Problemem tej metody jest jej zbyt
+duża jednorodność, wybrane punkty są ułożone w bardzo precyzyjny sposób. Drugim
+problemem w niektórych aplikacjach jest ograniczoność metody, zdefiniowaliśmy
+dokładnie $m^{n}$ punktów, które musimy wykorzystać, aby zbiór mógł być uważany
+za jednorodny, nie możemy punktów usuwać ani dodawać.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[height=5cm]{montecarlo/uniform_seq.pdf}
+  \caption{Próbki wygenerowane przez równomierny podział (1024 próbek)}
+  \label{fig:UniformSamples}
+\end{figure}
 
 Ciągi o niskiej rozbieżności są rozwiązaniem tego problemu, są to ciągi
-deterministyczne, które wydają się losowe oraz pokrywają równomiernie całą
-dziedzinę niezależnie od ilości punktów.
+deterministyczne, które wydają się losowe przez co posiadają ich zalety oraz
+pokrywają równomiernie całą dziedzinę niezależnie od wybranej ilości punktów.
 
-Najbardziej znanymi ciągami tego typu są: ciąg Haltona, zbiór Hammersleya,
-ciąg Sobola. W tej pracy zostaną omówione i wykorzystane dwa pierwsze.
+Najbardziej znanymi ciągami tego typu jest ciąg \textit{van der Corput'a} oraz
+jego pochodne czyli ciąg Haltona, zbiór Hammersleya.
 
 \subsection{Ciąg van der Corput'a}
 
-Ciąg van der Corput'a jest jednowymiarowym ciągiem o niskiej rozbieżności
-zdefiniowanym na zbiorze $[0,1]$ zbudowanym poprzez odwrócenie bazy
-reprezentacji w danym systemie o podstawie $b$. Każda liczba całkowita $i$ może
-zostać przedstawiona w pewnej zadanej bazie w sposób następujący:
+Ciąg van der Corput'a \cite{WongSamplingWH} jest jednowymiarowym ciągiem o
+niskiej rozbieżności zdefiniowanym na zbiorze $[0,1]$ zbudowanym poprzez
+odwrócenie bazy reprezentacji w danym systemie o podstawie $b$. Każda liczba
+całkowita $i$ może zostać przedstawiona w pewnej zadanej bazie w sposób
+następujący:
 
 \[ i = \sum_{j=0}^{\infty} {a_j b^j} \]
 
@@ -183,7 +199,8 @@ są odbiciem lustrzanym:
   (0.101)_{b} = 0.625 = \frac{1}{2} + \frac{1}{8} = v(5)
 \]
 
-Operacja bitowa tego typu pozwoli na uzyskanie poprawnego wyniku.
+Odpowiednio skonstruowana operacja bitowa tego typu pozwoli na uzyskanie
+poprawnego wyniku i zwiększenie wydajności obliczeń \cite{dammertz_2012}.
 
 \subsection{Ciąg Haltona}
 
@@ -195,6 +212,13 @@ dzielnikiem jest 1.
 $i$-ty $n$-wymiarowy element ciągu Haltona równy jest:
 
 \[ x(i) = \left( v_{b_0}(i), v_{b_1}(i), \cdots, v_{b_n}(i) \right) \]
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[height=5cm]{montecarlo/halton_seq.pdf}
+  \caption{Ciąg Haltona (1024 próbek)}
+  \label{fig:HaltonSamples}
+\end{figure}
 
 \subsection{Zbiór Hammersleya}
 
@@ -209,10 +233,31 @@ wymiarowym elementem ciągu jest:
   \right)
 \]
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[height=5cm]{montecarlo/hammersley_seq.pdf}
+  \caption{Zbiór Hammersleya (1024 próbek)}
+  \label{fig:HammersleySamples}
+\end{figure}
+
 \subsection{Generowanie punktów na sferze}
 
-Do wygenerowania punktów na sferze możemy wykorzystać dowolną z przedstawionych
-metod do wygenerowania $v = (\phi, t) \in [0,1]^2$. \todo{Dokończyć.}
+Do wygenerowania punktów na sferze możemy wykorzystamy parametryzację:
+  $(u,v) \in [0,1]^2 \rightarrow (\theta, \phi) \in \mathbb{H}$
+
+Możemy wykorzystać do tego parametryzację jednorodną \cite{dammertz_2012}:
+
+\begin{align*}
+	\phi &= \cos^{-1}(1-u) \\
+	\theta &= 2 \pi v
+\end{align*}
+
+Lub przekształcenie kosinusowe:
+
+\begin{align*}
+  \phi &= \cos^{-1}(\sqrt{1-u}) \\
+  \theta &= 2 \pi v
+\end{align*}
 
 
 \section{Przyrostowa metoda Monte-Carlo}
