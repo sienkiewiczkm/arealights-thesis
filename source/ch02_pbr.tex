@@ -106,7 +106,9 @@ które odpowiadają trzem kolorom: czerwonemu (ang. red, R), zielonemu (ang.
 green, G) i niebieskiemu (ang. blue, B).
 
 \begin{figure}[ht]
-  \missingfigure{Ilustracja spektrum światła i przybliżenie RGB}
+  \centering
+  \includegraphics[height=4cm]{pbr/spectrum.jpg}
+  \caption{Widmo światła widzialnego emitowanego przez Słońce}
 \end{figure}
 
 Światło może poruszać się w różnego rodzaju ośrodkach w powietrzu, soku, mleku,
@@ -484,10 +486,10 @@ zapisać jako:
 
 \end{itemize}
 
-Aby funkcja BRDF była fizycznie możliwa \todo{Przetłumaczyć Physically
-Plausible} musi spełniać dwa warunki. Po pierwsze, funkcja BRDF musi być
-niezależna od kolejności parametrów, odwrócenie wszystkich kierunków promieni
-powinno dać nam dokładnie ten sam wynik (ang. \textit{reciprocity}):
+Aby funkcja BRDF była fizycznie wiarygodna (ang. \textit{physically plausible})
+musi spełniać dwa warunki. Po pierwsze, funkcja BRDF musi być niezależna od
+kolejności parametrów, odwrócenie wszystkich kierunków promieni powinno dać nam
+dokładnie ten sam wynik (ang. \textit{Helmholtz reciprocity}):
 
 \[
   \forall{\omega_i, \omega_o \in \Omega} \quad
