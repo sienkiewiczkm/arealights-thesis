@@ -176,9 +176,9 @@ Warto zauważyć, że $\sum_{n=1}^{\infty} \frac{b-1}{b^n} = 1$ dla $b>1$.
 Kod realizujący powyższe zadanie może być zapisany w formie:
 
 \begin{lstlisting}[language=c++]
-float VanDerCorput(unsigned int n, unsigned int base) {
-  auto denominator = 1.0f;
-  auto result = 0.0f;
+double VanDerCorput(unsigned int n, unsigned int base) {
+  auto denominator = 1.0;
+  auto result = 0.0;
 
   while (n > 0) {
     denominator /= base;
@@ -191,16 +191,30 @@ float VanDerCorput(unsigned int n, unsigned int base) {
 \end{lstlisting}
 
 Istnieje alternatywne rozwiązanie korzystające z właściwości operacji takiej
-odwrotności. Warto zauważyć, że obie liczby $n$ oraz $v(n)$ zapisane binarnie
-są odbiciem lustrzanym:
+odwrotności. Warto zauważyć, że obie liczby $n$ oraz $v(n)$ zapisane w systemie
+o podstawie $b$ (tutaj $b=2$) są odbiciem lustrzanym:
 
 \[
   5 = 1 + 4 = (101.0)_{b} \quad
   (0.101)_{b} = 0.625 = \frac{1}{2} + \frac{1}{8} = v(5)
 \]
 
-Odpowiednio skonstruowana operacja bitowa tego typu pozwoli na uzyskanie
-poprawnego wyniku i zwiększenie wydajności obliczeń \cite{dammertz_2012}.
+Dla $b=2$ odpowiednio skonstruowana operacja bitowa tego typu pozwoli na
+uzyskanie poprawnego wyniku i zwiększenie wydajności obliczeń
+\cite{dammertz_2012}\cite{MultidimensionalSampling}:
+
+\begin{lstlisting}[language=c++]
+double VanDerCorputRadicalInverse(unsigned int bits)
+{
+	bits = (bits << 16) | (bits >> 16);
+	bits = ((bits & 0x00ff00ff) <<  8) | ((bits & 0xff00ff00) >>  8);
+	bits = ((bits & 0x0f0f0f0f) <<  4) | ((bits & 0xf0f0f0f0) >>  4);
+	bits = ((bits & 0x33333333) <<  2) | ((bits & 0xcccccccc) >>  2);
+	bits = ((bits & 0x55555555) <<  1) | ((bits & 0xaaaaaaaa) >>  1);
+
+	return (double) bits / (double) 0x100000000LL;
+}
+\end{lstlisting}
 
 \subsection{Ciąg Haltona}
 
@@ -232,6 +246,11 @@ wymiarowym elementem ciągu jest:
     \frac{i}{m}, v_{b_0}(i), v_{b_1}(i), \cdots, v_{b_{n-1}}(i)
   \right)
 \]
+
+Warto zauważyć, że dla wielu parametryzacji potrzebujemy jedynie dwuwymiarowej
+parametryzacji, a w takim przypadku bardzo wygodnie jest skorzystać z wersji
+bitowej do generowania ciągu van der Corputa, a drugi z parametrów wziąć z
+prostej proporcji. Ten zbiór będzie wykorzystywany w kodzie pracy.
 
 \begin{figure}[h]
   \centering

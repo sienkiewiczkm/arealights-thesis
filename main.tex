@@ -1,26 +1,19 @@
 \documentclass[pl]{minipw/minipw}
 
-% https://tex.stackexchange.com/a/166775
-\usepackage{babel}
-
-\usepackage{url}
-
+\usepackage{babel} % https://tex.stackexchange.com/a/166775
 \usepackage{polski}
 \usepackage{xltxtra}
 
-% amsmath - text in math
-\usepackage{amsmath}
-% amssybm - extended math symbol collection (Cap, Cup etc.)
-\usepackage{amssymb}
+\usepackage{hyperref}
 
+\usepackage{amsmath} % text in math
+\usepackage{amssymb} % extended math symbol collection (Cap, Cup etc.)
 \usepackage{listings} % code listings (lstlisting)
-
-\usepackage{subfiles}
-
+\usepackage{subfiles} % subfiles and selective compilation
 \usepackage[textsize=small]{todonotes}
-
-%\overfullrule=2cm % for debugging purposes! comment in production
-%                  % displays overfill rule on side of the document
+\usepackage{fontspec}
+\usepackage{fontawesome}
+\usepackage{wrapfig} % wrapfigure enviroment
 
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
@@ -28,14 +21,10 @@
 \usetikzlibrary{intersections}
 \usetikzlibrary{babel}
 
-\usepackage{fontspec}
-\usepackage{fontawesome}
-
-\usepackage{wrapfig}
-
 \usepackage{graphicx}
 \graphicspath{ {illustrations/} }
 
+% Code listing configuration
 \lstset{
   basicstyle=\small\ttfamily,
   columns=fullflexible,
@@ -88,6 +77,6 @@
 \subfile{source/ch04_ltc}
 
 \bibliography{source/references}
-\bibliographystyle{unsrt}
+\bibliographystyle{plain}
 
 \end{document}
