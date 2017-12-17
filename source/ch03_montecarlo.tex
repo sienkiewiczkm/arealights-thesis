@@ -345,10 +345,12 @@ całkowanej funkcji $g(x)$ możemy przepisać:
   \int_{x \in \mathbb{A}} { g(x) dx } =
   \int_{x \in \mathbb{A}} { g(x) \frac{h(x)}{h(x)} dx } =
   \int_{x \in \mathbb{A}} { \frac{g(x)}{h(x)} h(x) dx } =
-  \mathbb{E}\left({ \frac{g(x)}{h(x)} }\right)
+  \mathbb{E}_{h}\left({ \frac{g(x)}{h(x)} }\right)
 \]
 
-Aby funkcja $h(x)$ była użyteczna, musi spełniac kilka warunków:
+Jeżeli funkcja gęstości prawdopodobieństwa $h(x)$ zostanie wybrana mądrze to
+wariancja estymatora Monte-Carlo zmniejszy się. Aby funkcja $h(x)$ była
+użyteczna, musi spełniac kilka warunków:
 
 \begin{itemize}
 
@@ -365,11 +367,57 @@ Aby funkcja $h(x)$ była użyteczna, musi spełniac kilka warunków:
 
 \end{itemize}
 
+Teoretycznie najlepszym wyborem jest funkcja $g'(x) = cg(x)$ gdzie:
+
+\[
+c \propto \frac{1}{\int_{\Omega}{g(x)dx}}
+\]
+
+\noindent Niestety, taka funkcja jest niemożliwa do wykorzystania praktycznego
+w sposób bezpośredni, ponieważ mianownik w stałej $c$ jest naszą szukaną całką,
+której przecież nie potrafimy policzyć. Będziemy szukać funkcji $h$ podobnych
+kształtem do $g$.
+
+Istotnym problemem tej metody jest to, że nieuważny wybór funkcji $h$ może
+znacząco pogorszyć wariancję (rys. \ref{fig:ImportanceSamplingProblems}.
+
+\begin{figure}
+  \centering
+
+  \begin{subfigure}[t]{0.45\textwidth}
+    \missingfigure{Zła funkcja}
+    \label{fig:ImportanceSamplingWrongFunction}
+    \caption{Nie odwzorowany kształt estymowanej funkcji}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \missingfigure{Zgubiony ogon}
+    \label{fig:ImportanceSamplingLostTail}
+    \caption{Nie uwzględnienie ,,ogona'' rozkładu}
+  \end{subfigure}
+
+  \label{fig:ImportanceSamplingProblems}
+  \caption{Przykłady problemów związanych z wyborem $h(x)$}
+\end{figure}
+
 \section{Multiple Importance Sampling}
 
-\cite{pbrt}
 
-\subsection{Multi-sample model}
+Załóżmy, że mamy $n$ różnych funkcji gęstości prawodpodobieństwa $p_{i}(x)$ dla
+$i \in \{ 1, \cdots, n \}$ opisujących istotność poszczególnych próbek dla
+danych czynników szukanej funkcji $f(x)$. Każda z tych strategii działa lepiej
+w pewnych obszarach dziedziny, jednakże gorzej od nich w każdym innym miesjcu.
+Chcielibyśmy dynamicznie wybierać, której strategii używać w danym momencie,
+tak aby wariancja spadła jeszcze bardziej.
+
+Naiwnym podejściem jest obliczenie całki korzystając z każdego z podejść
+i uśrednienie wyniku, takie podejście nie da nam pożądanego rezultatu.
+
+Zbudujemy model wielopróbkowy (ang. \textit{multi-sample model})
+\cite{pbrt}\cite{ImportanceSamplingForProduction} korzystający z wygenerowanych
+próbek z wielu źródeł jednocześnie, których wyniki będą mieszane zgodnie z
+pewną funkcją mieszającą $w$. Nasz estymator Monte-Carlo będzie wyglądał
+następująco:
 
 \[
   F = \sum_{i=1}^{n} \frac{1}{n_i} \sum_{j=1}^{n_i} w_{i}(X_{i,j}) \frac{
@@ -379,16 +427,29 @@ Aby funkcja $h(x)$ była użyteczna, musi spełniac kilka warunków:
   }
 \]
 
-\subsection{Balance heuristics}
+Aby estymator $F$ pozsotał \textit{unbiased} funkcja $w_i$ musi spełniać
+następujące warunki:
+% MIS p.261
+
+\[ \sum_{i = 1}^{n} w_{i}(x) = 1 \text{ dla } f(x) \neq 0 \]
+\[
+  \forall i \in \{ 1, \ldots, n \} \quad
+  w_{i}(x) = 0 \Leftrightarrow p_i(x) = 0
+\]
+
+Za najlepsze funkcją mieszającą $w_i$ sprawdzające się w większości zastosowań
+uważa się funkcje postaci:
 
 \[
   w_{i}(x) = \frac{
     n_{i} p_{i}(x)
   }{
-    \sum_{k} {
+    \sum_{k=1}^{n} {
       n_{k} p_{k}(x)
     }
   }
 \]
+
+\noindent nazywane heurystyką balansującą (ang. \textit{balance heuristics}).
 
 \end{document}
