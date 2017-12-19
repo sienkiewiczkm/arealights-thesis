@@ -4,6 +4,10 @@
 \usepackage{polski}
 \usepackage{xltxtra}
 
+\usepackage[toc,page]{appendix}
+\renewcommand{\appendixtocname}{Załączniki}
+\renewcommand{\appendixpagename}{Załączniki}
+
 \usepackage{hyperref}
 
 \usepackage{amsmath} % text in math
@@ -76,6 +80,10 @@
 \subfile{source/ch02_pbr}
 \subfile{source/ch03_montecarlo}
 \subfile{source/ch04_ltc}
+
+\begin{appendices}
+\subfile{source/appendix_pdf_maxima}
+\end{appendices}
 
 \bibliography{source/references}
 \bibliographystyle{plain}

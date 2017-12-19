@@ -1,0 +1,12 @@
+declare(n, integer);
+assume(n > 0, sp > 0, st > 0);
+
+ptp: (n+1)/(2*%pi) * cos(t)^n * sin(t) $
+pt: integrate(ptp, p, 0, 2*%pi) $
+pp: ptp / pt $
+
+Pp: integrate(pp, p, 0, sp) $
+solve(Pp = u, sp);
+
+Pt: integrate(pt, t, 0, st) $
+solve(Pt = v, st);

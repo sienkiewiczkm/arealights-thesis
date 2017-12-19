@@ -259,12 +259,40 @@ prostej proporcji. Ten zbiór będzie wykorzystywany w kodzie pracy.
   \label{fig:HammersleySamples}
 \end{figure}
 
+\subsection{Generowanie próbki z funkcji gęstości prawdopodobieństwa}
+
+Weźmy funkcję gęstości prawdopodobieństwa $f(x)$. Jej dystrybuanta jest równa:
+
+\[ F(s_x) = \int_{-\infty}^{s_{x}} f(x) dx \in [0,1] \]
+
+Załóżmy, że mamy do dyspozycji parametr $\xi \in [0,1]$ wygenerowany dowolną
+metodą. Zbudujmy równanie w którym nieznaną zmienną będzie $s_x$:
+
+\[ F(s_x) = \xi \]
+
+Rozwiązując powyższe równanie otrzymamy funkcję odwrotną generującą próbkę
+$s_x$:
+
+\[ s_x = F^{-1}(\xi) \]
+
 \subsection{Generowanie punktów na sferze}
 
 Do wygenerowania punktów na sferze możemy wykorzystamy parametryzację:
-  $(u,v) \in [0,1]^2 \rightarrow (\theta, \phi) \in \mathbb{H}$
+  $(u,v) \in [0,1]^2 \rightarrow (\theta, \phi) \in \mathcal{H}$
 
-Możemy wykorzystać do tego parametryzację jednorodną \cite{dammertz_2012}:
+Przekształcenie bezpośrednie tj.:
+
+\begin{align*}
+	\theta &= \pi u \\
+  \phi &= 2 \pi v
+\end{align*}
+
+\noindent nie będzie wystarczające, otrzymany rozkład nie będzie równomierny
+\cite{WolframSpherePointPicking}.
+
+Możemy wykorzystać do tego parametryzację jednorodną \cite{dammertz_2012}
+\todo{Dopisać wyjaśnienie dlaczego, trójkąt i kąt, rysunkowo}
+\todo{Przeczytać: Advanced Computer Graphics Rendering Equation}.
 
 \begin{align*}
 	\phi &= \cos^{-1}(1-u) \\
@@ -400,8 +428,237 @@ znacząco pogorszyć wariancję (rys. \ref{fig:ImportanceSamplingProblems}.
   \caption{Przykłady problemów związanych z wyborem $h(x)$}
 \end{figure}
 
-\section{Multiple Importance Sampling}
+\section{Importance Sampling dla poszczególnych rodzajów BRDF}
 
+Pozostaje jeszcze kwestia znalezienia konkretnej funkcji $h(x)$ z której
+będziemy mogli skorzystać przy Importance Samplingu. Po pierwsze funkcja
+ma mieć podobny kształt do funkcji podcałkowej oraz musimy potrafić wygenerować
+próbkę.
+
+\subsection{Phong BRDF}
+
+Znajdźmy funkcję gęstości prawdopodobieństwa nadającą się do generowania próbek
+dla BRDF Phonga
+  \cite{NotesImportanceSampling} \cite{ImportanceSamplingForProduction}:
+
+\[
+  L_o(\omega_o) = \int_{\Omega} {
+    L_i(\omega_i) \cos^{n}\theta_s \cos\theta_i d\omega_i
+  }
+\]
+
+Będziemy poszukiwać funkcji $p(\theta, \phi)$:
+
+\noindent z której będziemy mogli wygenerwować próbki korzystając z funkcji
+odwrotnych:
+
+\begin{align*}
+  s_\theta &= F_{\theta}^{-1}(\xi_\theta) \\
+  s_\phi &= F_{\phi}^{-1}(\xi_\phi)
+\end{align*}
+
+\noindent użytecznych do oszacowania całki:
+
+Interesuje nas część $\cos^{n}\theta_s$ w odniesieniu do kąta bryłowego
+$d\omega_i$.
+
+Wykorzystajmy tą funkcję jako kształt dla szukanej funkcji gęstości
+prawdopodobieństwa. Funkcja gęstości $p(x)$ musi spełniać warunek:
+
+\[ \int_{-\infty}^{\infty} p(x) dx = 1 \]
+
+\noindent stąd (czynnik $\sin\theta$ pochodzi z zamiany do współrzędnych
+sferycznych z kątów bryłowych:
+
+\[
+  p(\theta, \phi) = \frac{
+    \cos^{n}{\theta} \sin\theta
+  }{
+    \int_{0}^{2\pi} \int_{0}^{\frac{\pi}{2}} {
+      \cos^{n}{\theta} \sin\theta d\theta
+    }
+  }
+\]
+
+Rozwiązując poniższą całkę otrzymujemy poniższy dwuwymiarowy rozkład gęstośći
+prawdopodobieństwa (patrz listing \ref{appendix:maxima_phong}):
+
+\[
+  p(\theta, \phi) =
+    \frac{n+1}{2\pi} \cos^{n}\theta \sin\theta
+\]
+
+Rozbijmy zmienne $\theta$ oraz $\phi$ na dwie oddzielne niezależne funkcje
+korzystając z rozkładu brzegowego (ang. \textit{marginal density function}):
+
+\[
+  p(\theta) = \int_{0}^{2\pi} {
+    p(\theta, \phi) d \theta
+  } =
+  (n+1) \cos^{n}{\theta} \sin\theta
+\]
+
+Korzystając z twierdzenie Bayesa możemy obliczyć rozkład warunkowy
+	$p(\phi | \theta)$:
+
+\[
+  p(\phi | \theta) = \frac{
+    p(\theta, \phi)
+	}{
+		p(\theta)
+	} = \frac{1}{2\pi}
+\]
+
+Oba rozkłady konwertujemy do postaci dystrybuanty którą będziemy próbkować
+korzystając ze zmiennych losowych $(\xi_{\theta}, \xi_{\phi}) \in [0,1]^2$:
+
+\[
+	\xi_1 = P(s_{\phi}) =
+	\int_{0}^{s_{\phi}} {
+		p(\phi) d\phi
+	} =
+	\int_{0}^{s_{\phi}} {
+		\frac{1}{2\pi}
+	} =
+	\frac{s_{\phi}}{2\pi}
+\]
+
+Stąd możemy wyznaczyć:
+
+\[
+	s_{\phi} = 2 \pi \xi_{\phi}
+\]
+
+Analogicznie postępujemy z rozkładem brzegowym:
+
+\[
+  \xi_{\theta} = P(s_{\theta}) =
+	\int_{0}^{s_{\theta}} {
+		p(\theta) d\theta
+	} =
+	\int_{0}^{s_{\theta}} {
+		\frac{n+1}{2\pi} \cos^{n}\theta \sin\theta d\phi
+	} =
+	1 - \cos^{n+1}(s_{\theta})
+\]
+
+Z czego mamy:
+
+\[
+	s_{\theta} =
+	\cos^{-1}\left[
+		(1 - \xi_{\theta})^{\frac{1}{n+1}}
+	\right]
+\]
+
+lub ze względu na losowość rozkładu (rozkład uzyskany przez lustrzane odbicie
+dalej jest losowy i spełnia wszystkie założenia):
+
+\[
+	s_{\theta} =
+	\cos^{-1}\left(
+		\xi_{\theta}^{\frac{1}{n+1}}
+	\right)
+\]
+
+\subsection{Trowbridge-Reitz BRDF (GGX)}
+
+\[
+  \int D(m) (n \cdot m) dm = \left(\int D(m) cos\theta dm\right) = 1
+\]
+
+NDF:
+
+\[
+	D(m) = \frac{
+		\alpha^2
+	}{
+    \pi \left(
+      \cos^{2}(n \cdot m)(\alpha^2 - 1) + 1
+    \right)^{2}
+  }
+\]
+
+\[
+  p(\theta, \phi) =
+	\frac{
+    \alpha^2 \cos\theta \sin\theta
+	}{
+    \pi \left(
+      \cos^{2}\theta (\alpha^2 - 1) + 1
+    \right)^{2}
+  }
+\]
+
+Analogicznie do poprzedniego przykładu oba rozkłady konwertujemy do postaci
+dystrybuanty którą będziemy próbkować korzystając ze zmiennych losowych
+  $(\xi_{\theta}, \xi_{\phi}) \in [0,1]^2$:
+
+\[
+  p(\theta) = \int_{0}^{2\pi} {
+    p(\theta, \phi) d \theta
+  } =
+  \frac{2 \alpha^2 \cos\theta \sin\theta}{
+    \left(
+      \cos^{2}\theta (\alpha^2 - 1) + 1
+    \right)^{2}
+  }
+\]
+
+Dla $\phi$ proces wygląda analogicznie do BRDF Phonga:
+
+\[
+  p(\phi | \theta) = \frac{
+    p(\theta, \phi)
+	}{
+		p(\theta)
+	} = \frac{1}{2\pi}
+\]
+
+\[
+	\xi_\phi = P(s_{\phi}) =
+	\int_{0}^{s_{\phi}} {
+		p(\phi) d\phi
+	} =
+	\int_{0}^{s_{\phi}} {
+		\frac{1}{2\pi}
+	} =
+	\frac{s_{\phi}}{2\pi}
+  \Rightarrow
+	s_{\phi} = 2 \pi \xi_{\phi}
+\]
+
+\[
+  \xi_\theta = P(s_{\theta}) =
+	\int_{0}^{s_{\theta}} {
+		p(\theta) d\theta
+	} =
+  2 \alpha^2 \left(
+    \frac{1}{
+      (2\alpha^4 - 4\alpha^2 + 2) \cos^{2}{s_\theta} + 2\alpha^2 - 2
+    } - \frac{1}{
+      2\alpha^4 - 2\alpha^2
+    }
+  \right)
+\]
+
+Po przekształceniu powyższego wzoru uzyskujemy:
+
+\begin{align*}
+  s_\theta &= \cos^{-1}\left(
+    \sqrt{
+      \frac{1 - \xi_\theta}{\alpha^2 \xi_\theta - \xi_\theta + 1}
+    }
+  \right) \\
+  s_{\phi} &= 2 \pi \xi_{\phi}
+\end{align*}
+
+\subsection{Rozkłady wykładnicze}
+
+Nie wszystkie rozkłady mogą być rozwiązane korzystając z powyższej metody.
+Box-Muller.
+
+\section{Multiple Importance Sampling}
 
 Załóżmy, że mamy $n$ różnych funkcji gęstości prawodpodobieństwa $p_{i}(x)$ dla
 $i \in \{ 1, \cdots, n \}$ opisujących istotność poszczególnych próbek dla

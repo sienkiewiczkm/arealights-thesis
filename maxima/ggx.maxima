@@ -1,0 +1,12 @@
+assume(a > 0);
+assume(sp > 0, st > 1);
+
+ptp: (a^2 * cos(t) * sin(t)) / (%pi * ((a^2-1)*cos(t)^2+1)^2) $
+pt: integrate(ptp, p, 0, 2*%pi) $
+pp: ptp / pt $
+
+Pp: integrate(pp, p, 0, sp);
+solve(Pp = u, sp);
+
+Pt: integrate(pt, t, 0, st);
+solve(Pt = v, st);
