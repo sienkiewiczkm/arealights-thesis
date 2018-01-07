@@ -8,8 +8,7 @@
 W początkach lat 2000 ze względu na ograniczenia techniczne najpopularniejszym
 modelem wykorzystywanym w grach był model Blinna-Phonga, który nie wymagał
 dużej mocy obliczeniowej do oświetlenia nawet złożonych scen. Model ten
-korzystał z kilku podstawowych zasad geometrycznych do opisu oświetlenia.
-Równanie Blinna-Phonga opisane jest prostym równaniem:
+korzystał z kilku podstawowych zasad geometrycznych do opisu oświetlenia:
 
 \begin{gather*}
   L_o(p) = k_e + k_a I_a +
@@ -20,26 +19,27 @@ Równanie Blinna-Phonga opisane jest prostym równaniem:
     h = \frac{\omega_o+\omega_m}{||\omega_o+\omega_m||}
 \end{gather*}
 
-W równaniu pojawiają się pewne dobrane przez artystę stałe materiałowe
+W powyższym równaniu pojawiają się pewne dobrane przez artystę stałe materiałowe
 opisujące dany punkt na powierzchni, a mianowicie:
 
 \begin{itemize}
-\item $k_e$ - współczynnik będący ilością światła wyemitowanego w punkcie,
-  opisuje on ilość wysłanej energii z punktu, wartość ta nie jest zależna
-  od żadnego innego czynnika, współczynnik ten może pomóc w modelowaniu
-  żarzącego się metalu, diód na urządzeniach elektronicznych itp.
+
+\item $k_e$ - współczynnik opisujący ilość energii wysłanej z punktu, wartość
+  ta nie jest zależna od żadnego innego czynnika, służy do modelowania
+  materiałów emisyjnych np. żarzącego się metalu, diód w urządzeniach
+  elektronicznych itp.
 
 \item $k_a$ - współczynnik odbicia światła otoczenia określa jaka część swiatła
-  pochodzącego z otoczenia jest odbita do obserwatora, w starszych grach źródłem
-  światła z otoczenia były tzw. mapy środowiskowe (ang. \textit{environment
-  maps});
+  pochodzącego z otoczenia jest odbita do obserwatora, najczęściej źródłem
+  światła z otoczenia były proste mapy środowiskowe (ang. \textit{environment
+  maps})
 
-\item $k_d$ - współczynnik odbicia światła rozproszonego określa ilość światła
-  odbitego równomiernie w każdym kierunku (ilość odebranego światła przez
-  obserwatora jest niezależna od kąta obserwacji), wartość ta opisuje generalnie
-  kolor materiału
+\item $k_d$ - współczynnik określa stosunek światła odbitego równomiernie w
+  każdym kierunku do światła przychodzącego do tego punktu (ilość odebranego
+  światła przez obserwatora jest niezależna od kąta obserwacji), wartość ta
+  opisuje generalnie kolor materiału
 
-\item $k_s$ - współczynnik odbicia światła lustrzanego, opisuje on kolor światła
+\item $k_s$ - współczynnik odbicia światła lustrzanego opisuje kolor światła
   odbitego od powierzchni, decyduje on o kolorze refleksów
 
 \end{itemize}
@@ -54,10 +54,9 @@ Doprowadza to sytuacji, w których obiekt, dla którego stworzone są tekstury
 może wyglądać bardzo dobrze w jednym otoczeniu, by w drugim wyglądać
 nienaturalnie: zaprojektowany model wraz z mapami może bardzo dobrze
 prezentować się na zewnątrz pośród trawy, lecz w słabo oświetlonej jaskini nie
-będzie sprawiał wrażenia naturalnego, wrażenia istnienia w i razem z tym
-miejscem. Zatem jednym z głównych problemów prostych modeli oświetlenia jest
-to, że bardzo często nie wyglądają one naturalnie w różnych warunkach
-oświetlenia.
+będzie sprawiał wrażenia naturalnego, pasującego do otoczenia. Zatem jednym z
+głównych problemów prostych modeli oświetlenia jest to, że bardzo często nie
+wyglądają one naturalnie w różnych warunkach oświetlenia.
 
 Podejście PBR wychodzi naprzeciw oczekiwaniom i rozwiązuje ten problem
 zmieniając podejście do tworzenia sceny. Artyści zamiast próbować dobrać
@@ -74,10 +73,10 @@ równania Blinna-Phonga ze względu na prostą strukturę nie umożliwiają na
 precyzyjną kontrolę jaka część energii zostaje rozproszona, a jaka odbita. Bez
 ingerencji artysty (lub programisty) często dochodzi do sytuacji w której
 refleksy są nienaturalne, prześwietlone w wyniku wygenerowania energii przez
-dany obszar powierzchni. Jest to skutkiem braku ograniczenia suma energii
-wychodzącej do całkowitej energii przychodzącej (ignorując zjawisko emisji
-światła przez rozżarzony metal, żarówki i inne). W obszarze w którym więcej
-światła ulega odbiciu, mniej światła może może ulec rozproszeniu.
+dany obszar powierzchni. Jest to skutkiem braku ograniczenia sumy energii
+wychodzącej na skutek interakcji z przychodzącymi wiązkami światła do ich
+całkowitej energii. W obszarze w którym więcej światła ulega odbiciu, mniej
+światła może może ulec rozproszeniu.
 
 Model Blinna-Phonga również nie jest w stanie realistycznie obsłużyć wielu
 typów materiałów, w tym metali. Metale cechują się pełną absorpcją światła
@@ -125,26 +124,27 @@ materii np. w wodzie.
 
 Ośrodkiem niejednorodnym nazywamy ośrodek o niejednorodnej strukturze
 wewenętrznej, w którym prędkość światła jest zależna od kierunku lub badanego
-miejsca. Ze względu na to, światło jest załamywane i w mocno niejednorodnych
-objawia się to  wymieszaniem światła (światło biegnie w losowych kierunkach).
+miejsca. Ze względu na to, światło jest załamywane co objawia się wymieszaniem
+światła (światło biegnie w losowych kierunkach). Idealnym przykładem takiego
+ośrodka jest mleko.
 
 Wiązka światła podczas zderzenia z powierzchnią (dokładniej, przy przejściu z
 jednego ośrodka do drugiego) rozdziela się na dwie części: część odbitą od
 powierzchni oraz załamaną - część ze zmienionym kierunkiem ale wchodzącym do
 nowego ośrodka.
 
-Część energii, która została uległa refrakcji wchodzi wgłąb obiektu, gdzie
+Część energii, która została uległa refrakcji wchodzi wgłąb, gdzie
 zachodzą kolejne kolizje z atomami materii, przez co znów dochodzi do
-powyższego zjawiska, tym razem we wnętrzu obiektu. Część tego światła może
+powyższego zjawiska, tym razem we wnętrzu. Część tego światła może
 wydostać się z obiektu i dotrzeć do obserwatora, pozostała część zostanie
 pochłonięta i zamieniona na inne rodzaje energii np. ciepło.
 
 Zauważmy, że w przypadku braku emisji energii energia która dociera do
 obserwatora musi być mniejsza lub równa energii wiązki światła - ta właściwość
-jest jednym z filarów podejścia fizycznie poprawnego. W przypadku metali
-jednak, światło które trafi do wnętrza takiego obiektu zostaje bardzo szybko
-zaabsorbowane. Energia światła zostaje zamieniona na inny jej rodzaj przez
-wolne elektrony w strukturze metalu.
+jest jednym z filarów modeli bazowanych na zjawiskach fizycznych. W przypadku
+metali jednak, światło które trafi do wnętrza takiego obiektu zostaje bardzo
+szybko zaabsorbowane. Energia światła zostaje zamieniona na inny jej rodzaj
+przez wolne elektrony w strukturze metalu.
 
 W modelach matematycznych wymienionych w tej pracy zakładamy, że ponowne
 wyjście energii która była poddana refrakcji następuje w tym samym punkcie, w
@@ -179,7 +179,7 @@ którym promień zderzył się z powierzchnią (rys. \ref{fig:ReflectionRefracti
 Istnieją techniki które biorą pod uwagę możliwość ucieczki energii w innym
 miejscu, ale skomplikowałyby one rozważania na których skupia się ta praca.
 Techniki takie są wymagane do uzyskania realistycznych obrazów w którym pojawia
-się skóra, work i inne materiały w których rozproszenie podpowierzchniowe
+się skóra, wosk i inne materiały w których rozproszenie podpowierzchniowe
 jest widoczne.
 
 \begin{figure}[ht]
@@ -230,7 +230,7 @@ potrzebować kilku podstawowych praw fizycznych:
 
 \textbf{Prawo odbicia.}
   Kąty padania wiązki światła $\alpha_i$ i jej odbicia $\alpha_r$ od
-  płaszczyznę są równe ($\alpha_i = \alpha_r$).
+  płaszczyzny są równe ($\alpha_i = \alpha_r$).
 
 \textbf{Prawo Snella.}
   Zmiana kierunku promienia światła przy przejściu przez granicę dwóch ośrodków
@@ -446,8 +446,8 @@ Bardzo ważną obserwacją jest to, że radiancja nie jest mierzona względem
 irradiancji powierzchni na której leży punkt $p$, ma to na celu wyeliminowanie
 czynnika $\cos \alpha$ z definicji \cite[p. 339]{pbrt}. Jednostką radiancji
 jest gęstość energii na jednostkę powierzchni na jednostkę kąta bryłowego.
-Radiancję możemy interpretować jako ilość światła wzdłuż jednego promienia.
-Radiancja jak i inne miary jest funkcją długości fali.
+Radiancję możemy interpretować jako miarę ilości światła wzdłuż jednego
+promienia. Radiancja jak i inne miary jest funkcją długości fali.
 
 \section{Równanie renderingu}
 
@@ -564,14 +564,13 @@ OpenGL. Po podstawieniu do równania renderingu otrzymujemy:
   k_s \int_{\Omega} {L_i(\omega_i) (n \cdot h)^{n} (n \cdot \omega_i) d\omega_i}
 \end{align*}
 
-\subsection{Cook-Torrance BRDF}
+\section{Model Cooka-Torrance'a}
 
-Najpopularniejszym \todo{Sprawdić czy są inne znane modele (chyba tak).}
-modelem BRDF wykorzystującym podejście mikropowierzchni jest model
-Cooka-Torrance'a \cite{CookTorrance}.
+Najpopularniejszym modelem BRDF wykorzystującym podejście mikropowierzchni jest
+model Cooka-Torrance'a \cite{CookTorrance}.
 
-Część refleksyjna dla BRDF zdefiniowanego przez Cooka i Torrance'a zapisana
-ogólnie wygląda w sposób następujący:
+Funkcja BRDF, będąca częścią refleksyjną BSDF nazy zdefiniowanego przez Cooka i
+Torrance'a zapisana ogólnie wygląda w sposób następujący:
 
 \begin{displaymath}
   f_{\mu} = \frac{
@@ -590,6 +589,8 @@ w rozdziale o analizie interakcji promienia w wiązką światła, są one kolejn
   \item $G$ - funkcja geometryczna
 \end{itemize}
 
+\subsection{Funkcje rozkładu normalnych}
+
 Funkcja rozkładu normalnych (ang. \textit{Normal Distribution Function, NDF})
 opisuje rozkład normalnych mikropowierzchni na pewnej powierzchni o
 współczynniku $\alpha$. Konkretniej, funkcja \textit{NDF} $D(h)$ określa
@@ -607,6 +608,71 @@ Każda funkcja rozkładu normalnych w postaci znormalizowanej spełnia warunek
     d \omega_i
   } = 1
 \]
+
+Podstawową funkcją rozkładu normalnych jest wspomniany już wcześniej rozkład
+Blinna-Phonga w postaci znormalizowanej:
+% http://graphicrants.blogspot.com/2013/08/specular-brdf-reference.html
+\[
+  D_{\text{Blinn}}(m) =
+    \frac{1}{2\pi\alpha^2}
+    (n \cdot m)^{(\frac{2}{\alpha^2} - 2)}
+\]
+
+Funkcja Beckmanna:
+\[
+  D_{\text{Beckmann}}(m) =
+    \frac{1}{2\pi\alpha^2 (n \cdot m)^{4}}
+    \exp\left(
+      \frac{
+        (n \cdot m)^2 - 1
+      }{
+        \alpha^2 (n \cdot m)^2
+      }
+    \right)
+\]
+
+Natomiast napopularniejszym modelem używanym w większości współczesnych silników
+jest model GGX (znany również jako model Trowbridge-Reitz):
+\[
+  D_{\text{GGX}}(m) =
+    \frac{
+      \alpha^2
+    }{
+      \pi \left(
+        \left(n \cdot m \right)^{2}
+        \left(\alpha^2 - 1 \right)
+        + 1
+      \right)^2
+    }
+\]
+
+W literaturze bardzo często występują alternatywne, równoważne formy zapisu
+tego równania, np. Walter podaje: %todo: add ref
+
+\[
+  D_{\text{GGX}}(m) =
+    \frac{\alpha^2 \chi^{+}(n \cdot m)}{
+      \pi \cos^{4} (n \cdot m) \left( \alpha^2 + \tan^2 (n \cdot m) \right)^2
+    }
+\]
+
+\noindent Równość powyższych form bardzo łatwo udowodnić korzystając z
+definicji tangensa oraz jedynki trygonometrycznej.
+
+Można się również spotkać z formą anizotropową \cite{pbrt}:
+\[
+  D_{\text{GGXaniso}}(m) =
+    \frac{1}{
+      \pi \alpha_x \alpha_y \cos^{4} (\theta_h) \left(
+        1 + \tan^{2}(\theta_h) \left(
+          \frac{\cos^{2}{\phi_h}}{\alpha_{x}^{2}} +
+          \frac{\sin^{2}{\phi_h}}{\alpha_{y}^{2}}
+        \right)
+      \right)^{2}
+    }
+\]
+
+\subsection{Współczynnik Fresnela}
 
 Współczynnik Fresnela opisuje stosunek światła odbitego do światła załamanego
 na danej powierzchni pod danym kątem.
@@ -631,7 +697,9 @@ opisującymi tą relację są:
   \caption{Odwrócony współczynnik Fresnela, aproksymacja Schlicka}
 \end{figure}
 
-Funckaj geometryczna (lub zaciemnianie geometryczne, ang. \textit{Geometric
+\subsection{Funkcja geometryczna}
+
+Funkcja geometryczna (lub zaciemnianie geometryczne, ang. \textit{Geometric
 Shadowing}) odpowiada za wspomniane wcześniej zjawiska rzucania cieni w obrębie
 mikropowierzchni, w związku z czym światło które pada pod pewnym kątem nie
 odbija się od całości powierzchni (ang. \textit{shadowing}, rys.
@@ -654,9 +722,62 @@ $h$, które nie są zaciemnione lub zasłonięte.
   \label{fig:GeometricShadowing}
 \end{figure}
 
+Funkcja geometryczna nazywaną funkcją \textit{implicit} eliminującą czynnik
+geometryczny definiujemy poprzez:
+\[
+  G_{\text{implicit}}(l,v,h) =
+    (n \cdot l) (n \cdot v)
+\]
+
+\[
+  G_{\text{Cook-Torrance}}(l,v,h) =
+    \min \left(
+      1,
+      \frac{2(n \cdot h)(n \cdot v)}{
+        v \cdot h
+      },
+      \frac{2(n \cdot h)(n \cdot l)}{
+        v \cdot h
+      }
+    \right)
+\]
+
+Funkcje geometryczne korzystające z metody Smitha polegającej na rozbiciu
+funkcji $G$ na dwa niezależne czynniki korzystające z tej samej funkcji $G_1$
+z parametrem kolejno $l$ oraz $v$, tzn:
+\[
+  G(l,v,h) = G_1(l) G_1(v)
+\]
+
+% cite walter
+Tak jak w poprzednim przypadku istnieje kilka modeli funkcji $G_1$.
+Najpopularniejszymi wyborami są: GGX oraz aproksymacja Schlick-GGX:
+\[
+  G_{1}^{\text{GGX}}(v) =
+    \chi^{+}\left(\frac{v \cdot m}{v \cdot n}\right)
+    \frac{2}{
+      1 + \sqrt{
+        1 + \alpha^2 \tan^{2}\left(\theta_v\right)
+      }
+    }
+\]
+\[
+  G_{1}^{\text{Schlick-GGX}}(v) =
+    \frac{n \cdot v}{
+      (n \cdot v)(1 - k) + k
+    }
+\]
+
+gdzie $k = \frac{\alpha}{2}$.
+
+\subsection{Podsumowanie}
+
 Powyższe definicje umożliwają nam zbudowanie ogólnego modelu fizycznego
 biorącego pod uwagę podstawowe zjawiska zachodzące w mikropowierzchniach
 będących powierzchniami idealnie płaskimi.
+
+W tej pracy będziemy korzystać głównie z funkcji rozkładu normalnych GGX,
+aproksymacji Schlicka oraz funkcji geometrycznej GGX.
 
 \todo[inline]{Dodać część diffuse Cook-Torrance}
 

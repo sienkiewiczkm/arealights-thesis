@@ -410,27 +410,35 @@ a mianowicie:
 
 Oryginalna metoda pływającego sympleksu nie posiada mechanizmu dla ograniczeń,
 ale istnieją techniki pozwalające rozwiązać ten problem. W mojej implementacji
-wykorzystałem logarytmiczną wewnętrzną funkcję kary.
+wykorzystałem logarytmiczną wewnętrzną (barierową) funkcję kary:
 
-\todo[inline]{Czy opisywać algorytm wraz z WFK?}
+\[
+  p_{\mathbb{L}}(x, \rho) = - \frac{1}{\rho} \sum_{i=1}^{m} \log(-g_i(x))
+\]
 
-\todo[inline]{Jakieś rysunki dla metody pływającego sympleksu}
+Alternatywną funkcją barierową jest funkcja hiperboliczna:
 
-\begin{tikzpicture}
-\draw [help lines] (0,0) grid (5,5);
-\draw [<->]
-  (0,5.2) node [left] {$a$} --
-  (0,0) --
-  (5.2,0) node [below] {$b$};
-\draw [thick]
-  (1,2) node [left] {$x_1$} --
-  (3,4) node [above] {$x_2$} --
-  (4,1) node [right] {$x_3$} --
-  (1,2);
-\end{tikzpicture}
+\[
+  p_{\mathbb{H}}(x, \rho) =
+    - \frac{1}{\rho} \sum_{i=1}^{m} \frac{1}{g_i(x)}
+\]
 
 \subsection{Wyznaczanie błędu przybliżenia}
 
-\todo[inline]{Wyznaczanie błędu przyblieżenia}
+Mając pewne parametry $a$, $b$, $c$ będące wynikiem kroku algorytmu optymalizacji
+chcielibyśmy ocenić jakość przybliżenia wyznaczonego przez te parametry. W tym
+celu stworzymy funkcję błędu:
+
+\[
+  f(a,b,c) =
+    \int_{\Omega} {
+      \left| {D_{\text{LTC}}(a, b, c, \omega) - D_{\text{BRDF}}(\omega)} \right|
+    } d \omega
+\]
+
+Funkcja ta może zostać obliczona z wykorzystaniem techniki MIS opisanej w
+rozdziale \ref{Chapter:MIS}.
+
+\subsection{Format danych}
 
 \end{document}

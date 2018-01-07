@@ -14,7 +14,7 @@
 \usepackage{amssymb} % extended math symbol collection (Cap, Cup etc.)
 \usepackage{listings} % code listings (lstlisting)
 \usepackage{subfiles} % subfiles and selective compilation
-\usepackage[textsize=small]{todonotes}
+\usepackage[disable,textsize=small]{todonotes}
 \usepackage{fontspec}
 \usepackage{fontawesome}
 \usepackage{wrapfig} % wrapfigure enviroment
@@ -76,7 +76,8 @@
 \cleardoublepage
 \pagestyle{fancy}
 
-%\subfile{source/ch01_introduction}
+\subfile{source/notation_table}
+\subfile{source/ch01_introduction}
 \subfile{source/ch02_pbr}
 \subfile{source/ch03_montecarlo}
 \subfile{source/ch04_ltc}
