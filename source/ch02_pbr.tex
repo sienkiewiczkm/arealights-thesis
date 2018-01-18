@@ -13,7 +13,7 @@ korzystał z kilku podstawowych zasad geometrycznych do opisu oświetlenia:
 \begin{gather*}
   L_o(p) = k_e + k_a I_a +
     \sum_{m \in L} \left( {
-      k_d L_m \max\left({ \omega_m \cdot n, 0 }\right) +
+      k_d L_m \max\left\{{ \omega_m \cdot n, 0 }\right\} +
       k_s L_m (n \cdot h)^{\alpha}
     } \right) \\
     h = \frac{\omega_o+\omega_m}{||\omega_o+\omega_m||}
@@ -457,13 +457,13 @@ $\omega_o$ znając radiancję przychodzącą do tego punktu. Równanie te możem
 zapisać jako:
 
 \[
-  L_0 =
+  L_o =
   L_{e}(p, \omega_o) +
   \int_{\Omega} {
-    f_r(p, \omega_i, \omega_o)
+    f_s(p, \omega_i, \omega_o)
     L_i(w_i)
     (n \cdot \omega_i)
-    d \omega_i
+    \dd{\omega_i}
   }
 \]
 
@@ -479,12 +479,30 @@ zapisać jako:
   \item $\Omega$ - jednostkowa półsfera wyznaczająca dziedzinę wszystkich
     możliwych kierunków przychodzących $\omega_i$
 
-  \item $f_{r}(p, \omega_i, \omega_o)$ - funkcja \textit{BRDF} (ang.
-    \textit{Bidirectional Reflectance Distribution Function}) wyznaczająca jaka
+  \item $f_{r}(p, \omega_i, \omega_o)$ - funkcja \textit{BSDF} (ang.
+    \textit{Bidirectional Scattering Distribution Function}) wyznaczająca jaka
     część energii przybywającej z kierunku $w_i$ zostanie wysłana w zadanym
-    kierunku $w_o$.
+    kierunku $w_o$ na skutek transmitancji i odbicia.
 
 \end{itemize}
+
+Funkcja BSDF w celu ułatwienia obliczeń bardzo często jest rozbijana na dwie
+funkcje składowe: \textit{BTDF} (\textit{Bidirectional Transmitance Scattering
+Function}) oraz \textit{BRDF} (\textit{Bidirectional Reflectance Scattering
+Function}). W tej pracy nie będziemy brać pod uwagę części transmisyjnej.
+\footnote{
+  Istnieje również funkcja nazywana \textit{Bidirectional Scattering-Surface
+  Reflectance Distribution Function (BSSRDF)} opisująca zjawiska rozproszenia
+  podpowierzchniowego, ważnego do uzyskania dobrych rezultatów przy
+  renderowaniu skóry, wosku i innych materiałów tego typu. W tej pracy nie
+  będziemy zajmować się tymi modelami.
+}
+Dodatkowo modele bardzo często rozbijają funkcję BRDF na składową
+\textit{diffuse} oraz \textit{specular}.  W kolejnych podrozdziałach
+przyjrzymy się konkretnym przykładom takich modeli.
+
+
+\section{Bidirectional Reflectance Distribution Function}
 
 Aby funkcja BRDF była fizycznie wiarygodna (ang. \textit{physically plausible})
 musi spełniać dwa warunki. Po pierwsze, funkcja BRDF musi być niezależna od
@@ -512,29 +530,92 @@ większość modeli rozdziela je i analizuje osobno lub definiuje tylko jedną
 część. Do podziału najczęściej używane są równania Fresnela.
 
 Istnieje bardzo dużo róznych modeli BRDF \cite{brdf_overview}, my zajmiemy się
-natomiast dwoma: najbardziej znanym modelem Blinna-Phonga i modelem
-Cooka-Torrance'a.
+natomiast kilkoma wybranymi.
 
-\subsection{Blinn-Phong BRDF}
+
+\subsection{Lambertian}
+
+Najprostszą funkcją BRDF jest rozkład jednorodny, niezależny od kąta
+obserwacji. Taka funkcja jest rozkładem lambertowskim opisanym poniższym
+równaniem:
+\[
+  f_r = \frac{\rho_d}{\pi}
+\]
+
+Model ten bardzo często jest wykorzystywany do opisania części rozproszonej,
+szczególnie używany do modelowania gładkich dielektryków.
+
+Teoretyczna powierzchnia lambertowska odbija tą samą ilość radiancji w każdym
+kierunku. Warto w tym miejscu zauważyć, czynnik równy kosinusowi kąta padania
+światła kojarzony z modelem Lamberta jest częścią równania renderingu, a nie
+samej funkcji BRDF.
+
+
+\subsection{Minnaert}
+
+Alternatywnym modelem dla gładkich izotropowych powierzchni jest model
+Minnaert'a. Model ten został stworzony do opisu powierzchni księżyca, można
+spotkać się z określeniem modelu księżycowego (ang. \textit{moon shading}).
+Główną zmianą jest zależność jasności od kąta obserwacji i kąta padania światła
+na powierzchnię.  Model ten jest szczególnie przydatny do obliczenia
+oświetlenia dla aksamitu, dywanów. Model ten opisany jest wzorem:
+\[
+  f_r = \frac{\rho_d}{\pi} \left[
+    (\omega_o \cdot n) (\omega_i \cdot n)
+  \right]^{k-1}
+\]
+
+Dla $k=1$ model ten redukuje się do modelu Lamberta.
+
+
+\subsection{Oren-Nayar}
+
+Oren-Nayar zaproponował model służący do opisu części rozproszonej chropowatych
+dielektryków, będącym uogólnieniem modelu Lamberta dla materiałów o różnym
+współczynniku chropowatości. Podobnie jak model Minnaerta nadaje się do
+materiałów takich jak aksamit czy welur, różnego rodzaju chropowate plastiki,
+skóra. Równanie opisane przez twórców jest aproksymacją i wyraża się poniższym
+wzorem:
+\[
+  f_r = \frac{\rho_d}{\pi} \left[
+    A +
+    B
+      \max\{ 0, \cos\left(\phi_{\omega_i} - \phi_{\omega_o}\right) \}
+      \sin a \tan b
+  \right]
+\]
+
+% Reference: Hoffman, N., Baker, D. and Kautz, J. (2006).
+%            Physically-Based Reflectance for Games. [online]
+%            Available at: http://jankautz.com/courses/GameCourse/
+%            [Accessed 10 Jan. 2018].
+
+\noindent gdzie:
+\begin{gather*}
+  a = \max \{ \theta_{\omega_o}, \theta_{\omega_i} \} \\
+  b = \min \{ \theta_{\omega_o}, \theta_{\omega_i} \} \\
+  A = 1 - 0.5 \frac{\alpha^2}{\alpha^2 + 0.33} \\
+  B = 0.45 \frac{\alpha^2}{\alpha^2 + 0.09}
+\end{gather*}
+
+Jak widać dla gładkiej powierzchni dla której $\alpha=0$ otrzymujemy
+z powrotem model Lamberta.
+
+
+\subsection{Blinn-Phong}
 
 Model Blinna-Phonga jest modelem empirycznym, jego równania pochodzą z
-obserwacji świata i próby dopasowania prostej funkcji do opisu wielu materiałów
-za pomocą małej liczby parametrów.
+obserwacji świata i próby dopasowania prostej funkcji do opisu części
+refleksyjnej wielu materiałów za pomocą małej liczby parametrów.
 
 Podstawowy model Phonga definiował funkcję BRDF w następujący sposób:
-
 \[
 f_r(\omega_i, \omega_o) =
-  k_d + k_s \left(
+  k_s \left(
     \omega_i \cdot
     \text{reflect}\left(\omega_i\right)
   \right)^{n}
 \]
-
-Część rozproszona tego BRDF korzysta ze standardowego modelu Lamberta i
-wykorzystuje parametr $k_d$ do określenia koloru materiału \todo{Ten podział
-nie do końca jest prawdziwy oraz $k_d$ ze względu na calkę musi być razem z
-jakimś współczynnikiem w przypadku bardziej PBR}.
 
 Modyfikacja Blinna polega na wykorzystaniu wektora połówkowego $h$
 definiującego teoretyczną powierzchnię która odbiłaby światło z kierunku
@@ -548,23 +629,9 @@ $\omega_i$ w kierunku $\omega_o$:
 Co ciekawe, powyższa modyfikacja spowodowała zmniejszenie ilości operacji
 wymaganych do obliczenia wyniku, przez co model był wykorzystywany wiele lat
 przez domyślne potoki renderowania we wcześniejszych wersjach DirectX oraz
-OpenGL. Po podstawieniu do równania renderingu otrzymujemy:
+OpenGL.
 
-\begin{align*}
-  L_0(p, \omega_i, \omega_o) &=
-  L_{e}(p, \omega_o) +
-  \int_{\Omega} {
-    f_r(p, \omega_i, \omega_o)
-    L_i(w_i)
-    (n \cdot \omega_i)
-    d \omega_i
-  } = \\
-  &= L_{e}(p, \omega_o) +
-  k_d \int_{\Omega} {L_i(\omega_i) (n \cdot \omega_i) d\omega_i} +
-  k_s \int_{\Omega} {L_i(\omega_i) (n \cdot h)^{n} (n \cdot \omega_i) d\omega_i}
-\end{align*}
-
-\section{Model Cooka-Torrance'a}
+\subsection{Cook-Torrance}
 
 Najpopularniejszym modelem BRDF wykorzystującym podejście mikropowierzchni jest
 model Cooka-Torrance'a \cite{CookTorrance}.
