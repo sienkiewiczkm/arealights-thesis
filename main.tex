@@ -3,6 +3,7 @@
 \usepackage{babel} % https://tex.stackexchange.com/a/166775
 \usepackage{polski}
 \usepackage{xltxtra}
+\usepackage{siunitx}
 
 \usepackage[toc,page]{appendix}
 \renewcommand{\appendixtocname}{Załączniki}
@@ -21,12 +22,16 @@
 \usepackage{subcaption} % subfigures
 \usepackage{tabularx}
 \usepackage{physics}
+\usepackage{siunitx}
 
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
 \usetikzlibrary{arrows.meta,angles,quotes}
 \usetikzlibrary{intersections}
 \usetikzlibrary{babel}
+
+\usepackage{biblatex}
+\addbibresource{source/references.bib}
 
 \usepackage{graphicx}
 \graphicspath{ {illustrations/} }
@@ -55,6 +60,10 @@
 \keywords{k1, k2}
 %-------------------------------------------------------------------------------
 
+\sisetup{
+  per-mode = fraction,
+}
+
 \begin{document}
 \sloppy
 \setcounter{page}{1}
@@ -70,25 +79,24 @@
 
 %\makestatement
 
-\cleardoublepage
+%\cleardoublepage
 \tableofcontents
 
-\listoftodos
+%\listoftodos
 
-\cleardoublepage
+%\cleardoublepage
 \pagestyle{fancy}
 
-\subfile{source/notation_table}
-\subfile{source/ch01_introduction}
+%\subfile{source/notation_table}
+%\subfile{source/ch01_introduction}
 \subfile{source/ch02_pbr}
-\subfile{source/ch03_montecarlo}
-\subfile{source/ch04_ltc}
+%\subfile{source/ch03_montecarlo}
+%\subfile{source/ch04_ltc}
 
-\begin{appendices}
-\subfile{source/appendix_pdf_maxima}
-\end{appendices}
+%\begin{appendices}
+%\subfile{source/appendix_pdf_maxima}
+%\end{appendices}
 
-\bibliography{source/references}
-\bibliographystyle{plain}
+\printbibliography
 
 \end{document}
