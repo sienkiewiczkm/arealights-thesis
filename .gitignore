@@ -11,3 +11,5 @@
 *.blg
 *.synctex.gz
 *.tdo
+main.run.xml
+main.bcf
