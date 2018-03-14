@@ -756,7 +756,7 @@ Napopularniejszą metodą wyznaczania przybliżonej wartości współczynnika Fr
 \[
     F_{\text{Schlick}} = F_0 + (1-F_0)(1-\cos\theta)^5
 \]
-\noindent gdzie $F_0$ jest reflektancją powierzchniową dla  oraz $\theta = (n \cdot \omega_i)$. Warto zauważyć, że dla przypadku w którym rozpatrujemy model bazujący na mikropowierzchniach musimy zastosować wektor połówkowy zamiast normalnej:
+\noindent gdzie $F_0$ jest reflektancją powierzchniową dla  oraz $\theta = (n \cdot \omega_i)$. Warto zauważyć, że dla przypadku w którym rozpatrujemy model bazujący na mikropowierzchniach musimy zastosować wektor połówkowy $m$ zamiast normalnej:
 \[
     F_{\text{Schlick}} = F_0 + (1-F_0)\left(
         1 - \left(
@@ -773,9 +773,9 @@ Alternatywną metodą aproksymacji jest przybliżenie wykorzystujące sferyczne 
 \[
     F_{\text{Gauss}} = F_0 +(1−F_0) 2^{\left[
         \left(
-            −5.55473\left(\omega_o \cdot h\right)−6.98316
+            −5.55473\left(\omega_o \cdot m\right)−6.98316
         \right) 
-        (\omega_o \cdot h)
+        (\omega_o \cdot m)
   \right]}
 \]
 
@@ -848,8 +848,7 @@ Najpopularniejszymi wyborami są: GGX \cite{WalterMicrofacetModels} oraz aproksy
       (n \cdot \omega)(1 - k) + k
     }
 \]
-
-gdzie $k = \frac{\alpha}{2}$.
+\noindent gdzie $k = \frac{\alpha}{2}$.
 
 \subsection{Podsumowanie}
 
