@@ -5,7 +5,7 @@
 
 \section{Wstęp}
 
-Wyprowadzone w poprzednim rozdziale równanie renderingu (ang. \textit{render equation}) podsumowujące wszystkie badane przez nas efekty świetlne wyraża się wzorem:
+Wyprowadzone w poprzednim rozdziale równanie renderingu opisuje wszystkie badane przez nas efekty radiometryczne. Można je zapisać we wspomnianej już wcześniej formie całkowej:
 \[
   \int_{\Omega} {
     L(\omega_{l})
@@ -15,44 +15,44 @@ Wyprowadzone w poprzednim rozdziale równanie renderingu (ang. \textit{render eq
   }
 \]
 
-Rozwiązanie używane przez większość obecnie produkowanych silników do gier polegające na przybliżeniu źródeł światła polegającym na założeniu ich punktowej natury zostało przedstawione w poprzednim rozdziale. Obliczenie sumy będącej odpowiednikiem powyższej całki, nie jest wyzwaniem dla obecnych kart graficznych nawet dla dużej ilości świateł, szczególnie przy zastosowaniu specjalnych technik zmniejszających wymaganą liczbę operacji do minimum, np. \textit{deferred shading}.  
+Większość obecnie produkowanych silników do gier używa rozwiązania polegającego na przybliżeniu źródeł światła źródłami punktowymi - obliczenie sumy będącej odpowiednikiem powyższej całki przy takich założeniach nie jest wyzwaniem dla obecnych kart graficznych nawet dla dużej ilości świateł, szczególnie przy zastosowaniu specjalnych technik zmniejszających wymaganą liczbę operacji do minimum, np. \textit{deferred shading}.
 
-W przypadku świateł zajmujących ciągły fragment dziedziny sferycznej, całka nie może zostać w bezpośredni sposób przedstawiona w postaci sumy skończonej bez znacznej utraty dokładności. Niestety również dla większośći funkcji $L$, $f_r$ rozwiązanie dokładne nie będzie możliwe do znalezienia w ograniczonym czasie wymaganym do zachowania płynności aplikacji.
+W przypadku świateł zajmujących ciągły fragment dziedziny sferycznej, nie jesteśmy w stanie bezpośrednio przedstawić całki w postaci sumy skończonej bez znacznej utraty dokładności. Niestety, również dla większości funkcji $L$, $f_r$ rozwiązanie nie jest możliwe do znalezienia metodą analityczną w bardzo ograniczonym czasie wymaganym do zachowania płynności aplikacji.
 
-Metody stosujące niebezpośrednie podejście do wyznaczenia przybliżenia wartości tej całki zostaną opisane w kolejnych rozdziałach. Wiedza na temat uzyskania przybliżenia oryginalnej całki przyda nam się do ich zrozumienia oraz weryfikacji poprawności.
+Metody stosujące niebezpośrednie podejście do wyznaczenia przybliżenia wartości tej całki będą opisane w kolejnych rozdziałach. Wiedza na temat uzyskania przybliżenia oryginalnej całki przyda nam się do ich zrozumienia oraz weryfikacji poprawności.
 
 \section{Metoda Monte Carlo}
 
-Całkowanie numeryczne funkcji w ogólności nie jest prostym zadaniem do wykonania w taki sposób, aby błąd był niewielki przy relatywnie niskim czasie obliczeń. Z pomocą przychodzi nam metoda przybliżona Monte Carlo bazująca na rachunku prawdopodobieństwa i prawie wielkich liczb. Metoda dokładnie opisana jest w \cite{Sierocinski,MonteCarloAnderson,Veach}. Przytoczę tutaj ogólnie podstawowe pojęcia i twierdzenia.
+W ogólności całkowanie numeryczne funkcji nie jest możliwe do zrealizowania tak, aby błąd był niewielki przy relatywnie niskim czasie obliczeń wystarczającym do uzyskania płynności działania. Jedną z szybszych metod całkowania numerycznego jest przybliżona metoda Monte Carlo bazująca na rachunku prawdopodobieństwa i prawie wielkich liczb. Metoda ta dokładnie opisana jest w publikacjach \cite{Sierocinski,MonteCarloAnderson,Veach}. Przytoczę tutaj ogólnie podstawowe pojęcia i twierdzenia.
 
-Zdarzeniem elementarnym nazywamy kazdy mozliwy wynik pewnego doświadczenia. Każde zdarzenie jest unikalne oraz dwa zdarzenia elementarne nie mogą wystąpić w trakcie jednego eksperymentu.
+Zdarzeniem elementarnym nazywamy każdy możliwy wynik pewnego doświadczenia. Każde zdarzenie jest unikalne oraz dwa zdarzenia elementarne nie mogą wystąpić w trakcie jednego eksperymentu.
 
 Zmienną losową $\mathbb{X}$ nazywamy funkcję przypisującą zdarzeniom elementarnym liczby. Przykładem zmiennej losowej jest liczba wylosowanych oczek na kostce, waga lub wzrost. Dziedzina zmiennej losowej może być dyskretna (np. liczba oczek na kostce tj. zbiór $\{1,2,3,4,5,6\}$) lub ciągła (np. przedział $[0,1]$). Wartość $Y = f(X)$, gdzie $f$ jest dowolną funkcją również jest zmienną losową. 
 
-Funkcją rozkładu prawdopodobieństwa $P$ nazywamy funkcję przypisującą prawdopodobobieństwo wartościom zmiennej losowym.
+Funkcją rozkładu prawdopodobieństwa $P$ nazywamy funkcję przypisującą prawdopodobobieństwo wartościom zmiennej losowej. 
 % Jak to się ma dla zmiennych losowych ciągłych?
 
 Dystrybuanta (ang. \textit{cumulative distribution function}, \textit{CDF})
 wyznacza prawodpodobieństwo, że zdarzenie losowe $\mathbb{X}$, które zachodzi
 ma wartość $\eta$ nie przekraczającą $x$.
 \[
-F(x) = P(\mathbb{X} \leq x)
+    F(x) = P(\mathbb{X} \leq x)
 \]
 
 Funkcją gęstości prawopodobieństwa $f_{\mathbb{X}}$ (ang. \textit{probability density
 function}, \textit{PDF}) nazywamy pochodną dystrybuanty:
 \[
-f_{\mathbb{X}}(x) = \frac{dF}{dx}(x)
+    f_{\mathbb{X}}(x) = \frac{dF}{dx}(x)
 \]
 
 Wartości funkcji gęstości prawdopodobieństwa muszą być nieujemne oraz całka po całej dziedzinie zmiennej losowej $\Omega$ musi być równa $1$:
 \[
-\int_{\Omega} f_{\mathbb{X}}(x) \dd x
+    \int_{\Omega} f_{\mathbb{X}}(x) \dd x = 1
 \]
 
 Dla zmiennej losowej określonej na pewnym przedziale $\Lambda \in \mathbb{R}$ tż. $[a,b] \in \Lambda$ mamy:
 \[
-\int_{a}^{b} f_{\mathbb{X}}(x) \dd x = P(a \leq x \leq b)
+    \int_{a}^{b} f_{\mathbb{X}}(x) \dd x = P(a \leq x \leq b)
 \]
 
 Weżmy funkcję gęstości prawdopobieństwa $f_{\mathbb{X}}$ ciągłej zmiennej
@@ -66,7 +66,7 @@ losowej $\mathbb{X}$ wynosi:
 }
 \]
 
-Wartość oczekiwaną możemy interpretować jako średnia wartość funkcji $g$, której parametry są wybierane zgodnie z rozkładem reprezentowanym przez $f$.
+Wartość oczekiwaną możemy interpretować jako średnią wartość funkcji $g$, której parametry są wybierane zgodnie z rozkładem reprezentowanym przez $f$.
 
 Wariancją nazywamy funkcję wyznaczającą kwadrat oczekiwanych odchyleń od wartości oczekiwanej. Wariancja $V$ funkcji $g$ zdefiniowana jest intuicyjnie jako:
 \[
@@ -86,7 +86,6 @@ V\left[ g(x) \right]
 \]
 
 Własności wartości oczekiwanej i wariancji:
-
 \begin{gather*}
 \mathbb{E}\left[ag(x)\right] = a \mathbb{E} \left[g(x)\right] \\
 \mathbb{E}\left[\sum_{i} g(x_i)\right] = \sum_{i} \mathbb{E} \left[g(x_i)\right] \\
@@ -112,22 +111,17 @@ prawie wielkich liczb nazywamy:
 	\sum_{i=1}^{n}g(x_i)
 \]
 
-\noindent gdzie, $x=(x_1, \ldots, x_n)$ jest zbiorem $n$ próbek zmiennej
+\noindent gdzie $x=(x_1, \ldots, x_n)$ jest zbiorem $n$ próbek zmiennej
 losowej $\mathbb{X}$.
 
 \section{Generowanie próbek}
 
-Próbki Monte-Carlo można wybierać w sposób całkowicie losowy (rys.
-\ref{fig:RandomSamples}, jednak taka metoda nie daje nam żadnej gwarancji, że
-wybrane próbki będą pokrywały dziedzinę w sposób równomierny. Z pomocą
-przychodzą nam ciągi \textit{quasi-losowe}, które pokrywają zadaną dziedzinę w
-sposób całkowity i równomierny. Załóżmy, że nasza dziedzina jest kostką $n$
-wymiarową: $[0,1]^{n}$.
+Próbki Monte-Carlo można wybierać w sposób całkowicie losowy, jednak taka metoda nie daje nam żadnej gwarancji, że wybrane próbki będą pokrywały dziedzinę w sposób równomierny, co łatwo zaobserwować na rys. \ref{fig:RandomSamples}. Z pomocą przychodzą nam ciągi \textit{quasi-losowe}, które pokrywają zadaną dziedzinę w sposób, który gwarantuje nam jednorodne pokrycie dziedziny. Załóżmy, że nasza dziedzina jest kostką $n$-wymiarową $[0,1]^{n}$.
 
 \begin{figure}[h]
   \centering
   \includegraphics[height=5cm]{montecarlo/random_seq.pdf}
-  \caption{Próbki wygenerowane w sposób losowy (1024 próbek)}
+  \caption{Próbki wygenerowane w sposób losowy (1024 próbek). Opracowanie własne.}
   \label{fig:RandomSamples}
 \end{figure}
 
@@ -136,7 +130,7 @@ Pierwszą metodą jednorodną (rys. \ref{fig:UniformSamples}) jaka się narzuca 
 \begin{figure}[h]
   \centering
   \includegraphics[height=5cm]{montecarlo/uniform_seq.pdf}
-  \caption{Próbki wygenerowane przez równomierny podział (1024 próbek)}
+  \caption{Próbki wygenerowane przez równomierny podział (1024 próbek). Opracowanie własne.}
   \label{fig:UniformSamples}
 \end{figure}
 
@@ -159,7 +153,7 @@ i = \sum_{j=0}^{\infty} {a_j b^j}
 Ciąg van der Corputa transformuje powyższą reprezentację $a_k$, dla $n$-tego
 elementu ciągu mamy:
 \[ 
-v(n) = \sum_{j=0}^{\infty} {a_j b^{-j-1}} 
+v_b(n) = \sum_{j=0}^{\infty} {a_j b^{-j-1}} 
 \]
 
 \begin{example}
@@ -202,7 +196,7 @@ Istnieje alternatywne rozwiązanie korzystające z właściwości operacji takie
 odwrotności. Warto zauważyć, że obie liczby $n$ oraz $v(n)$ zapisane w systemie o podstawie $b$ (tutaj $b=2$) są odbiciem lustrzanym:
 \[
   5 = 1 + 4 = (101.0)_{b} \quad
-  (0.101)_{b} = 0.625 = \frac{1}{2} + \frac{1}{8} = v(5)
+  (0.101)_{b} = 0.625 = \frac{1}{2} + \frac{1}{8} = v_2(5)
 \]
 
 Dla $b=2$ odpowiednio skonstruowana operacja bitowa tego typu pozwoli na
@@ -237,7 +231,7 @@ x(i) = \left( v_{b_0}(i), v_{b_1}(i), \cdots, v_{b_n}(i) \right)
 \begin{figure}[h]
   \centering
   \includegraphics[height=5cm]{montecarlo/halton_seq.pdf}
-  \caption{Ciąg Haltona (1024 próbek)}
+  \caption{Ciąg Haltona (1024 próbek). Opracowanie własne.}
   \label{fig:HaltonSamples}
 \end{figure}
 
@@ -261,11 +255,12 @@ prostej proporcji. Ten zbiór będzie wykorzystywany w kodzie pracy.
 \begin{figure}[h]
   \centering
   \includegraphics[height=5cm]{montecarlo/hammersley_seq.pdf}
-  \caption{Zbiór Hammersleya (1024 próbek)}
+  \caption{Zbiór Hammersleya (1024 próbek). Opracowanie własne.}
   \label{fig:HammersleySamples}
 \end{figure}
 
 \subsection{Generowanie próbki z funkcji gęstości prawdopodobieństwa}
+\label{section:pdfsampling}
 
 Weźmy funkcję gęstości prawdopodobieństwa $f(x)$. Jej dystrybuanta jest równa:
 \[ 
@@ -286,28 +281,29 @@ s_x = F^{-1}(\xi)
 
 Dla niektórych funkcji, obliczenie wartości całki lub znalezienie rozwiązania może nie być możliwe, istnieją jednak inne metody pozwalające na wyznaczenie metody dla takich funkcji: metoda odrzucania (ang. \textit{rejection method}), transformacja Boxa-Mullera \cite{pbrt}.
 
-\subsection{Generowanie punktów na sferze}
+\subsection{Generowanie punktów na półsferze}
 
-Do wygenerowania punktów na sferze możemy wykorzystamy parametryzację:
-  $(u,v) \in [0,1]^2 \rightarrow (\theta, \phi) \in \mathcal{H}$
+Generowanie punktów na półsferze jest bardzo ważnym zagadnieniem związanym z wykorzystaniem metody Monte-Carlo do znalezienia rozwiązania przybliżonego równania renderingu. Najczęściej, wszystkie możliwe kierunki z których może padać światło oraz kierunki wychodzące dla odbitych promieni znajdują się w obszarze półsfery zdefiniowanej przez punkt oraz normalną do symulowanej powierzchni w tym punkcie. Z tego powodu ważne jest posiadanie metody generowanie kierunków, a te są tożsame z punktami na sferze jednostkowej.
 
-Przekształcenie bezpośrednie tj.:
+Do wygenerowania punktów na półsferze możemy wykorzystamy parametryzację z kostki dwuwymiarowej do współrzędnych polarnych:
+\[
+  (u,v) \in [0,1]^2 \rightarrow (\theta, \phi) \in \mathcal{H}
+\]
+
+Niestety, proste przeskalowanie dziedziny źródłowej tzn. przekształcenie parametrów przekształceniem liniowym postaci:
 \begin{align*}
-	\theta &= \pi u \\
- 	\phi &= 2 \pi v
+	\phi &= \frac{1}{2} \pi u \\
+ 	\theta &= 2 \pi v
 \end{align*}
-\noindent nie będzie wystarczające, otrzymany rozkład nie będzie równomierny
-\cite{WolframSpherePointPicking}.
+\noindent nie będzie wystarczające, ponieważ otrzymany rozkład nie będzie równomierny na powierzchni półsfery (więcej punktów jest skupionych w okolicach biegunów) \cite{WolframSpherePointPicking}.
 
-Możemy wykorzystać do tego parametryzację jednorodną \cite{dammertz_2012}
-\todo{Dopisać wyjaśnienie dlaczego, trójkąt i kąt, rysunkowo}
-\todo{Przeczytać: Advanced Computer Graphics Rendering Equation}.
+Możemy wykorzystać do tego parametryzację jednorodną \cite{dammertz_2012, AdvancedCGRenderingEq} wyprowadzoną z użyciem metody z sekcji \ref{section:pdfsampling} przy założeniu, że funkcja gęstości prawdopodobieństwa jest stała:
 \begin{align*}
 	\phi &= \cos^{-1}(1-u) \\
 	\theta &= 2 \pi v
 \end{align*}
 
-Lub przekształcenie kosinusowe dla rozkładów z czynnikiem $\cos\alpha$:
+Dla funkcji które są zależą od kosinusa kąta $\phi$ możemy wykorzystać alternatywną metodę generowania, która będzie generować mniej punktów w okolicach horyzontu, gdzie $\cos\phi \approx 0$. Do wyznaczenia takiego rozkładu wykorzystamy funkcję gęstości prawdopodobieństwa $p$ proporcjonalną do czynnika $cos\phi$, finalnie otrzymamy \cite{AdvancedCGRenderingEq}:
 \begin{align*}
   \phi &= \cos^{-1}(\sqrt{1-u}) \\
   \theta &= 2 \pi v
@@ -315,32 +311,25 @@ Lub przekształcenie kosinusowe dla rozkładów z czynnikiem $\cos\alpha$:
 
 \section{Przyrostowa metoda Monte-Carlo}
 
-Metoda Monte-Carlo ze względu na swoją złożoność obliczeniową nie umożliwia
-uzyskania rezultatu w czasie rzeczywistym. Możliwość operowania sceną,
-precyzyjnego ustawienia kamery i obiektów nie jest łatwe w takim środowisku.
-Czasami nie potrzebujemy również bardzo dużej szczegółowości, czasem wystarczy
-nam konkretna ilość iteracji do znalezienia problemu i głównych różnic.
+Metoda Monte-Carlo ze względu na swoją złożoność obliczeniową nie umożliwia uzyskania rezultatu w czasie rzeczywistym. Możliwość operowania sceną, precyzyjnego ustawienia kamery i obiektów nie jest łatwe w takim środowisku. Czasami nie potrzebujemy również bardzo dużej szczegółowości - w niektórych przypadkach wystarczy nam konkretna ilość iteracji do znalezienia problemu obecnej implementacji lub oceny głównych różnic między metodami.
 
 Wygodnym kompromisem jest podzielenie obliczeń na wiele etapów, z których każdy
 może zostać wyświetlony jako częściowy podgląd. Dłuższy czas oczekiwania bez
 zmian w scenie pozwala nam uzyskać większą jakość.
 
 Spróbujmy zbudować rekurencyjny ciąg podsum Monte-Carlo wyznaczających wynik dla $n$-tej próbki oraz po dołączeniu $n+1$ próbki:
-\[ 
-I_n = \frac{1}{n} \sum_{i=1}^{n} f(x_i) 
-\]
-\[
-I_{n+1} = \frac{1}{n+1} \sum_{i+1}^{n+1}f(x_i)
-	= \frac{n}{(n+1)n} \sum_{i=1}^{n}f(x_i) + \frac{1}{n+1}f(x_{n+1})
-	= \frac{n}{n+1} I_{n} + \frac{1}{n+1}f(x_{n+1})
-\]
+\begin{align*}
+I_n &= \frac{1}{n} \sum_{i=1}^{n} f(x_i) \\
+I_{n+1} &= \frac{1}{n+1} \sum_{i+1}^{n+1}f(x_i) \\
+	&= \frac{n}{(n+1)n} \sum_{i=1}^{n}f(x_i) + \frac{1}{n+1}f(x_{n+1}) \\
+	&= \frac{n}{n+1} I_{n} + \frac{1}{n+1}f(x_{n+1})
+\end{align*}
 
 Dodatkowy czas potrzebny na przygotowanie ramki, policzenie sumy ważonej i
 wyświetlenie rezultatu na ekranie sprawia, że uzyskamy szybszą zbieżność przez
 zgrupowanie próbkek w pakiety, które mogą zostać potencjalnie policzone
 jednocześnie. Okazuje się, że rozpisanie analogicznego równania dla paczek
 danego, stałego rozmiaru jest trywialne:
-
 \begin{align*}
   I_{(m+1)n} &= \frac{1}{(m+1)n} \sum_{i=1}^{(m+1)n} f(x_i)
   = \frac{1}{(m+1)n} \sum_{i=1}^{mn} f(x_i)
@@ -406,18 +395,18 @@ znacząco pogorszyć wariancję (rys. \ref{fig:ImportanceSamplingProblems}).
   \centering
 
   \begin{subfigure}[t]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{montecarlo/is_different_shape.jpg}
+    \includegraphics[width=\textwidth]{montecarlo/different_shape}
     \label{fig:ImportanceSamplingWrongFunction}
-    \caption{Nie odwzorowany kształt estymowanej funkcji}
+    \caption{$h$ nie odwzorowuje kształtu funkcji $g$}
   \end{subfigure}
   \begin{subfigure}[t]{0.45\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{montecarlo/is_lost_tail.jpg}
+    \includegraphics[width=\textwidth]{montecarlo/lost_tail}
     \label{fig:ImportanceSamplingLostTail}
-    \caption{Nie uwzględnienie ,,ogona'' rozkładu}
+    \caption{$h$ nie obejmuje ogona rozkładu funkcji $g$}
   \end{subfigure}
 
-  \caption{Przykłady problemów związanych z wyborem $h(x)$}
+  \caption{Przykłady problemów związanych z wyborem $h(x)$. Opracowanie własne.}
   \label{fig:ImportanceSamplingProblems}
 \end{figure}
 
@@ -446,11 +435,12 @@ odwrotnych:
 Interesuje nas odwzorowanie kształtu części $\cos^{n}\theta_s$ w odniesieniu do kąta bryłowego
 $d\omega_i$. Wykorzystajmy tą funkcję jako kształt dla szukanej funkcji gęstości
 prawdopodobieństwa. Funkcja gęstości $p(x)$ musi spełniać warunek:
-
-\[ \int_{-\infty}^{\infty} p(x) dx = 1 \]
+\[ 
+\int_{-\infty}^{\infty} p(x) dx = 1 
+\]
 
 \noindent stąd (czynnik $\sin\theta$ pochodzi z zamiany do współrzędnych
-sferycznych z kątów bryłowych:
+sferycznych z kątów bryłowych):
 \[
   p(\theta, \phi) = \frac{
     \cos^{n}{\theta} \sin\theta
@@ -634,7 +624,7 @@ Istotnym szczegółem jest to, co właściwie reprezentuje $s_\theta$ oraz $s_\p
 \label{Chapter:MIS}
 
 Załóżmy, że mamy $n$ różnych funkcji gęstości prawodpodobieństwa $p_{i}(x)$ dla
-$i \in \{ 1, \cdots, n \}$ opisujących istotność poszczególnych próbek dla
+$i \in \{ 1, \ldots, n \}$ opisujących istotność poszczególnych próbek dla
 danych czynników szukanej funkcji $f(x)$. Każda z tych strategii działa lepiej
 w pewnych obszarach dziedziny, jednakże gorzej od nich w każdym innym miesjcu.
 Chcielibyśmy dynamicznie wybierać, której strategii używać w danym momencie,
