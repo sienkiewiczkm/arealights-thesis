@@ -12,11 +12,11 @@
 W początkowym okresie rozwoju trójwymiarowej grafiki komputerowej twórcy aplikacji działających w czasie rzeczywistym musieli poradzić sobie z poważnymi ograniczeniami technicznymi uniemożliwiającymi wygenerowanie wielu pożądanych efektów świetlnych.
 Konstrukcja układów graficznych wymuszała wiele kompromisów, między innymi zmuszała wszystkich użytkowników do korzystania ze ściśle zdefiniowanego procesu cieniowania zwanego standardowym potokiem renderowania (ang. \textit{fixed pipeline}). Jedynym sposobem kontroli tego procesu było ustawianie pewnych stałych oraz flag warunkowych tak, aby uzyskać efekt końcowy bliski naszym wymaganiom.
 
-Pojawienie się programów cieniujących (ang. \textit{shader}) zrewolucjonizowało podejście do generowania grafiki. Wydajniejsze, i co ważniejsze - kontrolowalne układy graficzne sprawiły, że można było przestać panicznie zastanawiać się nad tym co jest technicznie możliwe i dobre dla większości zastosowań, a zacząć myśleć nad tym jaki model opisujący nasze otoczenie jest nam potrzebny i najbardziej pasuje do danej sytuacji.
+Pojawienie się programów cieniujących (ang. \textit{shader}) zrewolucjonizowało podejście do generowania grafiki. Wydajniejsze, i co ważniejsze - kontrolowalne układy graficzne sprawiły, że można było przestać zastanawiać się nad tym, co jest technicznie możliwe i dobre dla większości zastosowań, a zacząć myśleć nad tym, jaki model opisujący nasze otoczenie jest nam potrzebny i najbardziej pasuje do danej sytuacji.
 
-Zrozumienie sposóbu generowania grafiki w przeszłości oraz pracy z takimi modelami od strony artystów pozwoli nam bardziej dostrzec zalety korzystania z bardziej skomplikowanych modeli posiadających pewną interpretację fizyczną.
+Zrozumienie sposobu generowania grafiki w przeszłości oraz pracy z takimi modelami od strony artystów pozwoli nam lepiej dostrzec zalety korzystania z bardziej skomplikowanych modeli posiadających pewną interpretację fizyczną.
 
-W czasach popularności standardowego potoku oraz przez pewien czas po pojawieniu się pierwszych programów cieniujących najpopularniejszym modelem wykorzystywanym w grach był model Blinna-Phonga, który nie wymaga dużej mocy obliczeniowej do oświetlenia nawet złożonych scen z kilkoma źródłami światła. Model ten korzysta z kilku podstawowych zasad geometrycznych do opisu oświetlenia, a mianowicie z obserwacji Lamberta oraz części wyznaczonej empirycznie dla refleksów. Kolor danego punktu możemy wyznaczyć ze wzoru:
+W czasach popularności standardowego potoku oraz przez pewien czas po pojawieniu się pierwszych programów cieniujących najczęściej wykorzystywanym modelem w grach był model Blinna-Phonga, który nie wymaga dużej mocy obliczeniowej do oświetlenia, nawet złożonych scen z kilkoma źródłami światła. Model ten korzysta z podstawowych zasad geometrycznych do opisu oświetlenia, a mianowicie z obserwacji Lamberta oraz części wyznaczonej empirycznie dla refleksów. Kolor danego punktu możemy wyznaczyć ze wzoru:
 \begin{gather*}
   L_o(p) = 
   	k_e + 
@@ -32,71 +32,59 @@ W powyższym równaniu pojawiają się pewne dobrane przez artystę stałe mater
 
 \begin{itemize}
 
-\item $k_e$ - współczynnik opisujący ilość energii wygenerowanej w badanym punkcie, wartość ta nie jest zależna od żadnego innego czynnika, służy do modelowania materiałów emisyjnych np. żarzącego się metalu, diód w urządzeniach elektronicznych itp.
+\item $k_e$ - współczynnik opisujący ilość energii wygenerowanej w badanym punkcie, wartość ta nie jest zależna od żadnego innego czynnika, służy do modelowania materiałów emisyjnych, np. żarzącego się metalu, diód w urządzeniach elektronicznych itp.,
 
 \item $k_a$ - współczynnik odbicia światła otoczenia określa jaka część swiatła pochodzącego z otoczenia jest odbita do obserwatora, 
 
-\item $k_d$ - współczynnik określa stosunek światła odbitego równomiernie w każdym kierunku do światła przychodzącego do tego punktu (ilość odebranego światła przez obserwatora jest niezależna od kąta obserwacji), wartość ta opisuje generalnie kolor materiału
+\item $k_d$ - współczynnik określa stosunek światła odbitego równomiernie w każdym kierunku do światła przychodzącego do tego punktu (ilość odebranego światła przez obserwatora jest niezależna od kąta obserwacji), wartość ta opisuje generalnie kolor materiału,
 
-\item $k_s$ - współczynnik odbicia światła lustrzanego opisuje kolor światła odbitego od powierzchni, decyduje on o kolorze refleksów
+\item $k_s$ - współczynnik odbicia światła lustrzanego opisuje kolor światła odbitego od powierzchni, decyduje on o kolorze refleksów.
 
 \end{itemize}
 
 \noindent Kolejna grupa stałych opisuje właściwości samego źródła:
 
 \begin{itemize}
-    \item $I_a$ - kolor światła pochodzącego z otoczenia, najczęściej źródłem światła z otoczenia były wtedy proste mapy środowiskowe (ang. \textit{environment maps}) 
-    \item $I_m$ - kolor światła pochodzącego z $m$-tego światła w scenie
+    \item $I_a$ - kolor światła pochodzącego z otoczenia, najczęściej źródłem światła z otoczenia były wtedy proste mapy środowiskowe (ang. \textit{environment maps}),
+    \item $I_m$ - kolor światła pochodzącego z $m$-tego światła w scenie.
 \end{itemize}
 
 \noindent Pozostałe stałe opisują powierzchnię i jej położenie w scenie:
 
 \begin{itemize}
-    \item $n$ - normalna powierzchni
-    \item $\alpha$ - współczynnik chropowatości powierzchni, jeżeli współczynnik rośnie to zbliża się ona coraz bardziej do idealnego lustra
-    \item $\omega_m$ - wektor jednostkowy reprezentujący kierunek od aktualnie cieniowanego punktu do punktu w którym znajduje się źródło światła
-    \item $\omega_o$ - wektor jednostkowy reprezentujący kierunek od aktualnie cieniowanego punktu do obserwatora
+    \item $n$ - normalna powierzchni,
+    \item $\alpha$ - współczynnik chropowatości powierzchni, jeżeli współczynnik rośnie to zbliża się ona coraz bardziej do idealnego lustra,
+    \item $\omega_m$ - wektor jednostkowy reprezentujący kierunek od aktualnie cieniowanego punktu do punktu w którym znajduje się źródło światła,
+    \item $\omega_o$ - wektor jednostkowy reprezentujący kierunek od aktualnie cieniowanego punktu do obserwatora.
 \end{itemize}
 
-Jak widać, stałe $k_a$, $k_d$, $k_s$ są tak naprawdę kolorami różnych typów interakcji
-wiązki światła z pewnych źródeł z powierzchnią. Kolor odbicia zależy w bardzo
-dużym stopniu od artysty i jego wyobrażenia o zachowaniu światła w danym
-środowisku, nie wynika on jasno z właściwości materiału, lecz zwykłego domysłu
-jak poszukiwany materiał się zachowa i w jaki sposób będzie połyskiwał.
+Jak widać, stałe $k_a$, $k_d$, $k_s$ są tak naprawdę kolorami różnych typów interakcji wiązki światła z pewnych źródeł z powierzchnią. Kolor odbicia zależy w bardzo dużym stopniu od wyobrażenia artysty o zachowaniu światła w danym środowisku, nie wynika on jasno z właściwości materiału, lecz zwykłego domysłu, jak poszukiwany materiał wygląda w określonych warunkach.
 
-Doprowadza to sytuacji, w których obiekt, dla którego stworzone są tekstury
-może wyglądać bardzo dobrze w jednym otoczeniu, by w drugim wyglądać
-nienaturalnie: zaprojektowany model wraz z mapami może bardzo dobrze
-prezentować się na zewnątrz pośród trawy, lecz w słabo oświetlonej jaskini nie
-będzie sprawiał wrażenia naturalnego, pasującego do otoczenia. Zatem jednym z
-głównych problemów prostych modeli oświetlenia jest to, że bardzo często nie
-wyglądają one naturalnie w różnych warunkach oświetlenia.
+Doprowadza to do sytuacji, w której obiekt, dla którego stworzone są tekstury, może wyglądać bardzo dobrze w jednym otoczeniu, a w drugim nienaturalnie. Zaprojektowany model może dobrze prezentować się w dziennym świetle, lecz w zaciemnionym miejscu nie będzie sprawiał wrażenia realistycznego. Zatem jednym z głównych problemów prostych modeli oświetlenia jest to, że opis materiału jest zależny od referencyjnych warunków świetlnych.
 
 Podejście o podłożu fizycznym (ang. \textit{physically based rendering, PBR}) wychodzi naprzeciw oczekiwaniom i rozwiązuje ten problem
-zmieniając podejście do tworzenia sceny. Artyści zamiast próbować dobrać
+zmieniając metodę tworzenia sceny. Artyści zamiast próbować dobrać
 współczynniki tak, aby uzyskać pewien efekt wizualny zgodny z naturalnym
 używają współczynników opisujących materię. W ten sposób nie opierają się oni
 na niedoskonałych domysłach i zmyśle artystycznym, przekładając
 odpowiedzialność za poprawny wygląd w dowolnej scenie na modele matematyczne.
-Opis staje się niezależny od oświetlenia co jest dużą oszczędnością w procesie
+Opis staje się niezależny od oświetlenia, co jest dużą oszczędnością w procesie
 produkcyjnym.
 
-Kosztem jednak jest złożoność takich modeli oraz to, że wiele z nich poprawnie opisuje tylko część materiałów występujących w przyrodzie. Istnieją dobre modele matematyczne dla plastików, metali, materiału (jedwab, satyna), jednak większość z nich nie potrafi w sposób uniwersalny opisać jednym wzorem każdego rodzaju materii. Do uzyskania najlepszego rezultatu konieczne jest wykorzystanie kilku z nich.
-Dodatkowo, przeprowadzenie wymaganych obliczeń wymaga kilkukrotnie
+Problemem natomiast jest złożoność takich modeli oraz to, że wiele z nich poprawnie opisuje tylko część materiałów występujących w przyrodzie. Istnieją dobre modele matematyczne dla plastiku, metalu, materiału (jedwab, satyna), jednak większość z nich nie potrafi, w sposób uniwersalny, opisać jednym wzorem każdego rodzaju materii. Do uzyskania najlepszego rezultatu konieczne jest wykorzystanie kilku z nich.
+Dodatkowo, przeprowadzenie obliczeń wymaga kilkukrotnie
 większej liczby operacji - modele opisane w tym rozdziale w większości powstały
-w latach 80, jednak ich użycie nie było wtedy możliwe. Postęp technologiczny 
+w latach 80., jednak ich użycie nie było wtedy możliwe. Postęp technologiczny 
 ostatnich lat sprawił, że nawet bardziej skomplikowane modele bazowane na zjawiskach fizycznych znajdują zastosowanie praktyczne w aplikacjach czasu rzeczywistego.
 
 Kolejnym problemem prostych modeli oświetlenia jest brak zachowania
 podstawowych zasad fizycznych, w tym zasady zachowania energii. W szczególności
-równania Blinna-Phonga ze względu na prostą strukturę nie pozwalają na
-precyzyjną kontrolę jaka część energii zostaje rozproszona, a jaka odbita. Bez
+równania Blinna-Phonga, ze względu na prostą strukturę, nie pozwalają na
+precyzyjną kontrolę jaka część promieni zostaje rozproszona, a jaka odbita. Bez
 ingerencji artysty (lub programisty) często dochodzi do sytuacji w której
 refleksy są nienaturalne, prześwietlone w wyniku przypadkowego wygenerowania 
 energii przez dany obszar powierzchni. Jest to skutkiem braku ograniczenia 
-sumy energii wychodzącej na skutek interakcji z przychodzącymi wiązkami światła 
-do ich całkowitej energii. W obszarze w którym więcej światła ulega odbiciu, mniej
-światła może może ulec rozproszeniu.
+sumy energii wychodzącej do całkowitej energii przychodzącej. W obszarze, w którym więcej światła ulega odbiciu, mniej światła może może ulec rozproszeniu.
 
 Model Blinna-Phonga również nie jest w stanie realistycznie obsłużyć wielu
 typów materiałów, w tym metali. Metale cechują się pełną absorpcją światła
@@ -118,37 +106,37 @@ Ze względów praktycznych w grafice komputerowej stosuje się przybliżenie trz
   \label{fig:solar_spectrum}
 \end{figure}
 
-Oddziaływanie światła z materią opisuje wielkość nazywana współczynnikiem załamania $n$. Współczynnik załamania mówi nam jak materia wpływa na prędkość światła oraz w postaci rozszerzonej w której współczynnik jest wartością zespoloną również pozwala obliczyć jak dużo światła dany ośrodek absorbuje. Podstawowym wzorem na $n$ jest:
+Oddziaływanie światła z materią opisuje wielkość nazywana współczynnikiem załamania $n$. Współczynnik załamania mówi nam, jak materia wpływa na prędkość światła oraz w postaci rozszerzonej w której współczynnik jest wartością zespoloną pozwala obliczyć jak dużo światła dany ośrodek absorbuje. Podstawowym wzorem na $n$ jest:
 \[
     n = \frac{c}{v}
 \]
 gdzie $c$ jest prędkością światła w próżni ($\SI{2.998e8}{\meter\per\second}$), a $v$ prędkością fazową fali, czyli prędkością z jaką faza propaguje się w przestrzeni.
 
-Najprostszym rodzajem ośrodka jest medium jednorodne, które ma jednolitą strukturę wewnętrzną o stałym współczynniku załamania. Na skutek tego prędkość światła w każdym punkcie i dowolnym kierunku jest jednakowa. W takim przypadku światło w ośrodku porusza się w linii prostej. Najlepszym przykładem ośrodka tego typu jest próżnia. Mimo braku zmiany kierunku w większości ośrodków następuje utrata energii na skutek absorpcji wynikającej ze zderzeń z atomami materii. Nawet niewielki stopień utraty energii może skutkować całkowitym jej pochłonięciem na większym dystansie np. pod wodą. Innym przykładem medium jednorodnego o niskiej absorpcji jest szkło i powietrze.
+Najprostszym rodzajem ośrodka jest medium jednorodne, które ma jednolitą strukturę wewnętrzną o stałym współczynniku załamania. Na skutek tego prędkość światła w każdym punkcie i dowolnym kierunku jest jednakowa. W takim przypadku światło w ośrodku porusza się w linii prostej. Najlepszym przykładem ośrodka tego typu jest próżnia. Mimo braku zmiany kierunku w większości ośrodków następuje utrata energii na skutek absorpcji, wynikającej ze zderzeń z atomami materii. Nawet niewielki stopień utraty energii może skutkować całkowitym jej pochłonięciem na większym dystansie np. pod wodą. Innym przykładem medium jednorodnego o niskiej absorpcji jest szkło i powietrze.
 
-Ośrodek niejednorodny jest ośrodkiem o niejednorodnej strukturze wewnętrznej w której prędkość światła jest zależna od kierunku lub badanego miejsca - w związku z czym współczynnik załamania jest zależny od pozycji w ośrodku. Jeżeli w otoczeniu danego punktu współczynnik załamania zmienia się to promień przechodzący przez ten punkt zmieni swój kierunek. W przypadku ciągłej zmiany współczynnika promień zostanie zagięty, jednak dla nieciągłości wiązka zostanie podzielona na dwie części - na część refrakcyjną oraz odbitą. Część odbita nie opuści obecnego ośrodka, lecz zmieni kierunek i wróci do jego wnętrza. Część refrakcyjna natomiast zagnie się oraz przejdzie do drugiego ośrodka. 
+Ośrodek niejednorodny jest ośrodkiem o niejednorodnej strukturze wewnętrznej, w której prędkość światła jest zależna od kierunku lub badanego miejsca - w związku z czym współczynnik załamania jest zależny od pozycji w ośrodku. Jeżeli w otoczeniu danego punktu współczynnik załamania zmienia się to promień przechodzący przez ten punkt zmieni swój kierunek. W przypadku ciągłej zmiany współczynnika promień zostanie zagięty, jednak dla nieciągłości wiązka zostanie podzielona na dwie części - na część refrakcyjną oraz odbitą. Część odbita nie opuści obecnego ośrodka, lecz zmieni kierunek i wróci do jego wnętrza. Część refrakcyjna natomiast zagnie się oraz przejdzie do drugiego ośrodka. 
 
-W bardzo różnorodnych strukturach może dojść do sytuacji w której na skutek dużej ilości nieciągłości lub znacznych wahań współczynnika załamania światło wymiesza się tak, że promienie będą podążały w losowych kierunkach. Takie zjawisko nazywamy rozpraszaniem (ang. \textit{scattering}). Przykładem substancji w której łatwo je zaobserwować jest mleko.
+W bardzo różnorodnych strukturach może dojść do sytuacji, w której na skutek dużej ilości nieciągłości lub znacznych wahań współczynnika załamania światło wymiesza się tak, że promienie będą podążały w losowych kierunkach. Takie zjawisko nazywamy rozpraszaniem (ang. \textit{scattering}). Przykładem substancji w której łatwo je zaobserwować jest mleko.
 
 Warto w tym miejscu zastanowić się nad znaczeniem skali dla rozpraszania światła. Małe zaburzenia w niewielkim otoczeniu mogą nie mieć dużego wpływu na fale świetlne, lecz w dużej skali nie mogą zostać pominięte. Czyste powietrze nie powoduje mieszania się światła na krótkich dystansach, jednak nawet taki ośrodek powoduje znaczne rozproszenie, gdy bierzemy pod uwagę sceny w których można dostrzec punkty leżące wiele kilometrów od obserwatora. 
 
 Oprócz jednorodności lub niejednorodności możemy podzielić substancje na trzy główne kategorie, są to:
 
 \begin{itemize}
-	\item przewodniki (metale) - materiały dobrze przewodzące prąd elektryczny, przykładami przewodników są: grafit, żelazo, stal, aluminium, złoto, miedz
+	\item przewodniki (metale) - materiały dobrze przewodzące prąd elektryczny, przykładami przewodników są: grafit, żelazo, stal, aluminium, złoto, miedź,
     
-	\item izolatory (dielektryki) - materiały w których prąd elektryczny przewodzony jest bardzo słabo, jest to rezultatem niskiej koncentracji ładunków swobodnych i/lub zbyt małej ich ruchliwości, przykładami dielektryków są szkło, ceramika, tworzywa sztuczne, suche drewno, powietrze
+	\item izolatory (dielektryki) - materiały w których prąd elektryczny przewodzony jest bardzo słabo, jest to rezultatem niskiej koncentracji ładunków swobodnych i/lub zbyt małej ich ruchliwości; przykładami dielektryków są szkło, ceramika, tworzywa sztuczne, suche drewno, powietrze,
 	
-	\item półprzewodniki - substancje, dla których przewodnictwo prądowe może być zmieniane w szerokim zakresie. Ze względu na ich rzadkie występowanie w codziennym otoczeniu (poza środowiskami laboratoryjnymi), nie będziemy ich brać pod uwagę. W przypadku konieczności wymodelowania materiału półprzewodnikowego możemy zbudować wystarczający w wielu przypadkach model będący interpolacją między przewodnikiem a izolatorem
+	\item półprzewodniki - substancje, dla których przewodnictwo prądowe może być zmieniane w szerokim zakresie. Ze względu na ich rzadkie występowanie w codziennym otoczeniu (poza środowiskami laboratoryjnymi), nie będziemy ich brać pod uwagę. W przypadku konieczności wymodelowania materiału półprzewodnikowego możemy zbudować wystarczający w wielu przypadkach model będący interpolacją między przewodnikiem a izolatorem.
 \end{itemize}
 
 Metale oraz dielektryki posiadają kilka szczególnych właściwości, które muszą zostać wzięte pod uwagę podczas obliczeń. Różnice zostaną przedstawione nieco później w tym rozdziale.
 
-Zrozumienie sposobu w jaki wiązka światła zachowuje się po zderzeniu z idealnie równą powierzchnią jest fundamentem całej dziedziny metod opartych na prawach fizycznych. Dopóki nie wprowadzimy pojęcia chropowatości będziemy zakładać, że analizowana powierzchnia jest optycznie gładka tzn. że wszystkie nierówności na tej powierzchni są mniejsze niż długość aktualnie analizowanej fali (mniejsze niż $400-700$nm) przez co możemy przyjąć, że nie wpływają one w żaden sposób na zachowanie promieni.
+Zrozumienie zachowania wiązki światła po zderzeniu z idealnie równą powierzchnią jest fundamentem całej dziedziny metod opartych na prawach fizycznych. Dopóki nie wprowadzimy pojęcia chropowatości będziemy zakładać, że analizowana powierzchnia jest optycznie gładka, to znaczy, że wszystkie nierówności na tej powierzchni są mniejsze niż długość aktualnie analizowanej fali (mniejsze niż $400-700$nm), przez co możemy przyjąć, że nie wpływają one w żaden sposób na zachowanie promieni.
 
 Dla uproszczenia objaśnień będziemy również zakładać, że analizowany materiał nie emituje światła. Dodanie emisji energii nie powinno stanowić żadnego problemu po zbudowaniu modelu dla interakcji z zewnętrznymi źródłami światła.
 
-Wiązka światła podczas zderzenia z powierzchnią (dokładniej, przy przejściu z jednego ośrodka do drugiego, w miejscu w którym występuje nieciągłość współczynnika załamania) rozdziela się na dwie części: część odbitą od powierzchni oraz załamaną (część która ulega refrakcji).
+Wiązka światła podczas zderzenia z powierzchnią (dokładniej, przy przejściu z jednego ośrodka do drugiego, w miejscu w którym występuje nieciągłość współczynnika załamania) rozdziela się na dwie części: część odbitą od powierzchni oraz załamaną (część, która ulega refrakcji).
 
 Reflektancją powierzchniową $\mathbb{R}^{\text{surf}}$ \cite{pbr_games_siggraph} nazywamy stosunek natężenia światła odbitego $I_o$ do światła przychodzącego $I_i$ w danym punkcie dla danej długości fali $\lambda$:
 \[
@@ -161,15 +149,15 @@ Reflektancją powierzchniową $\mathbb{R}^{\text{surf}}$ \cite{pbr_games_siggrap
     \right]
 \]
 
-Reflektancja powierzchniowa zależna jest również od kąta padania promienia oraz długości fali. Reflektancję dla kąta padania równego $\ang{0}$ będziemy oznaczać poprzez $\mathbb{R}^{\text{surf}}_{0}$ - ta wartość bardzo często używana jest jako wartość bazowa dla modeli przybliżających wartość reflektancji dla wszystkich kątów. 
+Reflektancja powierzchniowa zależna jest również od kąta padania promienia oraz długości fali. Reflektancję dla kąta padania równego $\ang{0}$ będziemy oznaczać poprzez $\mathbb{R}^{\text{surf}}_{0}$ - ta wartość bardzo często używana jest jako wartość bazowa dla modeli przybliżających współczynnik reflektancji dla wszystkich kątów. 
 
-Różnice między metalami a izolatorami rozpoczynają być widoczne przy analizie reflektancji powierzchniowej. Wartość $\mathbb{R}^{\text{surf}}_{0}$ dla izolatorów zwykle nie przekracza 6\%. Sytuacja wygląda zupełnie inaczej w świecie metali, wartość reflektancji powierzchniowej dla kierunku zgodnego z normalną tej powierzchni ($\mathbb{R}^{\text{surf}}_{0}$) jest zazwyczaj wyższa niż 50\%.
+Różnice między metalami, a izolatorami zaczynają być widoczne przy analizie reflektancji powierzchniowej. Wartość $\mathbb{R}^{\text{surf}}_{0}$ dla izolatorów zwykle nie przekracza 6\%. Sytuacja wygląda zupełnie inaczej w świecie metali, współczynnik reflektancji powierzchniowej dla kierunku zgodnego z normalną tej powierzchni ($\mathbb{R}^{\text{surf}}_{0}$) jest zazwyczaj wyższy niż 50\%.
 
-Część energii, która została uległa refrakcji wchodzi wgłąb, gdzie zachodzą kolejne kolizje z atomami materii, przez co znów dochodzi do wyżej wspomnianego zjawiska podziału promienia, tym razem we wnętrzu badanego ciała. Część tego światła może wydostać się ponownie z obiektu do ośrodka źródłowego, pozostała część zostanie pochłonięta i zamieniona na inne rodzaje energii np. ciepło.
+Część energii, która uległa refrakcji, wchodzi wgłąb, gdzie zachodzą kolejne kolizje z atomami materii, przez co znów dochodzi do wyżej wspomnianego zjawiska podziału promienia, tym razem we wnętrzu badanego ciała. Część tego światła może wydostać się ponownie z obiektu do ośrodka źródłowego, pozostała część zostanie pochłonięta i zamieniona na inne rodzaje energii np. ciepło.
 
-Ilość światła, które wydostaje się z powrotem z wnętrza ciała jest zależna od rodzaju substancji z której jest wykonany obiekt. Dla metali część światła, która dostaje się do wnętrza zostaje bardzo szybko pochłonięta przez wolne elektrony i zamieniona na ciepło. Z tego względu światło które ulega refrakcji nie wydostanie się z tego metalu. Wnioskiem jest to, że na wygląd metali wpływają jedynie promienie które zostają odbite od jego powierzchni. Dla dielektryków sytuacja wygląda inaczej, ze względu na budowę atomową światło nie jest pochłaniane w dużym stopniu i bardzo często jest uwolnione w innym miejscu ciała.
+Ilość światła, które wydostaje się z powrotem z wnętrza ciała jest zależna od rodzaju substancji z której jest wykonany obiekt. Dla metali część energii, która dostaje się do wnętrza zostaje bardzo szybko pochłonięta przez wolne elektrony i zamieniona na ciepło. Z tego względu światło, które ulega refrakcji nie wydostanie się z tego metalu. Wnioskiem jest to, że na wygląd metali wpływają jedynie promienie, które zostają odbite od jego powierzchni. Dla dielektryków sytuacja wygląda inaczej, ze względu na budowę atomową światło nie jest pochłaniane w dużym stopniu i bardzo często jest uwolnione w innym miejscu ciała.
 
-W modelach matematycznych wymienionych w tej pracy zakładamy, że ponowne wyjście energii która była poddana refrakcji następuje lokalnie tzn. w powierzchni, która przypada na obecnie generowany piksel dla którego promień zderzył się z powierzchnią (rys. \ref{fig:ReflectionRefraction}).
+W modelach matematycznych, wymienionych w tej pracy, zakładamy, że ponowne wyjście energii, która była poddana refrakcji następuje lokalnie tzn. we fragmencie powierzchni, która przypada na obecnie generowany piksel, w którym promień zderzył się z obiektem (rys. \ref{fig:ReflectionRefraction}).
 
 % Rysunek odbicia z płaską powierzchnią (model uproszczony)
 \begin{figure}[h]
@@ -197,11 +185,11 @@ W modelach matematycznych wymienionych w tej pracy zakładamy, że ponowne wyjś
   \label{fig:ReflectionRefraction}
 \end{figure}
 
-Istnieją techniki które biorą pod uwagę możliwość ucieczki energii w dalej położonym miejscu miejscu, ale skomplikowałyby one rozważania na których skupia się ta praca. Takie techniki muszą operować globalnie i zakładać możliwość wpływu obszaru przypadającego na jeden piksel na drugi. Wymagane są one do uzyskania realistycznych obrazów w którym pojawiają się materiały takie jak skóra, wosk i inne w których rozproszenie podpowierzchniowe jest wyraźnie widoczne. Zauważmy znowu, że rozważanie tego, czy dany materiał wymaga globalnej metody na wyznaczenie ucieczki światła z wnętrza materii jest zależne od skali. Jeżeli będziemy obserwować plastik, który w wymiarze standardowym dla gier nie wykazuje żadnych widocznych ,,interakcji'' między pikselami, to nie oznacza, że będzie tak również dla bardzo dużego przybliżenia tej powierzchni. Podobnie rozpalona woskowa świeczka lub marmurowa rzezba zmniejszona do bardzo małych rozmiarów nie będzie wykazywała istnienia takiego zjawiska.
+Istnieją techniki które biorą pod uwagę możliwość ucieczki energii w dalej położonym miejscu, ale skomplikowałyby one rozważania na których skupia się ta praca. Takie techniki muszą operować globalnie i zakładać możliwość wpływu fragmentów powierzchni obiektu na inne obszary. Wymagane są one, do uzyskania realistycznych obrazów, w których pojawiają się materiały takie jak skóra, wosk, dla których rozproszenie podpowierzchniowe jest wyraźnie widoczne. Zauważmy znowu, że rozważanie tego, czy dany materiał wymaga globalnej metody na wyznaczenie ucieczki światła z wnętrza materii jest zależne od skali. Jeżeli będziemy obserwować plastik, który w wymiarze standardowym dla gier nie wykazuje żadnych widocznych ,,interakcji'' między pikselami, nie oznacza to, że będzie tak również dla bardzo dużego przybliżenia tej powierzchni. Podobnie rozpalona woskowa świeczka lub marmurowa rzeźba zmniejszona do bardzo małych rozmiarów, nie będzie wykazywała istnienia takiego zjawiska.
 
-Reflektancja powierzchniowa nie bierze pod uwagę światła uciekającego z wnętrza ciała. Dlatego też, zdefiniujemy dodatkowe pojęcie które będziemy nazywać reflektancją ciała lub objętości (ang. \textit{body/volume reflectance}). Definicja będzie analogiczna do poprzedniej: reflektancją objętośći $\mathbb{R}^{\textit{vol}}$ będziemy nazywać stosunek ilości światła wychodzącego do przychodzącego w bardzo małym obszarze wokół danego punktu. W przeciwieństwie do reflektancji powierzchniowej wartość reflektancji objętościowej jest bardzo zróżnicowana, wartość ta dla śniegu wynosi około 80\%, dla kamienia około 20\%, a dla węgla blisko 0\%.
+Reflektancja powierzchniowa nie bierze pod uwagę światła uciekającego z wnętrza ciała. Dlatego też, zdefiniujemy dodatkowe pojęcie, które będziemy nazywać reflektancją ciała lub objętości (ang. \textit{body/volume reflectance}). Definicja będzie analogiczna do poprzedniej: reflektancją objętośći $\mathbb{R}^{\textit{vol}}$ nazywamy stosunek ilości światła wychodzącego do przychodzącego w bardzo małym obszarze wokół danego punktu. W przeciwieństwie do reflektancji powierzchniowej, wartość reflektancji objętościowej jest bardzo zróżnicowana, współczynnik ten dla śniegu wynosi około 80\%, dla kamienia około 20\%, a dla węgla blisko 0\%.
 
-Zauważmy, że w przypadku braku emisji energii oraz przy lokalnej ucieczce światła z materii energia która dociera doobserwatora musi być mniejsza lub równa energii wiązki światła - ta właściwość jest jednym z filarów modeli opartych na zjawiskach fizycznych.
+Zauważmy, że w przypadku braku emisji oraz przy lokalnej ucieczce światła z materii energia, która dociera do obserwatora musi być mniejsza lub równa energii przychodzącej wiązki światła - ta właściwość jest jednym z filarów modeli opartych na zjawiskach fizycznych.
 
 \begin{figure}[ht]
   \centering
@@ -247,7 +235,7 @@ Zauważmy, że w przypadku braku emisji energii oraz przy lokalnej ucieczce świ
   \label{fig:ReflectionRefractionDetailed}
 \end{figure}
 
-Do określenia tego ile i w jaki sposób wiązka światła będzie oddziaływać z powierzchnią poprzez odbicie lub refrakcję będziemy potrzebować kilku podstawowych praw fizycznych. Notacja wykorzystana we wzorach jest zgodna ze schematem z rys. \ref{fig:ReflectionRefractionDetailed}.
+Do określenia tego, ile i w jaki sposób wiązka światła będzie oddziaływać z powierzchnią poprzez odbicie lub refrakcję, będziemy potrzebować kilku podstawowych praw fizycznych. Notacja wykorzystana we wzorach jest zgodna ze schematem z rys. \ref{fig:ReflectionRefractionDetailed}.
 
 Podstawowym prawem wykorzystywanym do analizy zachowania wiązki światła jest prawo wiążące kąt padania oraz kąt odbicia promienia. Kąty padania wiązki światła $\alpha_i$ i jej odbicia $\alpha_r$ od płaszczyzny (zatem od idealnie gładkiej powierzchni) są równe ($\alpha_i = \alpha_r = \alpha$).
 
@@ -258,11 +246,11 @@ Zmiana kierunku promienia światła przy przejściu przez granicę dwóch ośrod
   \frac{n_2}{n_1} = n_{21}
 \]
 
-Stosunek energii wiązki światła odbitego do załamanego opisany jest równaniami Fresnela będących rozwiązaniem równań Maxwella dla fal świetlnych przechodzących przez jednorodne ośrodki o różnych współczynnikach załamania przez idealnie płaską granicę. W tej pracy nie będziemy korzystać bezpośrednio z równań Fresnela, lecz z ich aproksymacji, w szczególności z aproksymacji Schlicka. Współczynnik Fresnela, jego znaczenie i opis aproksymacji zostanie przedstawione dalej w tym rozdziale.
+Stosunek energii wiązki światła odbitego do załamanego opisany jest równaniami Fresnela, będących rozwiązaniem równań Maxwella dla fal świetlnych przechodzących przez jednorodne ośrodki o różnych współczynnikach załamania przez idealnie płaską granicę. W tej pracy nie będziemy korzystać bezpośrednio z równań Fresnela, lecz z ich aproksymacji, w szczególności z aproksymacji Schlicka. Współczynnik Fresnela, jego znaczenie i opis aproksymacji zostanie przedstawione dalej w tym rozdziale.
 
 Prawo odbicia światła, równanie Snella oraz równania Fresnela pozwalają nam na opis zachowania światła wystarczający do zastosowań w grafice czasu rzeczywistego.
 
-W naturze mało, który materiał jest optycznie idealnym lustrem (tak abyśmy mogli zastosować tutaj uproszczone równania Fresnela), w odpowiednio dużym przybliżeniu realnych pozornie gładkich powierzchni zauważymy nierówności niedostrzegalne gołym okiem, a jednocześnie wpływające znaczące na ogólny wygląd powierzchni (rys. \ref{fig:Microstructure}). Im większa jest nierówność tym większe jest zróżnicowanie normalnych w tym otoczeniu. W związku z tym światło się bardziej miesza i refleksy są coraz mniej wyraźne. Nierówności powierzchni wpływające na jej wygląd lecz nieobserwowalne w badanej skali będziemy nazywać mikrogeometrią lub mikrostrukturą.
+W naturze mało który materiał jest optycznie idealnym lustrem (tak abyśmy mogli zastosować tutaj uproszczone równania Fresnela), w odpowiednio dużym przybliżeniu realnych pozornie gładkich powierzchni zauważymy nierówności niedostrzegalne gołym okiem, a jednocześnie wpływające znaczące na ogólny wygląd powierzchni (rys. \ref{fig:Microstructure}). Im większa jest nierówność, tym większe jest zróżnicowanie normalnych w tym otoczeniu. W związku z tym światło się bardziej miesza i refleksy są coraz mniej wyraźne. Nierówności powierzchni wpływające na jej wygląd, lecz nieobserwowalne w badanej skali, będziemy nazywać mikrogeometrią lub mikrostrukturą.
 
 \begin{figure}[ht]
   \centering
@@ -300,7 +288,7 @@ W naturze mało, który materiał jest optycznie idealnym lustrem (tak abyśmy m
 	\label{fig:Microstructure}
 \end{figure}
 
-Warto zauważyć, że nawet jeżeli wiązka światła odbija się w kierunku obserwatora nie oznacza to, że wyjdzie z otoczenia powierzchni i do niego trafi. Mała nierówność może spowodować zasłonięcie obserwatora z perspektywy tego punktu i odbić się ponownie w zupełnie innym kierunku. Będziemy wtedy mówić o maskowaniu (ang. \textit{masking}). Modele bazujące na mikro-powierzchniach zazwyczaj nie biorą pod uwagę odbić wielokrotnych i to takimi modelami odbić jednokrotnych (ang. \textit{single-bounce models}) będziemy się zajmować. Wielokrotne odbicie w mikrostrukturze (ang. \textit{multiple-bounce model}) jest wciąż problemem otwartym, nie istnieją jeszcze zrozumiałe i powszechnie akceptowane modele opisujące to zjawisko.
+Warto zauważyć, że nawet jeżeli wiązka światła odbija się w kierunku obserwatora nie oznacza to, że wyjdzie z otoczenia powierzchni i do niego trafi. Mała nierówność może spowodować zasłonięcie obserwatora z perspektywy punktu zderzenia i odbić się ponownie w zupełnie innym kierunku. Będziemy wtedy mówić o maskowaniu (ang. \textit{masking}). Modele bazujące na mikro-powierzchniach zazwyczaj nie biorą pod uwagę odbić wielokrotnych i to takimi modelami odbić jednokrotnych (ang. \textit{single-bounce models}) będziemy się zajmować. Wielokrotne odbicie w mikrostrukturze (ang. \textit{multiple-bounce model}) jest wciąż problemem otwartym, nie istnieją zrozumiałe i powszechnie akceptowane modele opisujące to zjawisko.
 
 Możliwa jest również sytuacja odwrotna, w której dany punkt może być teoretycznie zaobserwowany przez obserwatora, ale światło nie dociera do tego punktu na skutek przysłaniania źródła światła przez sam obiekt (samo-zacienianie, ang. \textit{shadowing}).
 
@@ -308,13 +296,13 @@ Możliwa jest również sytuacja odwrotna, w której dany punkt może być teore
 
 \section{Podstawowe pojęcia radiometryczne}
 
-Rozpocznijmy od podstawowego budulca wiązki światła - fotonu. Energia pojedynczego fotonu o długości fali $\lambda$ możemy obliczyć przy użyciu wzoru:
+Rozpocznijmy od podstawowego budulca wiązki światła - fotonu. Energię pojedynczego fotonu o długości fali $\lambda$ możemy obliczyć przy użyciu wzoru:
 \[ 
     Q = \frac{hc}{\lambda} 
 \]
 \noindent gdzie $h$ jest stałą Plancka ($\SI{6.62620e-34}{\joule\per\second}$), a $c$ prędkością światła w próżni. Wszystkie kolejne miary przedstawione w tej sekcji są funkcją długości fali.
 
-Strumień promieniowania (inaczej moc promieniowania, ang. \textit{radiant flux}) to całkowita ilość energii przechodząca przez określoną powierzchnię w czasie jednostkowym. Powyższe pojęcie dotyczy wszystkich fal elektromagmetycznych, zatem jest ono poprawne również dla światła. Jednostką strumienia promieniowania jest Watt ($\si{\watt}$).
+Strumień promieniowania (inaczej moc promieniowania, ang. \textit{radiant flux}) to całkowita ilość energii przechodzącej przez określoną powierzchnię w czasie jednostkowym. Powyższe pojęcie dotyczy wszystkich fal elektromagmetycznych, zatem jest ono poprawne również dla światła. Jednostką strumienia promieniowania jest Watt ($\si{\watt}$).
 \[
 \Phi = 
     \lim_{\Delta t \rightarrow 0}{
@@ -322,6 +310,7 @@ Strumień promieniowania (inaczej moc promieniowania, ang. \textit{radiant flux}
     } 
     = \frac{\dd Q}{\dd t}
 \]
+
 
 Radiancją wyjściową (ang. \textit{radiant exitance, radiosity}) $B$ nazywamy wyemitowany strumień promieniowania $\Phi_{e}$ przez powierzchnię na jej powierzchnię jednostkową:
 \[
@@ -350,13 +339,11 @@ Oczywiście całkując irradiancję na powierzchni otrzymamy z powrotem strumie�
 \]
 
 W tym miejscu warto zauważyć, że jeżeli powierzchnia $A$ jest nachylona do
-strumienia światła $\Phi$ pod pewnym kątem $\alpha$ to irradiancja zmienia się
+strumienia światła $\Phi$ pod pewnym kątem $\alpha$, to irradiancja zmienia się
 proporcjonalnie do czynnika $\cos \alpha$. Wynika to z faktu, że obszar na
 który padają promienie emitowane przez źródło światła w kierunku prostopadłym
-do powierzchni tego źródła jest zależny od kąta pod którym nachylona jest
-powierzchnia (uzasadnienie graficzne znajduje się na rys. \ref{fig:SourceLightAngle}). Powierzchnia ta jest odwrotnie
-proporcjonalna do czynnika $\cos \alpha$, zatem dzieląc przez powierzchnię
-otrzymujemy zależność wprost proporcjonalną dla irradiancji.
+do powierzchni tego źródła, jest zależny od kąta pod którym nachylona jest
+powierzchnia (uzasadnienie graficzne znajduje się na rys. \ref{fig:SourceLightAngle}). Powierzchnia ta jest odwrotnie proporcjonalna do czynnika $\cos \alpha$, zatem dzieląc przez powierzchnię otrzymujemy zależność wprost proporcjonalną dla irradiancji.
 
 \begin{figure}[ht]
   \centering
@@ -379,7 +366,7 @@ promieniowania na pewnej skończonej powierzchni $A$:
   \]
 \end{example}
 
-Kątem planarnym obiektu geometrycznego $G$ z punktu $p$ nazywamy kąt wyznaczony przez dwie półproste rozpoczynające się w punkcie $p$ wyznaczające minimalny obszar zawierający obiekt $G$. Miarą kąta planarnego jest \textit{radian} (\si{\radian}). Inaczej mówiąc, kąt jest ciągłym zbiorem kierunków na płaszczyznie, a jego rozmiar jest równy długości łuku wyznaczonego przez wektory jednostkowe odpowiadające tym kierunkom.
+Kątem planarnym obiektu geometrycznego $G$ z punktu $p$ (rys. \ref{fig:PlanarAngle}) nazywamy kąt wyznaczony przez dwie półproste rozpoczynające się w punkcie $p$, określające minimalny obszar zawierający obiekt $G$. Miarą kąta planarnego jest \textit{radian} (\si{\radian}). Inaczej mówiąc, kąt jest ciągłym zbiorem kierunków na płaszczyznie, a jego rozmiar jest równy długości łuku wyznaczonego przez wektory jednostkowe odpowiadające tym kierunkom.
 
 % Rysunek kąta geometrycznego
 \begin{figure}[ht]
@@ -393,11 +380,11 @@ Kątem planarnym obiektu geometrycznego $G$ z punktu $p$ nazywamy kąt wyznaczon
     \draw [fill] (orig) circle [radius=0.08] node [below] {$p$};
     \draw pic[draw=black, <->, "$\theta$", angle eccentricity=1.5] {angle = right--orig--left};
   \end{tikzpicture}
-  \caption{Kąt planarny obiektu geometrycznego}
+  \caption{Kąt planarny obiektu geometrycznego. Opracowanie własne.}
   \label{fig:PlanarAngle}
 \end{figure}
 
-Kąt bryłowy jest rozszerzeniem kąta planarnego do trzech wymiarów. Kątem bryłowym $A$ nazywamy ciągły zbiór kierunków w przestrzeni trójwymiarowej mierzony polem powierzchni obszaru zdefiniowanego przez wektory jednostkowe odpowiadające tym kierunkom. Kątem bryłowym możemy też nazwać powierzchnię rzutu trójwymiarowego obiektu geometrycznego $G$ na sferę jednostkową o środku w punkcie $p$. Jest on mierzony w steradianach (\si{\steradian}). Kąt bryłowy całej sfery jednostkowej wynosi $\SI{4\pi}{\steradian}$.
+Kąt bryłowy jest rozszerzeniem kąta planarnego do trzech wymiarów. Kątem bryłowym $A$ nazywamy ciągły zbiór kierunków w przestrzeni trójwymiarowej, mierzony polem powierzchni obszaru zdefiniowanego przez wektory jednostkowe odpowiadające tym kierunkom. Kątem bryłowym możemy też nazwać powierzchnię rzutu trójwymiarowego obiektu geometrycznego $G$ na sferę jednostkową o środku w punkcie $p$. Jest on mierzony w steradianach (\si{\steradian}). Kąt bryłowy całej sfery jednostkowej wynosi $\SI{4\pi}{\steradian}$.
 
 % Rysunek kąta bryłowego
 \begin{figure}[ht]
@@ -407,7 +394,7 @@ Kąt bryłowy jest rozszerzeniem kąta planarnego do trzech wymiarów. Kątem br
   \label{fig:SolidAngle}
 \end{figure}
 
-Kolejną miarą energii jest intensywność źródła (ang. \textit{intensity}), która reprezentuje rozkład gęstości mocy światła na kierunkach \cite[str. 328]{pbrt}. Warto na wstępie zauważyć, że intensywność ma sens tylko i wyłącznie dla teoretycznych świateł punktowych lub bardzo odległych które możemy traktować jako kierunkowe ze względu na sposób pomiaru kąta. Wartość tą możemy zdefiniować w następujący sposób:
+Kolejną miarą energii jest intensywność źródła (ang. \textit{intensity}), która reprezentuje rozkład gęstości mocy światła na kierunkach \cite[str. 328]{pbrt}. Warto na wstępie zauważyć, że intensywność ma sens, tylko i wyłącznie dla teoretycznych świateł punktowych lub bardzo odległych, które możemy traktować jako kierunkowe, ze względu na sposób pomiaru kąta. Wartość tą możemy zdefiniować w następujący sposób:
 \begin{gather*}
   I = \lim_{\Delta\omega \rightarrow 0} {
     \frac{\Delta\Phi}{\Delta\omega}
@@ -423,7 +410,7 @@ Dla przykładu intensywność teoretycznego jednorodnego światła punktowego wy
 \]
 
 Poprzez $E_{\omega}$ oznaczmy irradiancję hipotetycznej powierzchni
-prostopadłej do kierunku $\omega$. Luminancją energetyczną (inaczej radiancja, ang. \textit{radiance}) $L$ nazywamy miarę irradiancji $E_{\omega}$ w odniesieniu do kąta bryłowego:
+prostopadłej do kierunku $\omega$. Luminancją energetyczną (inaczej radiancją, ang. \textit{radiance}) $L$ nazywamy miarę irradiancji $E_{\omega}$ w odniesieniu do kąta bryłowego:
 \[
 L(p, \omega) = \lim_{\Delta\omega \rightarrow 0} {
   \frac{\Delta E_{\omega} (p)}{\Delta\omega}
@@ -433,7 +420,7 @@ L(p, \omega) = \lim_{\Delta\omega \rightarrow 0} {
 
 Bardzo ważną obserwacją jest to, że luminancja energetyczna nie jest mierzona względem irradiancji powierzchni na której leży punkt $p$, ma to na celu wyeliminowanie czynnika $\cos \alpha$ z definicji \cite[str. 339]{pbrt}. Jednostką radiancji jest gęstość energii na jednostkę powierzchni na jednostkę kąta bryłowego. Luminancję energetyczną możemy interpretować jako miarę ilości światła wzdłuż jednego promienia.
 
-Irradiancję (tutaj względem normalnej makro-powierzchni) możemy odzyskać całkując luminancję energetyczną ponownie względem makro-powierzchni (stąd czynnik $\cos\theta$):
+Irradiancję (tutaj względem normalnej makro-powierzchni) możemy odzyskać całkując luminancję energetyczną względem makro-powierzchni (stąd czynnik $\cos\theta$):
 \begin{gather*}
     \dd E = L(p, \omega) \cos\theta \dd \omega \\
     E = \int_{\Omega_H}{L(p, \omega) \cos\theta \dd \omega}
@@ -451,7 +438,7 @@ f_r(\omega_i, \omega_o) = \frac{
 
 \section{Równanie renderingu}
 
-\textbf{Równanie renderingu} to równanie całkowe określające radiancję wychodzącą z danego punktu $p$ w danym kierunku $\omega_o$ znając radiancję przychodzącą do tego punktu. Równanie te możemy
+\textbf{Równanie renderingu} to równanie całkowe, określające radiancję wychodzącą z danego punktu $p$ w danym kierunku $\omega_o$ znając radiancję przychodzącą do tego punktu. Równanie te możemy
 wyprowadzić z poprzednio przedstawionych definicji:
 \begin{gather*}
     f_r(\omega_i, \omega_o) = \frac{
@@ -478,12 +465,12 @@ Podstawiając drugie równanie do pierwszego i całkując otrzymujemy:
 
 \begin{itemize}
 
-  \item $L_i(\omega_i)$ - radiancja przychodząca z kierunku $\omega_i$
+  \item $L_i(\omega_i)$ - radiancja przychodząca z kierunku $\omega_i$,
 
   \item $\Omega$ - jednostkowa półsfera wyznaczająca dziedzinę wszystkich
-    możliwych kierunków przychodzących $\omega_i$
+    możliwych kierunków przychodzących $\omega_i$,
 
-  \item $f_{r}(p, \omega_i, \omega_o)$ - dwukierunkowa funkcja rozkładu odbicia wyznaczająca jaka część energii przybywającej z kierunku $\omega_i$ zostanie wysłana w zadanym kierunku $\omega_o$
+  \item $f_{r}(p, \omega_i, \omega_o)$ - dwukierunkowa funkcja rozkładu odbicia wyznaczająca jaka część energii przybywającej z kierunku $\omega_i$ zostanie wysłana w zadanym kierunku $\omega_o$.
 
 \end{itemize}
 
@@ -504,7 +491,7 @@ Dwukierunkowa funkcja rozkładu odbicia (ang. \textit{Bidirectional Reflectance 
   f_r(\omega_i, \omega_o) = f_r(\omega_o, \omega_i)
 \]
 
-Po drugie, funkcja BRDF nie może przekazywać do otoczenia więcej światła niż otrzymuje (pamiętajmy o załozeniu braku emisji). Kierunkowa reflektancja półsferyczna (ang. \textit{directional-hemispherical reflectance}) $R(\omega_i)$ jest kolejną funkcją związaną z BRDF mierzącą ile energii przychodzącej z danego kierunku $\omega_i$ zostanie odbite w jakimkolwiek innym kierunku. Inaczej mówiąc, mierzy ona straty lub zyski energii dla danego kierunku wejściowego. Zauważmy, że dla modeli spełniających warunek zachowania energii wartość ta musi być w przedziale $\left[0,1\right]$ dla każdej długości fali $\lambda$ i kierunku przychodzącego $\omega_o$. Funkcja ta zdefiniowana jest w sposób następujący \cite{RealTimeRendering2008}:
+Po drugie, funkcja BRDF nie może przekazywać do otoczenia więcej światła niż otrzymuje (pamiętajmy o założeniu braku emisji). Kierunkowa reflektancja półsferyczna (ang. \textit{directional-hemispherical reflectance}) $R(\omega_i)$ jest kolejną funkcją związaną z BRDF mierzącą ile energii przychodzącej z danego kierunku $\omega_i$ zostanie odbite w jakimkolwiek innym kierunku. Inaczej mówiąc, mierzy ona straty lub zyski energii dla danego kierunku wejściowego. Zauważmy, że dla modeli spełniających warunek zachowania energii wartość ta musi być w przedziale $\left[0,1\right]$ dla każdej długości fali $\lambda$ i kierunku przychodzącego $\omega_o$. Funkcja ta zdefiniowana jest w sposób następujący \cite{RealTimeRendering2008}:
 \[
   R(\omega_i) 
   = \frac{\dd B}{\dd E(\omega_i)} 
@@ -532,13 +519,13 @@ W tym miejscu warto wprowadzić kolejną wielkość nazywaną albedo lub bi-pó�
 
 Albedo jest bardzo użyteczną miarą, którą można interpretować jako ogólny stopień refleksywności danej powierzchni. Parametr ten bardzo często jest wykorzystywany jako parametr wejściowy systemu oświetlenia.
 
-Cała funkcja BRDF zwykle zawiera część opisującą reflektancję powierzchniową (specular) oraz część dla reflektancji ciała (rozproszoną), przez co większość modeli rozdziela je i analizuje osobno lub definiuje tylko jeden fragment możliwy do wykorzystania z innym. Do podziału wiązki światła przy zderzeniu najczęściej używane są równania Fresnela.
+Cała funkcja BRDF zwykle zawiera część opisującą reflektancję powierzchniową (odbitą, ang. \textit{specular}) oraz część dla reflektancji ciała (rozproszoną, ang. \textit{diffuse}), przez co większość modeli rozdziela je i analizuje osobno lub definiuje tylko jeden fragment możliwy do wykorzystania z innym. Do podziału wiązki światła przy zderzeniu najczęściej używane są równania Fresnela.
 
 Istnieje bardzo dużo róznych modeli BRDF \cite{brdf_overview}, my zajmiemy się natomiast kilkoma wybranymi.
 
 \subsection{Lambert}
 
-Najprostszą funkcją BRDF jest rozkład jednorodny, niezależny od kąta obserwacji. Taka funkcja jest rozkładem lambertowskim opisanym poniższym równaniem:
+Najprostszą funkcją BRDF jest rozkład jednorodny, niezależny od kąta obserwacji. Taka funkcja, nazywana rozkładem lambertowskim, jest opisana poniższym równaniem:
 \[
   f_r = \frac{\rho}{\pi}
 \]
@@ -546,9 +533,9 @@ Najprostszą funkcją BRDF jest rozkład jednorodny, niezależny od kąta obserw
 
 Model ten bardzo często jest wykorzystywany do opisania części rozproszonej wielu modeli BRDF, szczególnie do modelowania gładkich dielektryków. Wartość $\rho$ (albedo) jest również często oznaczana poprzez $\text{c}_{\text{diff}}$ i jest ona rozumiana jako kolor rozproszony powierzchni (ang. \textit{diffuse color}).
 
-Teoretyczna powierzchnia lambertowska odbija tą samą ilość radiancji w każdym kierunku. Warto w tym miejscu zauważyć, czynnik równy kosinusowi kąta padania światła kojarzony z modelem Lamberta jest częścią równania renderingu, a nie samej funkcji BRDF.
+Teoretyczna powierzchnia lambertowska odbija tą samą ilość radiancji w każdym kierunku. Warto w tym miejscu zauważyć, że czynnik równy kosinusowi kąta padania światła, kojarzony z modelem Lamberta, jest częścią równania renderingu, a nie samej funkcji BRDF.
 
-Bardzo często w rzeczywistych aplikacjach czynnik $\pi^{-1}$ nie występuje, ze względu na to, że zostaje on wliczony do irradiancji światła, przez co efektywnie jest ona mniejsza niż powinna być wg rachunków radiometrycznych. 
+Bardzo często w rzeczywistych aplikacjach czynnik $\pi^{-1}$ nie występuje, ze względu na to, że zostaje on wliczony do irradiancji światła, przez co efektywnie jest ona mniejsza, niż powinna być wg rachunków radiometrycznych. 
 
 \subsection{Minnaert}
 
@@ -557,7 +544,7 @@ Minnaert'a. Model ten został stworzony do opisu powierzchni księżyca, można
 spotkać się z określeniem modelu księżycowego (ang. \textit{moon shading}).
 Główną zmianą jest zależność jasności od kąta obserwacji i kąta padania światła
 na powierzchnię.  Model ten jest szczególnie przydatny do obliczenia
-oświetlenia dla aksamitu, dywanów. Model ten opisany jest wzorem:
+oświetlenia dla materiału (np. aksamitu, dywanów). Model ten opisany jest wzorem:
 \[
   f_r = \frac{\rho_d}{\pi} \left[
     (\omega_o \cdot n) (\omega_i \cdot n)
@@ -570,8 +557,8 @@ oświetlenia dla aksamitu, dywanów. Model ten opisany jest wzorem:
 
 Oren-Nayar zaproponował model służący do opisu części rozproszonej chropowatych
 dielektryków, będącym uogólnieniem modelu Lamberta dla materiałów o różnym
-współczynniku chropowatości. Podobnie jak model Minnaerta nadaje się do
-materiałów takich jak aksamit czy welur, chropowatych plastików,
+współczynniku chropowatości. Podobnie jak model Minnaerta nadaje się on do
+materiałów takich jak aksamit czy welur, chropowatych plastików i
 skóry. Równanie opisane przez twórców jest aproksymacją wyznaczoną w sposób numeryczny i wyraża się poniższym
 wzorem:
 \[
@@ -596,7 +583,7 @@ wzorem:
   B = 0.45 \frac{\alpha^2}{\alpha^2 + 0.09}
 \end{gather*}
 
-Jak widać dla gładkiej powierzchni dla której $\alpha=0$ otrzymujemy
+Jak widać, dla gładkiej powierzchni dla której $\alpha=0$ otrzymujemy
 ponownie model Lamberta.
 
 
@@ -604,7 +591,7 @@ ponownie model Lamberta.
 
 Model Blinna-Phonga jest modelem empirycznym, jego równania pochodzą z obserwacji świata i próby dopasowania prostej funkcji do opisu części refleksyjnej wielu materiałów za pomocą małej liczby parametrów.
 
-Podstawowy model Phonga dla świateł punktowych definiował radiancję w kierunku $\omega_o$ w następujący sposób:
+Podstawowy model Phonga dla świateł punktowych definiuje radiancję w kierunku $\omega_o$ w następujący sposób:
 \[
 L_{o}(\omega_i, \omega_o) = \begin{cases}
 \cdiff \cos\theta_i + \cspec \cos^{m}{\alpha_r} & \theta_i > 0 \\
@@ -618,19 +605,19 @@ Korzystając z kilku przekształceń możliwe jest zbudowanie BRDF dla tej funkc
 f(\omega_i, \omega_o) = \frac{\cdiff}{\pi} + \frac{\cspec \cos^{m} \alpha_r}{\pi}
 \]
 
-Istotną wadą tej postaci jest to, że nie jest znormalizowana. To znaczy, parametr $m$ nie kontroluje tylko i wyłącznie rozmiaru rozbłysku ale również jego moc, tzn. ilość energii odbitej od powierzchni. Parametr chropowatości nie powinien wpływać w ten sposób na energię. Powoduje to konieczność nieintuicyjnego dostosowywania parametru $\cspec$. Wartość postrzeganego koloru powierzchni nie powinno zależeć od jej chropowatości. Proces przekształcenia funkcji BRDF w funkcję BRDF której parametrami wejściowymi są parametry o interpretacji fizycznej niezależne od siebie nawzajem nazywamy normalizacją.  Jeżeli podzielimy drugi człon tej funkcji przez jej maksymalną kierunkową, półsferyczną reflektancję $R$ dla kąta $\theta_i = 0$ to otrzymamy \cite{RealTimeRendering2008}:
+Istotną wadą tej postaci jest to, że nie jest znormalizowana. To znaczy, że parametr $m$ nie kontroluje tylko i wyłącznie rozmiaru rozbłysku, ale również jego moc, tzn. ilość energii odbitej od powierzchni. Parametr chropowatości nie powinien wpływać w ten sposób na energię. Powoduje to konieczność nieintuicyjnego dostosowywania parametru $\cspec$. Wartość postrzeganego koloru powierzchni nie powinna zależeć od jej chropowatości. Proces przekształcenia funkcji BRDF w funkcję BRDF, której parametrami wejściowymi są parametry o interpretacji fizycznej niezależne od siebie nawzajem nazywamy normalizacją.  Jeżeli podzielimy drugi człon tej funkcji przez jej maksymalną kierunkową, półsferyczną reflektancję $R$ dla kąta $\theta_i = 0$ to otrzymamy \cite{RealTimeRendering2008}:
 \[
   f(\omega_i, \omega_o) = \frac{\cdiff}{\pi} + \frac{m+2}{2\pi} {\cspec \cos^{m} \alpha_r}
 \]
 
-Celem normalizacji BRDF jest możliwość intuicyjnej kontroli parametrów, które mają interpretację fizyczną (najlepiej jest gdy mogą zostać one zmierzone w laboratorium). Pozostałym problemem BRDF Phonga jest to, że wykorzystuje on kąt $\alpha_r$, który nie ma jasnego znaczenia fizycznego. Problem ten rozwiązuje model Blinna-Phonga oparty na wektorze połówkowym \cite{RealTimeRendering2008}:
+Celem normalizacji BRDF jest możliwość intuicyjnej kontroli parametrów, które mają interpretację fizyczną (najlepiej jest, gdy mogą zostać one zmierzone w laboratorium). Pozostałym problemem BRDF Phonga jest to, że wykorzystuje on kąt $\alpha_r$, który nie ma jasnego znaczenia fizycznego. Problem ten rozwiązuje model Blinna-Phonga oparty na wektorze połówkowym \cite{RealTimeRendering2008}:
 \[
   f(\omega_i, \omega_o) = \frac{\cdiff}{\pi} + \frac{m+8}{8\pi} {\cspec \cos^{m} \theta_h}
 \]
 
 \subsection{Cook-Torrance}
 
-Najpopularniejszym obecnie modelem BRDF dla części refleksyjnej wykorzystującym podejście mikropowierzchni jest model Cooka-Torrance'a \cite{CookTorrance}:
+Najpopularniejszym obecnie modelem BRDF dla części refleksyjnej, wykorzystującym podejście mikropowierzchni, jest model Cooka-Torrance'a \cite{CookTorrance}:
 \begin{displaymath}
   f_{\mu}(\omega_i, \omega_o) = \frac{
     D(h) F(\omega_i, h) G(\omega_i, \omega_o, h)
@@ -639,12 +626,12 @@ Najpopularniejszym obecnie modelem BRDF dla części refleksyjnej wykorzystując
   }
 \end{displaymath}
 
-Gdzie funkcje $D$, $F$ i $G$ są funkcjami opisującymi zjawiska wspomniane w rozdziale o analizie interakcji promienia w wiązką światła, są to kolejno:
+Gdzie funkcje $D$, $F$ i $G$ są funkcjami opisującymi zjawiska wymienione w rozdziale o analizie interakcji promienia w wiązką światła, są to kolejno:
 
 \begin{itemize}
-  \item $D$ - funkcja rozkładu normalnych
-  \item $F$ - funkcja Fresnela
-  \item $G$ - funkcja geometryczna
+  \item $D$ - funkcja rozkładu normalnych,
+  \item $F$ - funkcja Fresnela,
+  \item $G$ - funkcja geometryczna.
 \end{itemize}
 
 \subsection{Funkcje rozkładu normalnych}
@@ -687,7 +674,7 @@ Inną funkcją zaproponowaną przez Cooka oraz Torrance'a jest funkcja Beckmanna
     \right)
 \]
 
-Natomiast napopularniejszym modelem używanym w większości współczesnych silników jest model GGX (znany również jako model Trowbridge-Reitz):
+Natomiast, napopularniejszym modelem używanym w większości współczesnych silników jest model GGX (znany również jako model Trowbridge-Reitz):
 \[
   D_{\text{GGX}}(m) =
     \frac{
@@ -701,7 +688,7 @@ Natomiast napopularniejszym modelem używanym w większości współczesnych sil
     }
 \]
 
-W literaturze bardzo często występują alternatywne, równoważne formy zapisu
+W literaturze bardzo często występują alternatywne, równoważne, formy zapisu
 tego równania, \cite{WalterMicrofacetModels} podaje:
 \[
   D_{\text{GGX}}(m) =
@@ -736,7 +723,7 @@ procentowi światła, które zostało odbite, zatem wartość tego współczynni
 znajdować się w przedziale $[0,1]$. Ze względu na złożoność równań Fresnela
 koniecznym jest korzystanie z postaci przybliżonej. 
 
-Istotną cechą współczynnika Fresnela jest jego związek z kątem padania. Jeżeli kąt padania wiązki dąży do $\ang{90}$ to współczynnik Fresnela dąży do $1$. Przykładowa zależność współczynnika od kąta dla żelaza jest przedstawiona na rysunku \ref{fig:fe_fresnel}. Drugi przykład z rysunku \ref{fig:schlick_fresnel} przedstawia współczynnik dla plastiku o $F_0 = 0.04$ z kamerą ustawioną w miejscu w którym znajduje się punktowe źródło światła. Wyraźnie widać, że odbicie będzie silniejsze w ciemniejszych obszarach znajdujących się przy krawędziach obiektu.
+Istotną cechą współczynnika Fresnela jest jego związek z kątem padania. Jeżeli kąt padania wiązki dąży do $\ang{90}$, to współczynnik Fresnela dąży do $1$. Przykładowa zależność współczynnika od kąta dla żelaza jest przedstawiona na rysunku \ref{fig:fe_fresnel}. Drugi przykład z rysunku \ref{fig:schlick_fresnel} przedstawia współczynnik dla plastiku o $F_0 = 0.04$ z kamerą ustawioną w miejscu, w którym znajduje się punktowe źródło światła. Wyraźnie widać, że odbicie będzie silniejsze w ciemniejszych obszarach znajdujących się przy krawędziach obiektu.
 
 \begin{figure}[ht]
     \centering
@@ -756,7 +743,7 @@ Napopularniejszą metodą wyznaczania przybliżonej wartości współczynnika Fr
 \[
     F_{\text{Schlick}} = F_0 + (1-F_0)(1-\cos\theta)^5
 \]
-\noindent gdzie $F_0$ jest reflektancją powierzchniową dla  oraz $\theta = (n \cdot \omega_i)$. Warto zauważyć, że dla przypadku w którym rozpatrujemy model bazujący na mikropowierzchniach musimy zastosować wektor połówkowy $m$ zamiast normalnej:
+\noindent gdzie $F_0$ jest reflektancją powierzchniową danego materiału zmierzoną pod kątem $\ang{0}$ oraz $\theta = (n \cdot \omega_i)$. Warto zauważyć, że dla przypadku, w którym rozpatrujemy model bazujący na mikropowierzchniach, musimy zastosować wektor połówkowy $m$ zamiast normalnej:
 \[
     F_{\text{Schlick}} = F_0 + (1-F_0)\left(
         1 - \left(
@@ -783,28 +770,28 @@ Alternatywną metodą aproksymacji jest przybliżenie wykorzystujące sferyczne 
 
 Funkcja geometryczna (lub zaciemnianie geometryczne, ang. \textit{Geometric
 Shadowing}) odpowiada za wspomniane wcześniej zjawiska rzucania cieni w obrębie
-mikropowierzchni, w związku z czym światło które pada pod pewnym kątem nie
+mikropowierzchni, w związku z czym światło, które pada pod pewnym kątem nie
 odbija się od całości powierzchni (ang. \textit{shadowing}, rys.
 \ref{fig:GeometricShadowing}) oraz zasłaniania promieni odbitych od powierzchni
-zmierzających do obserwatora przez inne elementy tej powierzchni w związku z
+zmierzających do obserwatora przez inne elementy tej powierzchni, w związku z
 czym światło odbite nie dociera w całości do obserwatora (ang.
 \textit{masking}). W realnym świecie promień po takim zderzeniu nie znika, ale
 uproszczone modele traktują takie zachowanie jako absorpcję światła przez
 powierzchnię.
 
 Współczynnik związany z zaciemnianiem geometrycznym oznaczymy przez $G(\omega_i,\omega_o,m)$.
-Wartość funkcji $G$ określa nam procent powierzchni skierowanych w kierunku
+Wartość funkcji $G$ określa procent powierzchni skierowanych w kierunku
 $m$, które nie są zaciemnione lub zasłonięte.
 
 \begin{figure}[h]
   \centering
   \includegraphics{illustrations/pbr/geometry_shadowing.pdf}
   \vspace{0.25cm}
-  \caption{Samozacienianie wewnątrz mikropowierzchni}
+  \caption{Samozacienianie wewnątrz mikropowierzchni. Opracowanie własne.}
   \label{fig:GeometricShadowing}
 \end{figure}
 
-Funkcja geometryczna nazywaną funkcją \textit{implicit} eliminującą czynnik geometryczny definiujemy poprzez:
+Funkcja geometryczna nazywaną funkcją implicit, która eliminuje czynnik geometryczny zdefiniowana jest poprzez:
 \[
   G_{\text{implicit}}(\omega_i, \omega_o, m) =
     (n \cdot \omega_i) (n \cdot \omega_o)
@@ -853,7 +840,7 @@ Najpopularniejszymi wyborami są: GGX \cite{WalterMicrofacetModels} oraz aproksy
 \subsection{Podsumowanie}
 
 Powyższe definicje umożliwają nam zbudowanie ogólnego modelu fizycznego
-biorącego pod uwagę podstawowe zjawiska zachodzące w mikropowierzchniach
+biorącego pod uwagę podstawowe zjawiska zachodzące w mikropowierzchniach,
 będących powierzchniami idealnie płaskimi.
 
 W tej pracy będziemy korzystać głównie z funkcji rozkładu normalnych GGX,
@@ -865,7 +852,7 @@ aproksymacji Schlicka oraz funkcji geometrycznej GGX.
 
 Powszechną optymalizacją w grach komputerowych jest zastępowanie naturalnie występujących świateł powierzchniowych światłami punktowymi \cite{pbr_background}. Swiatła takie nie są fizycznie możliwe, lecz bardzo upraszczają obliczenia i w odpowiedniej skali potrafią bardzo dobrze aproksymować efekty świetlne mimo tego, że są nieskończenie małe.
 
-Podczas lokalnych obliczeń wpływu takiego światła parametrami będzie wektor łączący obecnie badany punkt na powierzchni $p$ oraz centrum światła $p_l$, którego znormalizowaną postać oznaczymy poprzez $l$ oraz kolor światła $\clightcolor$. Kolor światła $\clightcolor$ zdefiniujemy jako całkowitą odbitą radiancję dla 100\% białego materiału Lambertowskiego z normalną w kierunku zgodnym z kierunkiem wyznaczonym przez $l$, tzn:
+Podczas lokalnych obliczeń wpływu takiego światła, parametrami jest wektor łączący obecnie badany punkt na powierzchni $p$ oraz centrum źródła $p_l$, którego znormalizowaną postać oznaczamy poprzez $l$ oraz kolor światła $\clightcolor$. Kolor światła $\clightcolor$ zdefiniujemy jako całkowitą odbitą radiancję dla 100\% białego materiału Lambertowskiego z normalną w kierunku zgodnym z kierunkiem wyznaczonym przez $l$, tzn:
 \[
 	\clightcolor = \frac{1}{\pi} \int_{\Omega} { L_i(\omega_l) (l \cdot \omega_i) \dd\omega_i }
 \]
@@ -895,12 +882,12 @@ Podstawiając za całkę stałą $\clightcolor$ otrzymujemy:
 	L_o(\omega_o) = \pi f(l, \omega_o) \clightcolor (n \cdot l)
 \]
 
-Jak widać, powyższe równanie aproksymuje obliczenie skomplikowanego wyrażenia całkowego jednokrotnym obliczeniem funkcji BRDF oraz kilkoma prostymi operacjami arytmetycznymi. Pozostaje pytanie, kiedy warto zastosować tego typu technikę. Aproksymacja ta, ma sens dla dynamicznych scen w których precyzja nie jest kluczowa oraz odleglość od źródła światła jest co namniej pięć razy większa od jego szerokości \cite{RealTimeRendering2008}\cite{lambert_photometria} - w takim przypadku konwersja na światło punktowe wraz z kwadratowym spadkiem intensywności powinna być wystarczająca w grach.
+Jak widać, powyższe równanie aproksymuje obliczenie skomplikowanego wyrażenia całkowego jednokrotnym obliczeniem funkcji BRDF oraz kilkoma prostymi operacjami arytmetycznymi. Pozostaje pytanie, kiedy warto zastosować tego typu technikę. Aproksymacja ta, ma sens dla dynamicznych scen w których precyzja nie jest kluczowa oraz odległość od źródła światła jest co najmniej pięć razy większa od jego szerokości \cite{RealTimeRendering2008,lambert_photometria} - w takim przypadku konwersja na światło punktowe wraz z kwadratowym spadkiem intensywności powinna być wystarczająca w grach.
 
 
 \section{Przybliżenie światła powierzchniowego klastrem świateł punktowych}
 
-Pierwszą metodą, która nasuwa się po poznaniu podstaw jest podejśćie uproszczone polegające na przybliżeniu klasycznego światła powierzchniowego zbiorem świateł punktowych.
+Pierwszą metodą, która nasuwa się po poznaniu podstaw, jest podejście uproszczone polegające na przybliżeniu klasycznego światła powierzchniowego zbiorem świateł punktowych.
 
 Będziemy badać światła powierzchniowe tego typu w formie prostokątnej ze względu na łatwość generowania jednorodnej siatki punktów wewnątrz takiego obszaru, kształt ten również posiada ostre krawędzie i rogi przez co minusy tej metody będą bardzo widoczne. Uogólnienie do dowolnego kształtu nie będzie wpływać na rezultaty jakościowo.
 
@@ -915,12 +902,12 @@ Siatka punktowa będzie wygenerowana w taki sposób, aby każdy punkt przybliża
   \label{fig:PointLightCluster}
 \end{figure}
 
-Energia promieniowania dla tak zdefiniowanego przypadku można obliczyć korzystając z definicjii irradiancji:
+Energię promieniowania dla tak zdefiniowanego przypadku możemy obliczyć korzystając z definicji irradiancji:
 \[
 	\Phi = E \Delta{x} \Delta{y}
 \]
 
-Intensywność takiego źródła również będzie stała (dla danej długości fali $\lambda$) i równa: 
+Intensywność takiego źródła jest stała (dla danej długości fali $\lambda$) i równa: 
 
 \[
   I 
@@ -938,7 +925,7 @@ Korzystając z wcześniejszych definicji dla punktu $p$ na powierzchni i świat�
 
 \noindent gdzie $r$ jest równe $\norm{p-l_c}$.
 
-Zatem dla całego klastra wystarczy zsumować wpływ każdego światła punktowego opisującego pewien podobszar:
+Zatem dla całego klastra, wystarczy zsumować wpływ każdego ze świateł punktowych opisujących podobszary:
 \[
 	L_o(\omega_o) = \pi \sum_{i}^{n} \sum_{j}^{m} {
 		f(l_{i,j}, \omega_o) \frac{I}{(r_{i,j})^2} (n \cdot l_{i,j})
