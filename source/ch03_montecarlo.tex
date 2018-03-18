@@ -15,15 +15,13 @@ Wyprowadzone w poprzednim rozdziale równanie renderingu opisuje wszystkie badan
   }
 \]
 
-Większość obecnie produkowanych silników do gier używa rozwiązania polegającego na przybliżeniu źródeł światła źródłami punktowymi. Obliczenie sumy będącej odpowiednikiem powyższej całki przy takich założeniach nie jest wyzwaniem dla obecnych kart graficznych nawet dla dużej ilości świateł, szczególnie przy zastosowaniu specjalnych technik zmniejszających wymaganą liczbę operacji do minimum, np. \textit{deferred shading}.
-
-W przypadku świateł zajmujących ciągły fragment dziedziny sferycznej, nie jesteśmy w stanie bezpośrednio przedstawić całki w postaci sumy skończonej bez znacznej utraty dokładności. Niestety, również dla większości funkcji $L$, $f_r$ rozwiązanie nie jest możliwe do znalezienia metodą analityczną w bardzo ograniczonym czasie wymaganym do zachowania płynności aplikacji.
+W przypadku świateł zajmujących ciągły fragment dziedziny sferycznej, nie jesteśmy w stanie bezpośrednio przedstawić całki w postaci sumy skończonej bez znacznej utraty dokładności. Niestety, również dla większości funkcji $L_i$, $f_r$ rozwiązanie nie jest możliwe do znalezienia metodą analityczną w bardzo ograniczonym czasie wymaganym do zachowania płynności aplikacji.
 
 Metody stosujące niebezpośrednie podejście do wyznaczenia przybliżenia wartości tej całki będą opisane w kolejnych rozdziałach. Wiedza na temat uzyskania przybliżenia oryginalnej całki przyda nam się do ich zrozumienia oraz weryfikacji poprawności.
 
 \section{Metoda Monte Carlo}
 
-W ogólności całkowanie numeryczne funkcji nie jest możliwe do zrealizowania tak, aby błąd był niewielki przy relatywnie niskim czasie obliczeń wystarczającym do uzyskania płynności działania. Jedną z szybszych metod całkowania numerycznego jest przybliżona metoda Monte Carlo bazująca na rachunku prawdopodobieństwa i prawie wielkich liczb. Metoda ta dokładnie opisana jest w publikacjach \cite{Sierocinski,MonteCarloAnderson,Veach}. Przytoczę tutaj ogólnie podstawowe pojęcia i twierdzenia statystyki matematycznej.
+W ogólności całkowanie numeryczne funkcji nie jest możliwe do zrealizowania tak, aby błąd był niewielki przy relatywnie niskim czasie obliczeń, wystarczającym do uzyskania płynności działania. Jedną z szybszych metod całkowania numerycznego jest przybliżona metoda Monte Carlo, która bazuje na rachunku prawdopodobieństwa i prawie wielkich liczb. Metoda ta jest dokładnie opisana w publikacjach \cite{Sierocinski,MonteCarloAnderson,Veach}. W tym podrozdziale przytoczę podstawowe pojęcia i własności elementów ze statystyki matematycznej.
 
 Zdarzeniem elementarnym nazywamy każdy możliwy wynik pewnego doświadczenia. Każde zdarzenie jest unikalne oraz dwa zdarzenia elementarne nie mogą wystąpić w trakcie jednego eksperymentu.
 
@@ -192,7 +190,7 @@ double VanDerCorput(unsigned int n, unsigned int base) {
 \end{lstlisting}
 
 Istnieje alternatywne rozwiązanie korzystające z właściwości operacji takiej
-odwrotności. Warto zauważyć, że obie liczby $n$ oraz $v(n)$ zapisane w systemie o podstawie $b$ (tutaj $b=2$) są odbiciem lustrzanym:
+odwrotności. Warto zauważyć, że obie liczby $n$ oraz $v_b(n)$ zapisane w systemie o podstawie $b$ (tutaj $b=2$) są odbiciem lustrzanym:
 \[
   5 = 1 + 4 = (101.0)_{b} \quad
   (0.101)_{b} = 0.625 = \frac{1}{2} + \frac{1}{8} = v_2(5)
@@ -217,14 +215,14 @@ double VanDerCorputRadicalInverse(unsigned int bits)
 
 \subsection{Ciąg Haltona}
 
-Ciąg Haltona jest uogólnieniem ciągu \textit{van der Corput}'a do wyższych
+Ciąg Haltona jest uogólnieniem ciągu van der Corput'a do wyższych
 wymiarów. Weźmy $n$ wzajemnie względnie pierwszych liczb $b_i$ większych od 1,
 czyli takiego zbioru w którym dla dowolnej pary liczb ich jedynym wspólnym
 dzielnikiem jest 1.
 
 $i$-ty $n$-wymiarowy element ciągu Haltona równy jest:
 \[ 
-x(i) = \left( v_{b_0}(i), v_{b_1}(i), \cdots, v_{b_n}(i) \right) 
+x(i) = \left( v_{b_1}(i), v_{b_2}(i), \cdots, v_{b_n}(i) \right) 
 \]
 
 \begin{figure}[h]
@@ -242,7 +240,7 @@ $n-1$ wzajemnie względnie pierwszych liczb $b_i$ większych od 1. $i$-tym $n$
 wymiarowym elementem ciągu jest:
 \[
   x(i) = \left(
-    \frac{i}{m}, v_{b_0}(i), v_{b_1}(i), \cdots, v_{b_{n-1}}(i)
+    \frac{i}{m}, v_{b_1}(i), v_{b_2}(i), \cdots, v_{b_{n-1}}(i)
   \right)
 \]
 
@@ -289,24 +287,49 @@ Do wygenerowania punktów na półsferze możemy wykorzystamy parametryzację z 
   (u,v) \in [0,1]^2 \rightarrow (\theta, \phi) \in \mathcal{H}
 \]
 
+Parametry wejściowe $(u,v)$ wygenerujemy za pomocą ciągów pseudo-losowych przedstawionych wcześniej. Obrazki poglądowe wykorzystują ciąg Hammersleya jako generator liczb wejściowych.
+
 Niestety, proste przeskalowanie dziedziny źródłowej tzn. przekształcenie parametrów przekształceniem liniowym postaci:
 \begin{align*}
 	\phi &= \frac{1}{2} \pi u \\
  	\theta &= 2 \pi v
 \end{align*}
-\noindent nie będzie wystarczające, ponieważ otrzymany rozkład nie będzie równomierny na powierzchni półsfery (więcej punktów jest skupionych w okolicach biegunów) \cite{WolframSpherePointPicking}.
+\noindent nie będzie wystarczające, ponieważ otrzymany rozkład nie będzie równomierny na powierzchni półsfery (więcej punktów jest skupionych w okolicach biegunów, rys. \ref{fig:SpherePointsNaive}) \cite{WolframSpherePointPicking}.
 
-Możemy wykorzystać do tego parametryzację jednorodną \cite{dammertz_2012, AdvancedCGRenderingEq} wyprowadzoną z użyciem metody z sekcji \ref{section:pdfsampling} przy założeniu, że funkcja gęstości prawdopodobieństwa jest stała:
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=6cm]{montecarlo/sphere_points_naive.png}
+    \caption{Punkty na sferze wygenerowane metodą naiwną (500 próbek). Opracowanie własne.}
+    \label{fig:SpherePointsNaive}
+\end{figure}
+
+Alternatywne rozwiązanie znajdziemy stosując metodę przedstawioną w sekcji \ref{section:pdfsampling}  przy założeniu, że funkcja gęstości prawdopodobieństwa jest stała \cite{dammertz_2012, AdvancedCGRenderingEq}:
 \begin{align*}
 	\phi &= \cos^{-1}(1-u) \\
 	\theta &= 2 \pi v
 \end{align*}
 
-Dla funkcji które są zależą od kosinusa kąta $\phi$ możemy wykorzystać alternatywną metodę generowania, która będzie generować mniej punktów w okolicach horyzontu, gdzie $\cos\phi \approx 0$. Do wyznaczenia takiego rozkładu wykorzystamy funkcję gęstości prawdopodobieństwa $p$ proporcjonalną do czynnika $\cos \phi$, finalnie otrzymamy \cite{AdvancedCGRenderingEq}:
+Na rysunku \ref{fig:SpherePointsUniform} wyraźnie widać, że punkty przestały być skupione wokół bieguna.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=6cm]{montecarlo/sphere_points_uniform.png}
+    \caption{Punkty na sferze wygenerowane metodą inwersji (500 próbek). Opracowanie własne.}
+    \label{fig:SpherePointsUniform}
+\end{figure}
+
+Dla funkcji które są zależą od kosinusa kąta $\phi$ możemy wykorzystać alternatywną metodę generowania, która będzie generować mniej punktów w okolicach horyzontu (rys. \ref{fig:SpherePointsCosine}), gdzie $\cos\phi \approx 0$. Do wyznaczenia takiego rozkładu wykorzystamy funkcję gęstości prawdopodobieństwa $p$ proporcjonalną do czynnika $\cos \phi$, finalnie otrzymamy \cite{AdvancedCGRenderingEq}:
 \begin{align*}
   \phi &= \cos^{-1}(\sqrt{1-u}) \\
   \theta &= 2 \pi v
 \end{align*}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=6cm]{montecarlo/sphere_points_cosine.png}
+    \caption{Punkty na sferze wygenerowane metodą inwersji z uwzględnieniem czynnika $\cos\phi$ (500 próbek). Opracowanie własne.}
+    \label{fig:SpherePointsCosine}
+\end{figure}
 
 \section{Przyrostowa metoda Monte-Carlo}
 
