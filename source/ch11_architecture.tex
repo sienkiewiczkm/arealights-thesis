@@ -41,6 +41,7 @@ Przykłady:
 \end{lstlisting}
 
 \subsection{Kompilacja}
+\label{section:ltcFitterCompilation}
 
 Aplikacja wykorzystuje pakiet CMake do wygenerowania projektu dla konkretnego kompilatora \texttt{Makefile}, który będzie można wykorzystać potem do właściwego zbudowania aplikacji. Dokładny opis użytkowania tego programu można znaleźć w dokumentacji projektu CMake \cite{CMakeDoc}. Przykładowa kompilacja w systemie z rodziny Unix może wyglądać następująco (przy użyciu domyślnego komplatora C++ dla systemu):
 \begin{lstlisting}[language=bash,numbers=none]
@@ -179,7 +180,7 @@ Implementacja już istniejących interfejsów (rys. \ref{fig:LTCClassDiagram}) p
     \centering
     \includegraphics[scale=\graphvizscale]{architecture/ltcfitter/ltc1.pdf}
     \includegraphics[scale=\graphvizscale]{architecture/ltcfitter/ltc2.pdf}
-    \caption{Wybrane elementy klas dotyczących procesu optymalizacji funkcji. Opracowanie własne.}
+    \caption{Klasy implementujące wsparcie dla optymalizacji macierzy $M$ dla metody LTC. Opracowanie własne.}
     \label{fig:LTCClassDiagram}
 \end{figure}
 
@@ -198,9 +199,18 @@ Program \texttt{arealights} jest aplikacją graficzną realizującą algorytmy s
 Kod programu można znaleźć na dołączonej płycie CD lub w repozytorium online pod adresem: \url{https://github.com/sienkiewiczkm/arealights}.
 
 \subsection{Opis użytkowania}
+
 \subsection{Kompilacja}
+
+Kompilacja tego projektu przebiega analogiczne do poprzedniego programu. Szczegóły dotyczące budowania aplikacji można znaleźć w rozdziale \ref{section:ltcFitterCompilation}.
+
 \subsection{Struktura kodu źródłowego}
 \subsection{Architektura aplikacji}
 \subsection{Możliwe rozszerzenia}
+
+\begin{itemize}
+    \item kolorowe światła LTC
+    \item inne metody?
+\end{itemize}
 
 \end{document}
