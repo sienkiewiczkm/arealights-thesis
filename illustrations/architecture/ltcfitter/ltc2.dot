@@ -1,0 +1,32 @@
+digraph G {
+    fontname = "Lucida Console"
+    fontsize = 14
+
+    dpi = 300
+
+    node [
+        shape = "record"
+        fontname = "Lucida Console"
+        fontsize = 14
+    ]
+
+    error_estimator [
+        label = "{\<\<\<interface\>\>\>\nerror_estimator|+ estimate_error(vector\<float\> parameters): float\l}"
+    ]
+
+    ltc_error_estimator [
+        label = "{ltc_error_estimator|+ ltc_error_estimator(const brdf& referenceBrdf)\l}"
+    ]
+  
+    constraints_calculator [
+        label = "{\<\<\<interface\>\>\>\nconstraints_calculator|+ calculate_constraints(vector\<float\> parameters): vector\<float\>\l}"
+    ]
+
+    ltc_constraints_calculator [
+        label = "{ltc_constraints_calculator|+ ltc_constraints_calculator()\l}"
+    ]
+
+    edge[arrowhead="empty"]
+    ltc_error_estimator -> error_estimator
+    ltc_constraints_calculator -> constraints_calculator
+}

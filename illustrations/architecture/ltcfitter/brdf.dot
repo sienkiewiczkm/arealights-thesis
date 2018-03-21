@@ -1,0 +1,25 @@
+digraph G {
+  fontname = "Lucida Console"
+  fontsize = 14
+
+  dpi = 300
+
+  node [
+    shape = "record"
+    fontname = "Lucida Console"
+    fontsize = 14
+  ]
+
+  brdf [
+    label = "{\<\<\<interface\>\>\>\nbrdf|+ evaluate(vec3 lightDir, vec3 viewDir, float& pdf) : float\l+ sample(vec3 viewDir, vec2 randomParameters) : vec3\l+ set_alpha(float alpha) : void\l}"
+  ]
+
+  ggx [
+    label = "{ggx|+ ggx()\l}"
+  ]
+
+  // Inheritance
+
+  edge[arrowhead="empty"]
+  ggx -> brdf
+}

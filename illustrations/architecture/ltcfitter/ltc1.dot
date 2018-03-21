@@ -1,0 +1,30 @@
+digraph G {
+    fontname = "Lucida Console"
+    fontsize = 14
+
+    dpi = 300
+
+    node [
+        shape = "record"
+        fontname = "Lucida Console"
+        fontsize = 14
+    ]
+
+    brdf [
+        label = "{\<\<\<interface\>\>\>\nbrdf|+ evaluate(vec3 lightDir, vec3 viewDir, float& pdf) : float\l+ sample(vec3 viewDir, vec2 randomParameters) : vec3\l+ set_alpha(float alpha) : void\l}"
+    ]
+
+    ltc [
+        label = "{ltc|+ ltc()\l+ set_base_frame(mat3 baseFrame) : void\l+ get_base_frame() : mat3\l+ set_amplitude(float) : void\l+ get_amplitude() : float\l+ get_framed_ltc_matrix(): mat3\l+ set_fresnel(float) : void\l+ get_fresnel() : float\l+ get_store_data(): ltc_store_data\l}"
+    ]
+
+    ltc_store_data [
+        label = "{ltc_store_data||+ matrix_parameters : array\<float, 5\>\l+ distribution_norm : float\l+ fresnel_term : float\l}"
+    ]
+
+    
+    ltc -> ltc_store_data
+
+    edge[arrowhead="empty"]
+    ltc -> brdf
+}

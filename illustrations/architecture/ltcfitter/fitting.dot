@@ -1,0 +1,84 @@
+// dot -Tpdf fitting.dot -ofitting.pdf
+
+digraph G {
+  fontname = "Lucida Console"
+  fontsize = 14
+  
+  dpi = 300
+
+  node [
+    shape = "record"
+    fontname = "Lucida Console"
+    fontsize = 14
+  ]
+
+
+  error_estimator [
+    label = "{\<\<\<interface\>\>\>\nerror_estimator|+ estimate_error(vector\<float\> parameters): float\l}"
+  ]
+
+
+  penalty_error_estimator [
+    label = "{\<\<\<interface\>\>\>\npenalty_error_estimator|+ set_base_estimator(shared_ptr\<error_estimator\>) : void\l+ set_penalty_factor(float) : void\l+ set_constraints(shared_ptr\<constraints_calculator\>) : void\l}"
+  ]
+
+  logarithmic_penalty_error_estimator [
+    label = "{logarithmic_penalty_error_estimator|+ logarithmic_penalty_error_estimator()\l}"
+  ]
+
+  constraints_calculator [
+    label = "{\<\<\<interface\>\>\>\nconstraints_calculator|+ calculate_constraints(vector\<float\> parameters): vector\<float\>\l}"
+  ]
+
+  penalty_optimizer [
+    label = "{penalty_optimizer|+ set_penalty_estimator(shared_ptr\<penalty_error_estimator\>) : void\l+ optimize(vector\<float\>& startParameters) const : vector\<float\>\l}"
+  ]
+
+  nelder_mead [
+    label = "{nelder_mead|+ nelder_mead(int space_dimmension)\l+ optimize(vector\<float\> start_parameters, const error_estimator*) : float\l}"
+  ]
+
+  /*
+  ltc_error_estimator [
+    label = "{ltc_error_estimator|+ ltc_error_estimator()\l}"
+  ]
+  
+  ltc_constraints_calculator [
+    label = "{ltc_constraints_calculator|+ ltc_constraints_calculator()\l}"
+  ]
+  */
+  
+  // Optional part, samplers
+
+  /*
+  sampler2d [
+    label = "{sampler2d}"
+  ]
+
+  halton_sampler2d [
+    label = "{halton_sampler2d}"
+  ]
+  */
+
+  //hammersley_sampler2d [label = "{hammersley_sampler2d}"]
+
+  // Inheritance
+
+  edge[arrowhead="empty"]
+  //ltc_error_estimator -> error_estimator
+  penalty_error_estimator -> error_estimator
+  logarithmic_penalty_error_estimator -> penalty_error_estimator
+
+  //halton_sampler2d -> sampler2d
+  //hammersley_sampler2d -> sampler2d
+
+  // Dependencies
+
+  edge[arrowhead="vee" style="dashed"]
+  penalty_optimizer -> penalty_error_estimator 
+  penalty_optimizer -> nelder_mead
+  nelder_mead-> error_estimator
+  penalty_error_estimator -> constraints_calculator
+  //ltc_constraints_calculator -> constraints_calculator
+  //ltc_error_estimator -> halton_sampler2d
+}
