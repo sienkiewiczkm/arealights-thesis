@@ -48,8 +48,6 @@ Zakładając znajomość rozwiązania, takie uproszczenie pozwala nam na proste 
 }
 \]
 
-Kolorowe światła nie dodają dodatkowych założeń dla funkcji $D$, ale wymagają więcej danych. Rozszerzenie dla teksturowanych świateł przedstawione jest na końcu tego rozdziału.
-
 \section{Wybór rozkładu $D(\omega)$}
 
 Rozpocznijmy od zdefiniowania warunków, które funkcja $D(\omega)$ musi spełniać, aby nadawała się do zastosowania jako element przybliżenia. W zaawansowanych modelach oświetlenia bazowanych na zjawiskach fizycznych występuje kilka ważnych efektów, które muszą zostać zachowane. Również, ze względu na różnorodność materiałów występujących w typowej scenie metoda musi wspierać zmienną chropowatość powierzchni określoną przez parametr $\alpha$.
@@ -173,7 +171,7 @@ E(p_1, \ldots, p_n) =
 \sum_{i=0}^{n} {
   \cos^{-1}(\langle p_i, p_j \rangle)
   \left\langle {
-    \frac{\langle p_i, p_j \rangle}{||\langle p_i, p_j \rangle||},
+    \frac{p_i \times p_j}{\norm{p_i \times p_j}},
     \left[ \begin{matrix} 0 \\ 0 \\ 1 \end{matrix} \right]
   } \right\rangle
 }
@@ -219,7 +217,7 @@ W takim przypadku istotną obserwacją jest to, że jeżeli dany materiał poch�
 \]
 W takim przypadku konieczne jest zachowanie wartości $n_D$ razem z dopasowaniem tak, abyśmy mogli przeskalować odpowiedź $D$, tak aby była proporcjonalna do powyższego wyrażenia podcałkowego.
 
-W wielu modelach występuje również współczynnik fresnela, najczęściej sterowany parametrem materiałowym $F_0$. W takim przypadku, będziemy rozpatrywać czynnik fresnelowski osobno, zakładając, że $f_r$ jest od niego niezależny:
+W wielu modelach występuje również współczynnik fresnela, najczęściej sterowany parametrem materiałowym $F_0$. W takim przypadku, będziemy rozpatrywać czynnik fresnelowski osobno, zakładając, że $f_r$ jest od niego niezależny. Będziemy traktować ten czynnik jako normę sterującą (skalującą) rozkład LTC:
 \[
 \int_{\Omega} {
     F(\omega_i, \omega_o)
@@ -246,7 +244,6 @@ Korzystając z aproksymacji Schlicka:
     \dd \omega_i
 } = \\
 = F_0 \int_{\Omega} {
-    F(\omega_i, \omega_o)
     f_r(\omega_i, \omega_o) 
     \cos\theta_i 
     \dd \omega_i
@@ -273,6 +270,8 @@ Oznaczając:
     F_0 n_D + (1-F_0) f_D
 \]
 
+Stałe $n_D$ oraz $f_D$ powinny zostać wyznaczone podczas szukania optymalnej macierzy $M$ i zapisane razem z nią.
+
 
 \section{Wybór przekształcenia liniowego}
 
@@ -295,10 +294,28 @@ M_{\alpha} =
 \]
 
 \begin{figure}[h]
-  \centering
-  \includegraphics[height=5cm]{ltc/cosine_dist_scale.png}
-  \caption{Skalowanie na płaszczyźnie XY. Opracowanie własne.}
-  \label{fig:LTCEqualScale}
+\centering
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[height=5cm]{ltc/cosine_dist_scale.png}
+        \caption{Skalowanie jednorodne.}
+        \label{fig:LTCEqualScale}
+    \end{subfigure}
+    \hspace{0.03\textwidth}
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[height=5cm]{ltc/cosine_dist_scale_aniso.png}
+        \caption{Skalowanie niejednorodne.}
+        \label{fig:LTCAnisoScale}
+    \end{subfigure}
+    \hspace{0.03\textwidth}
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[height=5cm]{ltc/cosine_dist_skew.png}
+        \caption{Przekształcenie skośne.}
+        \label{fig:LTCSkew}
+    \end{subfigure}
+    \caption{Przekształcenia bazowe wykorzystane do przybliżania dowolnego rozkładu rozkładem lambertowskim. Opracowanie własne.}
+    \label{fig:LTCTransforms}
 \end{figure}
 
 Anizotropia powstająca w przy dużych kątach obserwacji może zostać zasymulowana poprzez skalowanie niejednorodne w płaszczyźnie $XY$ (rys. \ref{fig:LTCAnisoScale}):
@@ -311,12 +328,7 @@ M_{\text{aniso}} =
 \end{bmatrix}
 \]
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[height=5cm]{ltc/cosine_dist_scale_aniso.png}
-  \caption{Skalowanie anizotropowe na płaszczyźnie XY. Opracowanie własne.}
-  \label{fig:LTCAnisoScale}
-\end{figure}
+
 
 Zjawisko off-specular peak przy rosnącej chropowatości może zostać zasymulowane poprzez skorzystanie z macierzy skośnej (rys. \ref{fig:LTCSkew}):
 \[
@@ -327,13 +339,6 @@ M_{\text{skew}} =
   \lambda_{s} & 0 & 1
 \end{bmatrix}
 \]
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[height=5cm]{ltc/cosine_dist_skew.png}
-  \caption{Skośność}
-  \label{fig:LTCSkew}
-\end{figure}
 
 Powyższe przekształcenia dają nam możliwość precyzyjnego modelowania
 spójnych rozkładów o prostych, ale wystarczających do naszych zastosowań
@@ -504,29 +509,105 @@ celu stworzymy funkcję błędu:
 \[
   f(a,b,c) =
     \int_{\Omega} {
-      \left| {D_{\text{LTC}}(a, b, c, \omega) - D_{\text{BRDF}}(\omega)} \right|
-    } d \omega
+      \abs{
+        {D_{\text{LTC}}(a, b, c, \omega) - D_{\text{BRDF}}(\omega)}
+      }
+    } \dd \omega
 \]
 
 Funkcja ta może zostać obliczona z wykorzystaniem techniki MIS opisanej w
 rozdziale \ref{Chapter:MIS}.
 
-\subsection{Format danych}
-
 \section{Cieniowanie sceny}
 
-\section{Kolorowe światła}
+Kolor danego punktu $p$ obserwowanego pod kątem $\theta$ do normalnej, o chropowatości $\alpha$, oświetlonego światłem powierzchniowym $P$ o stałej luminancji energetycznej $L$ możemy z łatwością wyznaczyć znając już macierz $M$.
+
+Pierwszym krokiem jest przekształcenie wielokąta $P$ transformacją $M$ oraz obcięcie go do horyzontu (rys. \ref{fig:QuadClip}). Obcinanie może być zrealizowane przez proste przejście po krawędziach i odrzucenie części dla której zachodzi $z=0$ i łącząc punkty niespójności liniami prostymi (dla tych linii składowa $z$ będzie zawsze równa $0$). Implementacja zastosowana przez \cite{ltc_heitz}, z której również korzysta ta praca, obsługuje każdy przypadek osobno ze względów wydajnościowych.
 
 \begin{figure}[h]
     \centering
-    \begin{tikzpicture}
-    %\draw[help lines] (0,0) grid (5,5);
-    \draw [-{Triangle[scale=2]}] (0.0,0.0) -> (3.0, 0.0) node [midway, below] {$\theta$};
-    \draw [-{Triangle[scale=2]}] (0.0,0.0) -> (0.0, 3.0) node [midway, left] {$\alpha$};
-    \draw (1.5, 1.5) node {$M^{-1}$};
-    \end{tikzpicture}
-    \caption{Sposób przechowywania wyznaczonych macierzy}
-    \label{fig:LTCFormat}
+    \includegraphics[width=0.6\textwidth]{ltc/quad_clip}
+    \caption{Prostokątne źródło światła przycięte do horyzontu. Opracowanie własne.}
+    \label{fig:QuadClip}
 \end{figure}
+
+Kolejnym krokiem jest obliczenie irradiancji tego wielokąta przy użyciu wcześniej wspomnianego wzoru wyprowadzonego przez Lamberta:
+\[
+E(p_1, \ldots, p_n) =
+\frac{1}{2\pi}
+\sum_{i=0}^{n} {
+    \cos^{-1}(\langle p_i, p_j \rangle)
+    \left\langle {
+        \frac{p_i \times p_j}{\norm{p_i \times p_j}},
+        \left[ \begin{matrix} 0 \\ 0 \\ 1 \end{matrix} \right]
+    } \right\rangle
+}
+\]
+\[
+j = (i+1) \text{ mod } n
+\]
+
+Bezpośrednia implementacja powyższego wzoru niestety nie da nam oczekiwanych rezultatów, ze względu na przybliżenia zastosowane do implementacji $\cos^{-1}$ na kartach graficznych. Błąd, mimo że niewielki, jest zbyt duży do poprawnego wyznaczenia irradiancji wielokąta. W związku z powyższym autorzy \cite{LTCJourneyPresentation} proponują własne przybliżenie.
+
+Okazuje się, że dobre rezultaty daje przybliżenie większej części równania, a mianowicie czynnika $\frac{\theta}{\sin\theta}$ \footnote{Użyteczność tej formy wynika z faktu, że $\norm{p_i \times p_j} = \sin\theta$.}. Metodą prób i błędów autorom udało się dobrać funkcję przybliżającą korzystając z optymalizacji funkcji. Funkcja wyznacza dobre przybliżenie dla parametru:
+\[
+\gamma = \abs{\cos\theta} = \abs{\langle p_i, p_j \rangle}
+\]
+\noindent w przedziale $(0,1]$:
+\[
+\frac{\theta}{\sin\theta} = f(\gamma) = \frac{
+    5.42031 + \left( 3.12829 + 0.0902326 \gamma \right) \gamma
+}{
+    3.45068 + \left( 4.18814 + \gamma \right) \gamma
+}
+\]
+\noindent W przypadku, gdy $\gamma \in [-1, 0)$, możemy wyznaczyć wartość przybliżenia korzystając z własności:
+\[
+    \frac{\pi - \theta}{\sin\left( \pi-\theta \right)} =
+    \frac{\pi - \theta}{\sin\theta} = 
+    \frac{\pi}{\sqrt{1-\cos^{2}\theta}} - \frac{\theta}{\sin\theta}
+\]
+
+W zależności od tego, czy światło jest dwustronne czy nie, należy wziąć wartość absolutną irradiancji lub obciąć ją do zera. Do obliczenia końcowej wartości wykorzystujemy wzór, w którym wyprowadziliśmy czynnik Fresnelowski:
+\[
+    spec = irr_{spec} * (F_0 n_D + (1-F_0) f_D)
+\]
+
+Pozostaje nam jeszcze obliczenie wpływu czynnika rozproszonego. Do tego wystarczy wykorzystać macierz $M=I$, ponownie obliczyć irradiancję wielokąta. 
+\[
+    L_o = L_i * \left( spec + c_{diff}*irr_{diff} \right)
+\]
+
+\subsection{Format danych}
+
+Plik zawierający wyniki dla poszczególnych $\alpha$, $\theta$ rozpoczyna się od nagłówka. Nagłówek pliku zawiera podstawowe informacje na temat rodzaju pliku, wersji i rozmiaru tekstur przechowywanych wewnątrz (tab. \ref{table:ALFHeader}).
+
+Wyniki obliczeń zostają zapisane do pliku w formie gotowej do wczytania przez bibliotekę graficzną bezpośrednio do tekstury. Pierwsza tekstura zawiera współczynniki $M_{1}^{1}, M_{1}^{3}, M_{2}^{2}, M_{3}^{1}$ w postaci liczb zmiennoprzecinkowych o pojedynczej precyzji. Druga tekstura zawiera pozostały istotny współczynnik, czyli $M_{3}^{3}$, normę referencyjnego BRDF i oszacowany współczynnik Fresnela.
+
+Każda z tekstur zajmuje ciągły fragment pamięci w pliku. Poszczególne wartości są przechowywane w kolejności odpowiednio $[M_{1}^{1}, M_{1}^{3}, M_{2}^{2}, M_{3}^{1}]$ i $[M_{3}^{3}, n_D, f_D]$, gdzie offset względem początku tekstury wskazujący na pierwszy bajt sekwencji w pamięci może zostać obliczony ze wzoru:
+\begin{gather*}
+\texttt{offset}_1 = 4 * \texttt{sizeof(float)} * \left(
+i_{\theta} * N_{\alpha} + i_{\alpha}
+\right) \\
+\texttt{offset}_2 = 3 * \texttt{sizeof(float)} * \left(
+i_{\theta} * N_{\alpha} + i_{\alpha}
+\right)
+\end{gather*}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        Typ & Rozmiar & Opis \\ \hline
+        \texttt{char[4]} & 4B & identyfikator, ,,ALFS" \\\hline
+        \texttt{short} & 2B & numer główny wersji, obecnie 1 \\\hline
+        \texttt{short} & 2B & numer dodatkowy wersji, obecnie 0 \\\hline
+        \texttt{uint} & 32B & ilość próbek dla kąta \\\hline
+        \texttt{uint} & 32B & ilość próbek dla chropowatości \\\hline
+    \end{tabular}
+    \caption{Struktura nagłówka pliku podglądu używanego w pracy.}
+    \label{table:ALFHeader}
+\end{table}
+
 
 \end{document}
