@@ -25,6 +25,10 @@
 \usepackage{physics}
 \usepackage{siunitx}
 
+\usepackage{color}
+
+\usepackage[normalem]{ulem}
+
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
 \usetikzlibrary{arrows.meta,angles,quotes}
@@ -88,11 +92,16 @@
 %\cleardoublepage
 \pagestyle{fancy}
 
-\subfile{source/notation_table}
+%\subfile{source/notation_table}
 %\subfile{source/ch01_introduction}
-%\subfile{source/ch02_pbr}
-\subfile{source/ch03_montecarlo}
+\subfile{source/ch02_pbr}
+%\subfile{source/ch03_montecarlo}
 %\subfile{source/ch04_ltc}
+%\subfile{source/ch11_architecture}
+
+%latexdiff old new > diff.tex
+%afterwards fix requirepackage in diff.tex
+%\subfile{source/diff}
 
 %\begin{appendices}
 %\subfile{source/appendix_pdf_maxima}

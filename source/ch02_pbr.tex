@@ -53,12 +53,12 @@ W powyższym równaniu pojawiają się pewne dobrane przez artystę stałe mater
 
 \begin{itemize}
     \item $n$ - normalna powierzchni,
-    \item $\alpha$ - współczynnik chropowatości powierzchni, jeżeli współczynnik rośnie to zbliża się ona coraz bardziej do idealnego lustra,
+    \item $\alpha$ - współczynnik gładkości powierzchni, jeżeli współczynnik rośnie to zbliża się ona coraz bardziej do idealnego lustra,
     \item $\omega_m$ - wektor jednostkowy reprezentujący kierunek od aktualnie cieniowanego punktu do punktu w którym znajduje się źródło światła,
     \item $\omega_o$ - wektor jednostkowy reprezentujący kierunek od aktualnie cieniowanego punktu do obserwatora.
 \end{itemize}
 
-Jak widać, stałe $k_a$, $k_d$, $k_s$ są tak naprawdę kolorami różnych typów interakcji wiązki światła z pewnych źródeł z powierzchnią. Kolor odbicia zależy w bardzo dużym stopniu od wyobrażenia artysty o zachowaniu światła w danym środowisku, nie wynika on jasno z właściwości materiału, lecz zwykłego domysłu, jak poszukiwany materiał wygląda w określonych warunkach.
+Jak widać, stałe $k_a$, $k_d$, $k_s$ są kolorami różnych typów interakcji wiązki światła z pewnych źródeł z powierzchnią. Kolor odbicia zależy w bardzo dużym stopniu od wyobrażenia artysty o zachowaniu światła w danym środowisku, nie wynika on jasno z właściwości materiału, lecz zwykłego domysłu, jak poszukiwany materiał wygląda w określonych warunkach.
 
 Doprowadza to do sytuacji, w której obiekt, dla którego stworzone są tekstury, może wyglądać bardzo dobrze w jednym otoczeniu, a w drugim nienaturalnie. Zaprojektowany model może dobrze prezentować się w dziennym świetle, lecz w zaciemnionym miejscu nie będzie sprawiał wrażenia realistycznego. Zatem jednym z głównych problemów prostych modeli oświetlenia jest to, że opis materiału jest zależny od referencyjnych warunków świetlnych.
 
@@ -523,7 +523,7 @@ Cała funkcja BRDF zwykle zawiera część opisującą reflektancję powierzchni
 
 Istnieje bardzo dużo róznych modeli BRDF \cite{brdf_overview}, my zajmiemy się natomiast kilkoma wybranymi.
 
-\subsection{Lambert}
+\subsection{Model Lamberta}
 
 Najprostszą funkcją BRDF jest rozkład jednorodny, niezależny od kąta obserwacji. Taka funkcja, nazywana rozkładem lambertowskim, jest opisana poniższym równaniem:
 \[
@@ -537,10 +537,10 @@ Teoretyczna powierzchnia lambertowska odbija tą samą ilość radiancji w każd
 
 Bardzo często w rzeczywistych aplikacjach czynnik $\pi^{-1}$ nie występuje, ze względu na to, że zostaje on wliczony do irradiancji światła, przez co efektywnie jest ona mniejsza, niż powinna być wg rachunków radiometrycznych. 
 
-\subsection{Minnaert}
+\subsection{Model Minnaerta}
 
 Alternatywnym modelem dla gładkich izotropowych powierzchni jest model
-Minnaert'a. Model ten został stworzony do opisu powierzchni księżyca, można
+Minnaerta. Model ten został stworzony do opisu powierzchni księżyca, można
 spotkać się z określeniem modelu księżycowego (ang. \textit{moon shading}).
 Główną zmianą jest zależność jasności od kąta obserwacji i kąta padania światła
 na powierzchnię.  Model ten jest szczególnie przydatny do obliczenia
@@ -553,9 +553,9 @@ oświetlenia dla materiału (np. aksamitu, dywanów). Model ten opisany jest wzo
 
 \noindent Dla $k=1$ model ten redukuje się do modelu Lamberta.
 
-\subsection{Oren-Nayar}
+\subsection{Model Orena-Nayara}
 
-Oren-Nayar zaproponował model służący do opisu części rozproszonej chropowatych
+Oren oraz Nayar zaproponowali model służący do opisu części rozproszonej chropowatych
 dielektryków, będącym uogólnieniem modelu Lamberta dla materiałów o różnym
 współczynniku chropowatości. Podobnie jak model Minnaerta nadaje się on do
 materiałów takich jak aksamit czy welur, chropowatych plastików i
@@ -587,7 +587,7 @@ Jak widać, dla gładkiej powierzchni dla której $\alpha=0$ otrzymujemy
 ponownie model Lamberta.
 
 
-\subsection{Phong}
+\subsection{Model Phonga}
 
 Model Blinna-Phonga jest modelem empirycznym, jego równania pochodzą z obserwacji świata i próby dopasowania prostej funkcji do opisu części refleksyjnej wielu materiałów za pomocą małej liczby parametrów.
 
@@ -615,7 +615,7 @@ Celem normalizacji BRDF jest możliwość intuicyjnej kontroli parametrów, któ
   f(\omega_i, \omega_o) = \frac{\cdiff}{\pi} + \frac{m+8}{8\pi} {\cspec \cos^{m} \theta_h}
 \]
 
-\subsection{Cook-Torrance}
+\subsection{Model Cooka-Torrance'a}
 
 Najpopularniejszym obecnie modelem BRDF dla części refleksyjnej, wykorzystującym podejście mikropowierzchni, jest model Cooka-Torrance'a \cite{CookTorrance}:
 \begin{displaymath}
