@@ -7,7 +7,7 @@
 
 Wyprowadzone w poprzednim rozdziale równanie renderingu opisuje wszystkie badane przez nas efekty radiometryczne. Można je zapisać we wspomnianej już wcześniej formie całkowej:
 \[
-  \int_{\Omega} {
+  L(\omega_o) = \int_{\Omega} {
       f_r(\omega_i, \omega_o)
       L_i(\omega_i)
       (n \cdot \omega_i)
@@ -17,7 +17,7 @@ Wyprowadzone w poprzednim rozdziale równanie renderingu opisuje wszystkie badan
 
 W przypadku świateł zajmujących ciągły fragment dziedziny sferycznej, nie jesteśmy w stanie bezpośrednio przedstawić całki w postaci sumy skończonej bez znacznej utraty dokładności. Niestety, również dla większości funkcji $L_i$, $f_r$ rozwiązanie nie jest możliwe do znalezienia metodą analityczną w bardzo ograniczonym czasie wymaganym do zachowania płynności aplikacji.
 
-Metody stosujące niebezpośrednie podejście do wyznaczenia przybliżenia wartości tej całki będą opisane w kolejnych rozdziałach. Wiedza na temat uzyskania przybliżenia oryginalnej całki przyda nam się do ich zrozumienia oraz weryfikacji poprawności.
+Metody stosujące numeryczne podejście do wyznaczenia przybliżenia wartości tej całki będą opisane w kolejnych rozdziałach. Wiedza na temat uzyskania przybliżenia oryginalnej całki przyda nam się do ich zrozumienia oraz weryfikacji poprawności.
 
 \section{Metoda Monte Carlo}
 
@@ -135,11 +135,11 @@ Pierwszą metodą jednorodną (rys. \ref{fig:UniformSamples}) jaka się narzuca 
 Ciągi o niskiej rozbieżności są rozwiązaniem tego problemu: są to ciągi
 deterministyczne, które na pierwszy rzut oka wydają się losowe przez co posiadają ich zalety oraz pokrywają równomiernie całą dziedzinę niezależnie od wybranej ilości punktów.
 
-Najbardziej znanymi ciągami tego typu jest ciąg \textit{van der Corput'a} oraz jego pochodne czyli ciąg Haltona, zbiór Hammersleya.
+Najbardziej znanymi ciągami tego typu jest ciąg \textit{van der Corputa} oraz jego pochodne czyli ciąg Haltona, zbiór Hammersleya.
 
-\subsection{Ciąg van der Corput'a}
+\subsection{Ciąg van der Corputa}
 
-Ciąg van der Corput'a \cite{WongSamplingWH} jest jednowymiarowym ciągiem o
+Ciąg van der Corputa \cite{WongSamplingWH} jest jednowymiarowym ciągiem o
 niskiej rozbieżności, zdefiniowanym na zbiorze $[0,1]$ zbudowanym poprzez
 odwrócenie bazy reprezentacji w danym systemie o podstawie $b$. Każda liczba
 całkowita $i$ może zostać przedstawiona w pewnej zadanej bazie w sposób
@@ -215,7 +215,7 @@ double VanDerCorputRadicalInverse(unsigned int bits)
 
 \subsection{Ciąg Haltona}
 
-Ciąg Haltona jest uogólnieniem ciągu van der Corput'a do wyższych
+Ciąg Haltona jest uogólnieniem ciągu van der Corputa do wyższych
 wymiarów. Weźmy $n$ wzajemnie względnie pierwszych liczb $b_i$ większych od 1,
 czyli takiego zbioru w którym dla dowolnej pary liczb ich jedynym wspólnym
 dzielnikiem jest 1.
@@ -228,7 +228,7 @@ x(i) = \left( v_{b_1}(i), v_{b_2}(i), \cdots, v_{b_n}(i) \right)
 \begin{figure}[h]
   \centering
   \includegraphics[height=5cm]{montecarlo/halton_seq.pdf}
-  \caption{Ciąg Haltona dla $b_1=2\: b_2=3$ (1024 próbek). Opracowanie własne.}
+  \caption{Ciąg Haltona dla $b_1=2$ i $b_2=3$ (1024 próbek). Opracowanie własne.}
   \label{fig:HaltonSamples}
 \end{figure}
 
@@ -244,10 +244,7 @@ wymiarowym elementem ciągu jest:
   \right)
 \]
 
-Warto zauważyć, że dla wielu zastosowań potrzebujemy jedynie dwuwymiarowej
-parametryzacji. W takim przypadku bardzo wygodnie jest skorzystać z wersji
-bitowej do generowania ciągu van der Corputa, a drugi z parametrów wziąć z
-prostej proporcji. Ten zbiór będzie wykorzystywany w kodzie pracy.
+Warto zauważyć, że dla wielu zastosowań potrzebujemy jedynie dwuwymiarowej parametryzacji. W takim przypadku będziemy potrzebować jednego ciągu składowego van der Corputa, zatem bardzo wygodnie jest skorzystać z  z wersji bitowej do generowania liczb. Ten zbiór będzie wykorzystywany w kodzie pracy.
 
 \begin{figure}[h]
   \centering
@@ -256,7 +253,7 @@ prostej proporcji. Ten zbiór będzie wykorzystywany w kodzie pracy.
   \label{fig:HammersleySamples}
 \end{figure}
 
-\subsection{Generowanie próbki z funkcji gęstości prawdopodobieństwa}
+\subsection{Generowanie próbki z funkcji gęstości prawdopodobieństwa metodą inwersji}
 \label{section:pdfsampling}
 
 Weźmy funkcję gęstości prawdopodobieństwa $f(x)$. Jej dystrybuanta jest równa:
@@ -264,14 +261,12 @@ Weźmy funkcję gęstości prawdopodobieństwa $f(x)$. Jej dystrybuanta jest ró
 F(s_x) = \int_{-\infty}^{s_{x}} f(x) dx \in [0,1] 
 \]
 
-Załóżmy, że mamy do dyspozycji parametr $\xi \in [0,1]$ wygenerowany dowolną
-metodą. Zbudujmy równanie w którym niewiadomą będzie $s_x$:
+Załóżmy, że mamy do dyspozycji parametr $\xi \in [0,1]$ wygenerowany dowolną metodą. Zbudujmy równanie w którym niewiadomą będzie $s_x$:
 \[ 
 F(s_x) = \xi
 \]
 
-Rozwiązując powyższe równanie dla $s_x$ otrzymamy funkcję odwrotną generującą próbkę
-$s_x$:
+Rozwiązując powyższe równanie dla $s_x$ otrzymamy funkcję odwrotną generującą próbkę $s_x$:
 \[
 s_x = F^{-1}(\xi)
 \]
@@ -282,12 +277,12 @@ Dla niektórych funkcji, nie omawianych w tej pracy, obliczenie wartości całki
 
 Generowanie punktów na półsferze jest bardzo ważnym zagadnieniem związanym z wykorzystaniem metody Monte-Carlo. Próbkowanie równania renderingu wymaga wyznaczenia zbioru testowych kierunków padania światła. Najczęściej, wszystkie możliwe kierunki przychodzące oraz wychodzące promieni znajdują się w obszarze półsfery zdefiniowanej przez punkt oraz normalną do symulowanej powierzchni w tym punkcie. Mając, więc metodę generowania równomiernego zbioru punktów na sferze będziemy znać sposób wyznaczania kierunków.
 
-Do wygenerowania punktów na półsferze możemy wykorzystamy parametryzację z kostki dwuwymiarowej do współrzędnych polarnych:
+Do wygenerowania punktów na półsferze możemy wykorzystamy parametryzację z kostki dwuwymiarowej do współrzędnych sferycznych:
 \[
   (u,v) \in [0,1]^2 \rightarrow (\theta, \phi) \in \mathcal{H}
 \]
 
-Parametry wejściowe $(u,v)$ wygenerujemy za pomocą ciągów pseudo-losowych przedstawionych wcześniej. Obrazki poglądowe wykorzystują ciąg Hammersleya jako generator liczb wejściowych.
+Parametry wejściowe $(u,v)$ wygenerujemy za pomocą ciągów pseudolosowych przedstawionych wcześniej. Obrazki poglądowe wykorzystują ciąg Hammersleya jako generator liczb wejściowych.
 
 Niestety, proste przeskalowanie dziedziny źródłowej tzn. przekształcenie parametrów przekształceniem liniowym postaci:
 \begin{align*}
@@ -342,7 +337,7 @@ zmian w scenie pozwala nam uzyskać większą jakość.
 Spróbujmy zbudować rekurencyjny ciąg podsum Monte-Carlo wyznaczających wynik dla $n$-tej próbki oraz po dołączeniu $n+1$ próbki:
 \begin{align*}
 I_n &= \frac{1}{n} \sum_{i=1}^{n} f(x_i) \\
-I_{n+1} &= \frac{1}{n+1} \sum_{i+1}^{n+1}f(x_i) \\
+I_{n+1} &= \frac{1}{n+1} \sum_{i=1}^{n+1}f(x_i) \\
 	&= \frac{n}{(n+1)n} \sum_{i=1}^{n}f(x_i) + \frac{1}{n+1}f(x_{n+1}) \\
 	&= \frac{n}{n+1} I_{n} + \frac{1}{n+1}f(x_{n+1})
 \end{align*}
@@ -364,17 +359,15 @@ danego, stałego rozmiaru jest trywialne:
     \right)
 \end{align*}
 
-Powyższe obliczenie sumy ważonej może zostać zrealizowane za pomocą łańcucha \textit{framebufferów} i obliczone za pomocą wspartego sprzętowo mechanizmu łączenia kolorów (ang. \textit{blending}). Obecna partia musi być liczona w osobnym buforze oraz potem skopiowana do docelowego z użyciem blendingu. Można zastosować uproszczenie, w którym wykorzystamy tylko jeden bufor, ale często ze względu na istnienie wielu świateł i wybraną technikę (np. \textit{deferred shading}) może być koniecznie zastosowanie przynajmniej dwóch.
+Powyższe obliczenie sumy ważonej może zostać zrealizowane za pomocą łańcucha buforów ramki i obliczone za pomocą wspartego sprzętowo mechanizmu łączenia kolorów (ang. \textit{blending}). Obecna partia musi być liczona w osobnym buforze oraz potem skopiowana do docelowego z wykorzystaniem mieszania. Można zastosować uproszczenie, w którym wykorzystamy tylko jeden bufor, ale często ze względu na istnienie wielu świateł i wybraną technikę np. odroczone cieniowanie (ang. \textit{deferred shading}) może być koniecznie zastosowanie przynajmniej dwóch.
 
-\section{Importance Sampling}
+\section{Metoda funkcji ważności}
 
-Importance Sampling jest jedną z metod ograniczania wariancji metody
+Metoda funkcji ważności (ang. \textit{importance sampling}) jest jedną z metod ograniczania wariancji metody
 Monte-Carlo. Innymi słowy, zastosowanie tej techniki poprawnie powinno
 skrócić czas w którym ciąg zbiegnie do odpowiednio bliskiej wartości całki.
 
-Publikacje \cite{Veach,MonteCarloAnderson} sugerują zastosowanie innej
-techniki generowania próbek, tak aby większość z nich była generowana w
-miejsach, które są bardziej istotne dla wyniku.
+Publikacje \cite{Veach,MonteCarloAnderson} sugerują zastosowanie innej techniki generowania próbek tak, aby znacznie częściej wybierać próbki istotne dla wyniku.
 
 Mając funkcję gęstości $h(x)$ zmiennej losowej $\mathbb{X}$ na której potrafimy całkować, wyznaczać jej wartość w punkcie oraz jest prawie proporcjonalna do całkowanej funkcji $g(x)$ możemy przepisać:
 \[
@@ -384,26 +377,21 @@ Mając funkcję gęstości $h(x)$ zmiennej losowej $\mathbb{X}$ na której potra
   \mathbb{E}_{h}\left({ \frac{g(x)}{h(x)} }\right)
 \]
 
-Jeżeli funkcja gęstości prawdopodobieństwa $h(x)$ zostanie wybrana mądrze to
-wariancja estymatora Monte-Carlo zmniejszy się. Aby funkcja $h(x)$ była
-użyteczna, musi spełniac kilka warunków:
+Jeżeli funkcja gęstości prawdopodobieństwa $h(x)$ zostanie wybrana w odpowiedni sposób to wariancja estymatora Monte-Carlo zmniejszy się. Aby funkcja $h(x)$ była użyteczna, musi spełniać kilka warunków:
 
 \begin{itemize}
 
-  \item obliczenia dotyczące funkcji $h$ muszą być łatwo realizowalne,
-    obliczenie wartości funkcji, jej całki musi być możliwe bez wykorzystania
-    metody Monte-Carlo
+  \item obliczenia dotyczące funkcji $h$ muszą być łatwo realizowalne, obliczenie wartości funkcji, jej całki musi być możliwe bez wykorzystania metody Monte-Carlo,
 
-  \item symulowanie próbek z rozkładu $h$ musi być realizowalne
+  \item symulowanie próbek z rozkładu $h$ musi być realizowalne,
 
-  \item $h(x) > 0$ dla $g(x) \neq 0$
+  \item $h(x) > 0$ dla $g(x) \neq 0$,
 
-  \item $h(x)$ musi być możliwie proporcjonalne do $|g(x)|$, inaczej wariancja
-    zamiast zmaleć, wzrośnie
+  \item $h(x)$ musi być możliwie proporcjonalne do $|g(x)|$, inaczej wariancja zamiast zmaleć, wzrośnie.
 
 \end{itemize}
 
-Teoretycznie najlepszym wyborem jest funkcja $g'(x) = cg(x)$ gdzie:
+Teoretycznie najlepszym wyborem jest funkcja $g'(x) = cg(x)$, gdzie:
 \[
 	c \propto \frac{1}{\int_{\Omega}{g(x)dx}}
 \]
@@ -432,9 +420,9 @@ znacząco pogorszyć wariancję (rys. \ref{fig:ImportanceSamplingProblems}).
   \label{fig:ImportanceSamplingProblems}
 \end{figure}
 
-\section{Importance Sampling dla poszczególnych rodzajów BRDF}
+\section{Funkcja ważności dla poszczególnych rodzajów BRDF}
 
-Pozostaje jeszcze kwestia znalezienia konkretnej funkcji $h(x)$ z której będziemy mogli skorzystać przy Importance Samplingu. Po pierwsze, funkcja ma mieć podobny kształt do funkcji podcałkowej oraz musimy potrafić wygenerować próbkę.
+Pozostaje jeszcze kwestia znalezienia konkretnej funkcji $h(x)$ z której będziemy mogli skorzystać przy zastosowaniu metody funkcji ważności. Po pierwsze, funkcja $h(x)$ musi mieć podobny kształt do funkcji podcałkowej oraz musimy potrafić wygenerować próbkę.
 
 \subsection{Phong BRDF}
 
@@ -445,8 +433,7 @@ Znajdźmy funkcję gęstości prawdopodobieństwa nadającą się do generowania
   }
 \]
 
-Będziemy poszukiwać funkcji $p(\theta, \phi)$ z której będziemy mogli wygenerować próbki korzystając z funkcji
-odwrotnych:
+Będziemy poszukiwać funkcji $p(\theta, \phi)$ z której będziemy mogli wygenerować próbki korzystając z funkcji odwrotnych:
 \begin{align*}
   s_\theta &= F_{\theta}^{-1}(\xi_\theta) \\
   s_\phi &= F_{\phi}^{-1}(\xi_\phi)
@@ -501,7 +488,7 @@ Korzystając z twierdzenie Bayesa możemy obliczyć rozkład warunkowy $p(\phi |
 Oba rozkłady konwertujemy do postaci dystrybuanty którą będziemy próbkować
 korzystając ze zmiennych losowych $(\xi_{\theta}, \xi_{\phi}) \in [0,1]^2$:
 \[
-	\xi_1 = P(s_{\phi}) =
+	\xi_\phi = P(s_{\phi}) =
 	\int_{0}^{s_{\phi}} {
 		p(\phi) \dd \phi
 	} =
@@ -552,7 +539,7 @@ Nieco bardziej skomplikowanym rozkładem jest rozkład GGX, który wykorzystuję
   \int_{\Omega} D(m) (n \cdot m) \dd m = \left(\int_{\Omega} D(m) cos\theta \dd m\right) = 1
 \]
 
-Dla przypomnienia, NDF dla funkcji GGX wyraża się wzorem (w jednej z jego równoważnych wersji):
+Dla przypomnienia, funkcja rozkładu normalnych dla funkcji GGX wyraża się wzorem (w jednej z jego równoważnych wersji):
 \[
 	D(m) = \frac{
 		\alpha^2
@@ -563,7 +550,7 @@ Dla przypomnienia, NDF dla funkcji GGX wyraża się wzorem (w jednej z jego rów
   }
 \]
 
-Przekształcając powyższy wzór z kątów bryłowych na współrzędne polarne otrzymujemy:
+Przekształcając powyższy wzór z kątów bryłowych na współrzędne sferyczne otrzymujemy:
 \[
   p(\theta, \phi) =
 	\frac{
@@ -636,7 +623,7 @@ Po przekształceniu powyższego wzoru uzyskujemy:
   s_{\phi} &= 2 \pi \xi_{\phi}
 \end{align*}
 
-Istotnym jest to, co właściwie reprezentuje $s_\theta$ oraz $s_\phi$, tzn. co zostało wygeneorwane. Kąty te, generują nam zgodnie z definicją $D$ kierunek wektora połówkowego względem makropowierzchni (rys. \ref{fig:GGXSampleMReflect}). Znając kierunek obserwacji $\omega_o$, kierunek padania światła musi zostać obliczony ze wzoru na odbicie względem normalnej wyznaczonej przez parę $m = [s_\theta, s_\phi]$ (odwrócona prawa strona wynika z notacji: $\omega_o$ nie jest wektorem incydentnym):
+Istotnym jest to, co właściwie reprezentuje $s_\theta$ oraz $s_\phi$, tzn. co zostało wygeneorwane. Kąty te, generują nam zgodnie z definicją $D$ kierunek wektora połówkowego względem makropowierzchni (rys. \ref{fig:GGXSampleMReflect}). Znając kierunek obserwacji $\omega_o$, kierunek padania światła musi zostać obliczony ze wzoru na odbicie względem normalnej wyznaczonej przez parę $m = [s_\theta, s_\phi]$ (odwrócona prawa strona wynika z notacji: $\omega_o$ reprezentuje kierunek od punktu na powierzchni do obserwatora, zatem odwrotnie niż założono przy wyprowadzeniu wzoru na odbicie):
 \[
 	\omega_i = 2(\omega_o \cdot m)m - \omega_o
 \]
@@ -648,7 +635,7 @@ Istotnym jest to, co właściwie reprezentuje $s_\theta$ oraz $s_\phi$, tzn. co 
     \label{fig:GGXSampleMReflect}
 \end{figure}
 
-\section{Multiple Importance Sampling}
+\section{Monte-Carlo z wieloma funkcjami ważności}
 \label{Chapter:MIS}
 
 Załóżmy, że mamy $n$ różnych funkcji gęstości prawodpodobieństwa $p_{i}(x)$ dla
@@ -670,7 +657,7 @@ L_o(\omega_o) = \int_{\Omega} {
 
 Jedną ze strategii modelowania jest modelowanie funkcji $f_r$, jednak nie zawsze kierunki istotne dla BRDF będą pokrywać się z kierunkami z których przychodzi światło tzn. $L_i$. Najlepszą strategią, byłoby generowanie kierunków istotnych z punktu widzenia $f_r$ oraz $L_i$. Dla większości materii nie będzie to tak istotne, jednak jeżeli zaczniemy rozpatywać powierzchnie lustrzane z niewielkim pojedyńczym źródłem światła w otoczeniu problem stanie się oczywisty: większość próbek wygenerowanych na podstawie BRDF będzie posiadała $L_i(\omega_i) \approx 0$. Podobnie dla strategii generowania próbek z $L_i$, dla większości kierunków $f_r(\omega_i) \approx 0$.
 
-W takich sytuacjach właśnie znajduje zastosowanie technika wielokrotnego próbkowania Monte-Carlo (ang. \textit{Multiple Importance Sampling}, \textit{MIS}).
+W takich sytuacjach właśnie znajduje zastosowanie technika Monte-Carlo z wykorzystaniem wielu funkcji ważności (ang. \textit{Multiple Importance Sampling}, \textit{MIS}).
 
 W tej pracy technika ta nie będzie wykorzystywana do generowania obrazu w spośób bezpośredni, jednak jest ona nieoceniona przy dopasowywaniu parametrów aproksymacji.
 
@@ -686,15 +673,15 @@ Zbudujemy więc model wielopróbkowy (ang. \textit{multi-sample model}) \cite{pb
 \]
 \noindent gdzie:
 \begin{itemize}
-	\item $n$ - ilość strategii próbkowania
-	\item $n_i$ - ilość próbek wygenerowanych przez $i$-tą strategię
-	\item $w_i$ - funkcja wagi dla $i$-tej strategii próbkowania
-	\item $X_{i,j}$ - $j$-ta próbka wygenerowana przez $i$-tą strategię
-	\item $p_i$ - funkcja gęstości prawdopodobieństwa $i$-tej strategii
+	\item $n$ - ilość strategii próbkowania,
+	\item $n_i$ - ilość próbek wygenerowanych przez $i$-tą strategię,
+	\item $w_i$ - funkcja wagi dla $i$-tej strategii próbkowania,
+	\item $X_{i,j}$ - $j$-ta próbka wygenerowana przez $i$-tą strategię,
+	\item $p_i$ - funkcja gęstości prawdopodobieństwa $i$-tej strategii.
 \end{itemize}
 
 % Źródło: MIS p.261
-Aby estymator $F$ pozostał nieodchylony (ang. \textit{unbiased}) funkcja $w_i$ musi spełniać następujące warunki:
+Aby estymator $F$ pozostał nieobciążony (ang. \textit{unbiased}) funkcja $w_i$ musi spełniać następujące warunki:
 \[ \sum_{i = 1}^{n} w_{i}(x) = 1 \text{ dla } f(x) \neq 0 \]
 \[
   \forall i \in \{ 1, \ldots, n \} \quad
