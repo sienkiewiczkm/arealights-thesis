@@ -7,9 +7,9 @@
 
 \section{Program \texttt{ltc\_fitter}}
 
-Program \texttt{ltc\_fitter} służy do generowania przekształceń przybliżających rozkłady opisane przz BRDF za pomocą metody liniowo transformowanych rozkładów kosinusowych. Zadaniem programu jest wyznaczenie współczynników oraz zapisanie tablic do podglądu wartości (ang. \textit{lookup tables}) do pliku.
+Program \texttt{ltc\_fitter} służy do generowania przekształceń przybliżających rozkłady opisane przez modele BRDF za pomocą metody liniowo transformowanych rozkładów kosinusowych. Zadaniem programu jest wyznaczenie współczynników oraz zapisanie tablic do podglądu wartości (ang. \textit{lookup tables}) do pliku.
 
-Kod programu można znaleźć na dołączonej płycie CD lub w repozytorium online pod adresem: \url{https://github.com/sienkiewiczkm/ltc_fitter}\footnote{W przypadku skorzystania z repozytorium online nie można zapomnieć o pobraniu zależności, które są dołączone w formie submodułów: \url{https://git-scm.com/docs/git-submodule}}.
+Kod programu można znaleźć na dołączonej płycie CD lub w repozytorium online pod adresem: \url{https://github.com/sienkiewiczkm/ltc_fitter}\footnote{W przypadku skorzystania z repozytorium online nie można zapomnieć o pobraniu zależności, które są dołączone w formie podmodułów \url{https://git-scm.com/docs/git-submodule}}.
 
 \subsection{Opis użytkowania}
 
@@ -24,13 +24,13 @@ Aplikacja \texttt{ltc\_fitter} jest aplikacją linii poleceń, po uruchomieniu t
 
 Ustawienia mogą zostać zmodyfikowane przy użyciu następujących modyfikatorów:
 \begin{description}
-    \item[\texttt{--brdf=\textit{<method>}}] zmiana referencyjnego modelu BRDF, obecnie wspierany jest tylko \texttt{ggx}
+    \item[\texttt{--brdf=\textit{<method>}}] zmiana referencyjnego modelu BRDF, obecnie wspierany jest tylko model \texttt{ggx}
     
-    \item[\texttt{--resolution=\textit{<uint>}}] rozdzielczość podglądu, oznacza liczbę podziałów kąta padania i parametru chropowatości $\alpha$, domyślnie $32$
+    \item[\texttt{--resolution=\textit{<uint>}}] rozdzielczość podglądu, oznacza liczbę podziałów kąta padania i parametru chropowatości $\alpha$, domyślnie jest równy $32$
     
     \item[\texttt{--min-roughness=\textit{<floating>}}] minimalna wartość parametru chropowatości, zbyt niskie wartości będą skutkować błędami obliczeń, domyślnie $0.001$
     
-    \item[\texttt{--output=\textit{<string>}}] nazwa pliku wyjściowego, domyślnie \texttt{result\_\textit{<resolution>}\_\textit{<resolution>}.ltc}
+    \item[\texttt{--output=\textit{<string>}}] nazwa pliku wyjściowego, domyślnie nazwa pliku będzie zbudowana w następujący sposób: \texttt{result\_\textit{<rozdzielczość>}\_\textit{<rozdzielczość>}.ltc}
 \end{description}
 
 Przykłady:
@@ -43,17 +43,16 @@ Przykłady:
 \subsection{Kompilacja}
 \label{section:ltcFitterCompilation}
 
-Aplikacja wykorzystuje pakiet CMake do wygenerowania projektu dla konkretnego kompilatora \texttt{Makefile}, który będzie można wykorzystać potem do właściwego zbudowania aplikacji. Dokładny opis użytkowania tego programu można znaleźć w dokumentacji projektu CMake \cite{CMakeDoc}. Przykładowa kompilacja w systemie z rodziny Unix może wyglądać następująco (przy użyciu domyślnego komplatora C++ dla systemu):
+Aplikacja wykorzystuje pakiet CMake do wygenerowania projektu dla konkretnego kompilatora/środowiska np. clang czy Visual Studio IDE, który będzie można wykorzystać potem do właściwego zbudowania aplikacji. Dokładny opis użytkowania tego programu można znaleźć w dokumentacji projektu CMake \cite{CMakeDoc}. Przykładowa kompilacja w systemie z rodziny Unix może wyglądać następująco (przy użyciu domyślnego kompilatora C++ dla systemu):
 \begin{lstlisting}[language=bash,numbers=none]
- >ltc_fitter       $ mkdir build
- >ltc_fitter       $ cd build
+ >ltc_fitter       $ mkdir build && cd build
  >ltc_fitter/build $ cmake ..
  >ltc_fitter/build $ make -j4
 \end{lstlisting}
 
-Dla środowiska Windows można wykorzystać nakładkę CMake GUI ułatwiającą wygenerowanie projektu, sposób wygenerowania projektu przedstawiony jest na rys. \ref{fig:CMakeGUIUsage}.
+Dla środowiska Windows można wykorzystać nakładkę CMake GUI ułatwiającą wygenerowanie projektu. Przykładowy proces wygenerowania projektu przedstawiony jest na rys. \ref{fig:CMakeGUIUsage}.
 
-Projekt został przetestowany pod kątem błędów kompilacji z użyciem poniższych kompilatorów/IDE:
+Projekt został przetestowany pod kątem błędów kompilacji z użyciem poniższych kompilatorów/środowisk:
 \begin{itemize}
     \item gcc 6.0
     \item clang
@@ -96,7 +95,7 @@ Projekt został przetestowany pod kątem błędów kompilacji z użyciem poniżs
 
 \subsection{Struktura kodu źródłowego}
 
-W główym katalogu repozytorium znajdziemy poszczególne pliki oraz katalogi zawierające wszystko co jest potrzebne do uruchomienia 
+W główym katalogu repozytorium znajdziemy poszczególne pliki oraz katalogi zawierające wszystko co jest potrzebne do uruchomienia aplikacji.
 
 \begin{description}
     \item[\texttt{CMakeLists.txt}] \hfill\\ 
@@ -106,7 +105,7 @@ W główym katalogu repozytorium znajdziemy poszczególne pliki oraz katalogi za
     krótki opis aplikacji i podstawowy sposób użytkowania 
     
     \item[\texttt{scripts/}] \hfill\\ 
-    skrypty pomocnicze do generowania podglądów i szukania błędów
+    skrypty pomocnicze do generowania podglądów i wyszukiwania błędów
     
     \item[\texttt{src/}] \hfill\\ 
     katalog ze źródłami aplikacji
@@ -149,7 +148,9 @@ W główym katalogu repozytorium znajdziemy poszczególne pliki oraz katalogi za
 
 \subsection{Architektura aplikacji}
 
-Sercem programu jest elastyczna implementacja algorytmu pełzającego sympleksu z możliwością uruchomienia go w wariancie z funkcją kary. Diagram klas zawierający kluczowe elementy do zrozumienia architektury dopasowywania funkcji znajduje się na rys. \ref{fig:FunctionSolveClassDiagram}. Znalezienie parametrów opowiadającym minimum dla danej funkcji wymaga implementacji interfejsu \texttt{error\_estimator}, klasa ta wyznacza wartość błędu dla danych parametrów. Błąd ten minimalizowany jest w trakcie poszukiwania rozwiązania optymalnego. W przypadku funkcji kary, istnieje konieczność wyznaczenia wartości ograniczeń, które potem są przeliczane na dodatkowy, karny błąd zastosowany przez estymator \texttt{penalty\_error\_estimator}. 
+Sercem programu jest elastyczna implementacja algorytmu pełzającego sympleksu z możliwością uruchomienia go w wariancie z funkcją kary. Diagram klas zawierający kluczowe elementy do zrozumienia architektury dopasowywania funkcji znajduje się na rys. \ref{fig:FunctionSolveClassDiagram}. 
+
+Znalezienie parametrów opowiadającym minimum dla danej funkcji wymaga implementacji interfejsu \texttt{error\_estimator}, klasa ta wyznacza wartość błędu dla danych parametrów. Błąd ten minimalizowany jest w trakcie poszukiwania rozwiązania optymalnego. W przypadku funkcji kary, istnieje konieczność wyznaczenia wartości ograniczeń, które potem są przeliczane na dodatkowy, karny błąd zastosowany przez estymator \texttt{penalty\_error\_estimator}. 
 
 \begin{figure}[h]
     \centering
@@ -210,7 +211,8 @@ Kompilacja tego projektu przebiega analogiczne do poprzedniego programu. Szczeg�
 
 \begin{itemize}
     \item kolorowe światła LTC
-    \item inne metody?
+    \item wsparcie dla cieni - obecnie nie istnieją sensowne metody real-time
+    \item inne metody - jakieś przykłady metod?
 \end{itemize}
 
 \end{document}
