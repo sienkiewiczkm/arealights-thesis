@@ -20,11 +20,11 @@ L_o(\omega_o) = \int_{P} {
 }
 \]
 
-\noindent gdzie $P$ jest wielokątem reprezentującym światło obszarowe rzutowanym na sferę jednostkową, innymi słowy: $P$ wyznacza wszystkie kierunki promieni przecinających powierzchnię światła, a $D(\omega)$ naszą szukaną funkcją aproksymującą.
+\noindent gdzie $P$ jest wielokątem reprezentującym światło obszarowe rzutowanym na sferę jednostkową. Innymi słowy, $P$ wyznacza wszystkie kierunki promieni przecinających powierzchnię światła, a $D(\omega)$ jest naszą szukaną funkcją aproksymującą.
 
-Funkcję $D(\omega)$ \footnote{Funkcja $D(\omega)$ nie jest związana z z funkcją rozkładu normalnych, oznaczenie zostało zachowane dla kompatybilności z pracą \cite{ltc_heitz}} chcielibyśmy dobrać tak, aby całe wyrażenie posiadało wzór jawny lub było możliwe do bliskiego przybliżenia w bardzo krótkim czasie.
+Funkcję $D(\omega)$ \footnote{Funkcja $D(\omega)$ nie jest związana z z funkcją rozkładu normalnych, oznaczenie zostało zachowane dla kompatybilności z pracą \cite{ltc_heitz}.} chcielibyśmy dobrać tak, aby całe wyrażenie posiadało wzór jawny lub było możliwe do przybliżenia w bardzo krótkim czasie.
 
-Autorzy pracy \cite{ltc_heitz} postanowili najpierw uprościć problem jeszcze bardziej i znaleźć taki rozkład, który można całkować niezależnie w czasie rzeczywistym i pozwala modelować  zjawiska istotne dla funkcji BRDF. Weźmy dowolny rozkład na sferze oraz wielokąt  w przestrzeni, który zrzutujemy na sferę jednostkową. Chcielibyśmy, aby dla danego rozkładu $D(\omega)$ całka poniższej postaci była możliwa do obliczenia:
+Autorzy pracy \cite{ltc_heitz} postanowili najpierw uprościć problem jeszcze bardziej i znaleźć taki rozkład, który można całkować niezależnie w czasie rzeczywistym i pozwala modelować  zjawiska istotne dla funkcji BRDF. Chcielibyśmy, aby dla danego rozkładu $D(\omega)$ całka poniższej postaci była możliwa do obliczenia:
 \[
 \int_P {
     D(\omega)
@@ -77,75 +77,98 @@ Pierwszym z istotnych efektów jest odpowiedź funkcji BRDF dla powierzchni obse
     \label{fig:BRDFGrazingAnisotropy}
 \end{figure}
 
-Drugim jest to, że w takiej samej sytuacji zwiększając chropowatość materiału rozkład będzie się rozszerzał i deformował skośnie (rys. \ref{fig:BRDFOffSpecular}) powodując, że jest on bardziej rozproszony bliżej normalnej. Powyższe zjawisko jest znane jako maksimum poza kątem odbicia (ang. \textit{off-specular peak}).
+Drugim jest to, że w takiej samej sytuacji zwiększając chropowatość materiału rozkład będzie się rozszerzał i deformował skośnie powodując, że jest on bardziej rozproszony bliżej normalnej (rys. \ref{fig:BRDFOffSpecular}). Powyższe zjawisko jest znane jako maksimum poza kątem odbicia (ang. \textit{off-specular peak}).
 
 \begin{figure}
     \centering
     
-    \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{ltc/offspecular_0}
-        \caption{\ang{5} nachylenia, $\alpha = 0.2^2$}
+    \begin{subfigure}[t]{0.18\textwidth}
+        \includegraphics[width=\textwidth]{ltc/offspecular/fit_r25_a60_brdf}
     \end{subfigure}
-    \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{ltc/offspecular_1}
-        \caption{\ang{15} nachylenia, $\alpha = 0.2^2$}
+    \begin{subfigure}[t]{0.18\textwidth}
+        \includegraphics[width=\textwidth]{ltc/offspecular/fit_r30_a60_brdf}
     \end{subfigure}
-    \begin{subfigure}[t]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{ltc/offspecular_2}
-        \caption{\ang{30} nachylenia, $\alpha = 0.2^2$}
+    \begin{subfigure}[t]{0.18\textwidth}
+        \includegraphics[width=\textwidth]{ltc/offspecular/fit_r35_a60_brdf}
     \end{subfigure}
-
-    \begin{subfigure}[t]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{ltc/offspecular_3}
-        \caption{\ang{5} nachylenia, $\alpha = 0.4^2$}
+    \begin{subfigure}[t]{0.18\textwidth}
+        \includegraphics[width=\textwidth]{ltc/offspecular/fit_r40_a60_brdf}
     \end{subfigure}
-    \begin{subfigure}[t]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{ltc/offspecular_4}
-        \caption{\ang{15} nachylenia, $\alpha = 0.4^2$}
-    \end{subfigure}
-    \begin{subfigure}[t]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{ltc/offspecular_5}
-        \caption{\ang{30} nachylenia, $\alpha = 0.4^2$}
-    \end{subfigure}
-
-    \begin{subfigure}[t]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{ltc/offspecular_6}
-        \caption{\ang{5} nachylenia, $\alpha = 0.6^2$}
-    \end{subfigure}
-    \begin{subfigure}[t]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{ltc/offspecular_7}
-        \caption{\ang{15} nachylenia, $\alpha = 0.6^2$}
-    \end{subfigure}
-    \begin{subfigure}[t]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{ltc/offspecular_8}
-        \caption{\ang{30} nachylenia, $\alpha = 0.6^2$}
-    \end{subfigure}
-
-    \begin{subfigure}[t]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{ltc/offspecular_9}
-        \caption{\ang{5} nachylenia, $\alpha = 0.8^2$}
-    \end{subfigure}
-    \begin{subfigure}[t]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{ltc/offspecular_10}
-        \caption{\ang{15} nachylenia, $\alpha = 0.8^2$}
-    \end{subfigure}
-    \begin{subfigure}[t]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{ltc/offspecular_11}
-        \caption{\ang{30} nachylenia, $\alpha = 0.8^2$}
+    \begin{subfigure}[t]{0.18\textwidth}
+        \includegraphics[width=\textwidth]{ltc/offspecular/fit_r45_a60_brdf}
     \end{subfigure}
     
-    \caption{Różnice między najsilniejszym kierunkiem odbicia od powierzchni o chropowatości $\sqrt{\alpha}$, a kierunkiem odbicia idealnego $r$. Do wygenerowania wykorzystano model GGX. Opracowanie własne.}
+    \caption{Zjawisko przesuwania się maksimum w kierunku normalnej. Do wygnerowania podglądu wykorzystano model GGX. Opracowanie własne.}
     \label{fig:BRDFOffSpecular}
 \end{figure}
+
+%\begin{figure}
+%    \centering
+%    
+%    \begin{subfigure}[t]{0.3\textwidth}
+%        \includegraphics[width=\textwidth]{ltc/offspecular_0}
+%        \caption{\ang{5} nachylenia, $\alpha = 0.2^2$}
+%    \end{subfigure}
+%    \begin{subfigure}[t]{0.3\textwidth}
+%        \includegraphics[width=\textwidth]{ltc/offspecular_1}
+%        \caption{\ang{15} nachylenia, $\alpha = 0.2^2$}
+%    \end{subfigure}
+%    \begin{subfigure}[t]{0.3\textwidth}
+%        \includegraphics[width=\textwidth]{ltc/offspecular_2}
+%        \caption{\ang{30} nachylenia, $\alpha = 0.2^2$}
+%    \end{subfigure}
+%
+%    \begin{subfigure}[t]{0.3\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{ltc/offspecular_3}
+%        \caption{\ang{5} nachylenia, $\alpha = 0.4^2$}
+%    \end{subfigure}
+%    \begin{subfigure}[t]{0.3\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{ltc/offspecular_4}
+%        \caption{\ang{15} nachylenia, $\alpha = 0.4^2$}
+%    \end{subfigure}
+%    \begin{subfigure}[t]{0.3\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{ltc/offspecular_5}
+%        \caption{\ang{30} nachylenia, $\alpha = 0.4^2$}
+%    \end{subfigure}
+%
+%    \begin{subfigure}[t]{0.3\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{ltc/offspecular_6}
+%        \caption{\ang{5} nachylenia, $\alpha = 0.6^2$}
+%    \end{subfigure}
+%    \begin{subfigure}[t]{0.3\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{ltc/offspecular_7}
+%        \caption{\ang{15} nachylenia, $\alpha = 0.6^2$}
+%    \end{subfigure}
+%    \begin{subfigure}[t]{0.3\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{ltc/offspecular_8}
+%        \caption{\ang{30} nachylenia, $\alpha = 0.6^2$}
+%    \end{subfigure}
+%
+%    \begin{subfigure}[t]{0.3\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{ltc/offspecular_9}
+%        \caption{\ang{5} nachylenia, $\alpha = 0.8^2$}
+%    \end{subfigure}
+%    \begin{subfigure}[t]{0.3\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{ltc/offspecular_10}
+%        \caption{\ang{15} nachylenia, $\alpha = 0.8^2$}
+%    \end{subfigure}
+%    \begin{subfigure}[t]{0.3\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{ltc/offspecular_11}
+%        \caption{\ang{30} nachylenia, $\alpha = 0.8^2$}
+%    \end{subfigure}
+%    
+%    \caption{Różnice między najsilniejszym kierunkiem odbicia od powierzchni o chropowatości $\sqrt{\alpha}$, a kierunkiem odbicia idealnego $r$. Do wygenerowania wykorzystano model GGX. Opracowanie własne.}
+%    \label{fig:BRDFOffSpecular}
+%\end{figure}
 
 Warto zauważyć, że gdy $D$ jest rozkładem gęstości prawdopodobieństwa to całka:
 \[
@@ -156,9 +179,9 @@ Warto zauważyć, że gdy $D$ jest rozkładem gęstości prawdopodobieństwa to 
 \]
 \noindent definiuje całkowite prawdopodobieństwo, że próbka wygenerowana z rozkładu $D$ przetnie wielokąt $P$.
 
-Najprostszą, już wcześniej wspomnianą metodą nie nadającą się do zastosowań czasu rzeczywistego jest metoda Monte-Carlo polegający na wybraniu losowego wektora z rozkładu $D$ i sprawdzenia istnienia punktu przecięcia tego promienia z wielokątem. Dla odpowiednio dużej liczby próbek stosunek trafień do ilości przetestowanych promieni będzie przybliżał naszą szukaną całkę.
+Najprostszą, już wcześniej wspomnianą metodą nie nadającą się do zastosowań czasu rzeczywistego jest metoda Monte-Carlo polegająca na wielokrotnym wybraniu losowego wektora z rozkładu $D$ i sprawdzenia istnienia punktu przecięcia tego promienia z wielokątem. Dla odpowiednio dużej liczby próbek stosunek trafień do ilości przetestowanych promieni będzie przybliżał naszą szukaną całkę.
 
-Kluczową obserwacją jest to, że rozkład jest równoważny nieskończonej ilości próbek tego rozkładu, który da się przekształcić z jednego na drugi w sposób bezpośredni i bezstratny. Zatem rozkład na sferze jest obiektem dualnym do nieskończonego zbioru ilości próbek tego samego rozkładu \cite{ltc_heitz}. Wynika z tego to, że po zmodyfikowaniu jednego otrzymamy nowy obiekt matematyczny.
+Kluczową obserwacją jest to, że rozkład jest równoważny nieskończonej ilości próbek tego rozkładu. Każdą z tych form da się przekształcić na drugą w sposób bezpośredni i bezstratny. Zatem rozkład na sferze jest obiektem dualnym do nieskończonego zbioru ilości próbek tego samego rozkładu \cite{ltc_heitz}. Wynika z tego to, że po zmodyfikowaniu jednego otrzymamy nowy obiekt matematyczny.
 
 Przykładem takiej operacji może być przekształcenie liniowe modyfikujące kierunek próbki (zakładać będziemy, że próbka po przekształceniu liniowym w dalszym ciągu jest jednostkowej długości tzn. zawsze zostaje z powrotem znormalizowana). Takie przekształcenie ma kilka bardzo ważnych właściwości, które będziemy wykorzystywać. Warto zauważyć, że jeżeli przekształcimy rozkład prawdopodobieństwa przekształceniem $M$ to gdy zrobimy to samo z wielokątem $P$ otrzymując wielokąt $P'$, to prawdopodobieństwo, że nowa próbka przetnie nowy wielokąt się nie zmieni – widać to wyraźnie z faktu, że przekształcone próbki podążają za przekształcanym wielokątem. Wynika stąd, że:
 \[
@@ -200,7 +223,7 @@ Rozumowanie można przeprowadzić na odwrót dla przekształcenia $M^{-1}$. Wyni
 
 Kolejnym zadaniem jest wybór rozkładu bazowego, który po przekształceniu liniowym da nam oczekiwany rozkład spełniający założenia postawione na samym początku.
 
-Rozpocznijmy poszukiwania od najprostszego rozwiązywalnego rozkładu, a mianowicie rozkładu jednorodnego. Jeżeli rozkład $D$ przyjmuje taką samą wartość w każdym punkcie to całka na wielokącie sferycznym (ang. \textit{spherical polygon}) jest równoważna kątowi bryłowemu przemnożonym przez odpowiedni stały współczynnik, a na to istnieje wzór jawny \cite{Arvo,Snyder} (twierdzenie Girarda). Bardzo podobnie sytuacja wygląda z półsferą, z tym że wielokąt musi zostać przycięty do horyzontu. Rozkład jednorodny opisany na półsferze możemy wyrazić wzorem:
+Rozpocznijmy poszukiwania od najprostszego rozwiązywalnego rozkładu, a mianowicie rozkładu jednorodnego. Jeżeli rozkład $D$ przyjmuje taką samą wartość w każdym punkcie to całka na wielokącie sferycznym (ang. \textit{spherical polygon}) jest równoważna kątowi bryłowemu przemnożonym przez odpowiedni stały współczynnik, a na to istnieje wzór jawny \cite{Arvo,Snyder}. Bardzo podobnie sytuacja wygląda z półsferą z tym że, wielokąt musi zostać przycięty do horyzontu. Rozkład jednorodny opisany na półsferze możemy wyrazić wzorem:
 \[
 D_0(\omega_o=(x_0, y_0, z_0)) = \begin{cases}
   \frac{1}{2\pi} & \text{dla } y_0 \geq 0 \\
@@ -218,7 +241,7 @@ D_0(\omega_o=(x_0, y_0, z_0)) = \begin{cases}
 \end{cases}
 \]
 
-Zaletą tego rozkładu jest fakt, że przechodzi on gładko do 0 oraz posiada prosty wzór jawny. Obliczanie całki na takim rozkładzie jest z definicji obliczaniem irradiancji wielokąta sferycznego. Istnieje wzór jawny wyprowadzony przez Lamberta \cite{Baum}:
+Zaletą tego rozkładu jest fakt, że przechodzi on gładko do $0$ oraz posiada prosty wzór jawny. Obliczanie całki na takim rozkładzie jest z definicji obliczaniem irradiancji wielokąta sferycznego. Istnieje wzór jawny wyprowadzony przez Lamberta \cite{Baum}:
 \[
 E(p_1, \ldots, p_n) =
 \frac{1}{2\pi}
@@ -236,13 +259,9 @@ j = (i+1) \text{ mod } n
 
 Złożoność powyższego wzoru jest liniowo zależna od stopnia złożoności wielokąta, co umożliwia zastosowanie go w aplikacjach czasu rzeczywistego.
 
-Istnieją również inne potencjalne rozkłady bazowe, ale niestety w większości przypadków nie nadają się one do tego zastosowania. Rozkłady opisywane przez \textit{spherical gaussian} nie posiadają wzoru jawnego, rozkład Phong’a posiada wzór jawny, jednak zmienna złożoność zależna liniowo od wykładnika sprawia, że metoda jest niepraktyczna.
+Istnieją również inne potencjalne rozkłady bazowe, ale niestety w większości przypadków nie nadają się one do tego zastosowania. Rozkłady opisywane przez sferyczne gaussowskie (ang. \textit{spherical gaussian}) nie posiadają wzoru jawnego, rozkład Phong’a posiada wzór jawny, jednak zmienna złożoność zależna liniowo od wykładnika sprawia, że metoda jest niepraktyczna.
 
-\todo[inline]{Dodatkowo z natury rozkład Phong’a w postaci
-nieprzetransformowanej nie modeluje poprawnie zachowań światła przy dużym kącie
-padania wiązki światła.}
-
-Z powyższych rozważań, wynika, że przycięty rozkład cosinusowy jest dobrym kandydatem na rozkład bazowy – gładko przechodzi do 0 oraz posiada prosty wzór jawny.
+Z powyższych rozważań, wynika, że przycięty rozkład kosinusowy jest dobrym kandydatem na rozkład bazowy – gładko przechodzi do 0 oraz posiada prosty wzór jawny.
 
 \section{Uwzględnienie  normy BRDF i współczynnika Fresnela}
 
@@ -263,7 +282,7 @@ W takim przypadku istotną obserwacją jest to, że jeżeli dany materiał poch�
 \]
 W takim przypadku konieczne jest zachowanie wartości $n_D$ razem z dopasowaniem tak, abyśmy mogli przeskalować odpowiedź $D$, tak aby była proporcjonalna do powyższego wyrażenia podcałkowego.
 
-W wielu modelach występuje również współczynnik fresnela, najczęściej sterowany parametrem materiałowym $F_0$. W takim przypadku, chcielibyśmy uzależnić normę skalującą siłę rozkładu również od $F_0$. W tym celu skorzystamy z aproksymacji Schlicka:
+W wielu modelach występuje również współczynnik Fresnela, najczęściej sterowany parametrem materiałowym $F_0$. W takim przypadku, chcielibyśmy uzależnić normę skalującą wartość maksymalną całki rozkładu również od $F_0$. W tym celu skorzystamy z aproksymacji Schlicka:
 \begin{gather*}
 \int_{\Omega} {
     F(\omega_i, \omega_o)
@@ -291,7 +310,7 @@ W wielu modelach występuje również współczynnik fresnela, najczęściej ste
 }
 \end{gather*}
 
-Oznaczając:
+Oznaczmy:
 \[
     f_D = \int_{\Omega} {
         (1 - \omega_v \cdot m)^5
@@ -301,7 +320,7 @@ Oznaczając:
     }
 \]
 
-\noindent otrzymujemy:
+\noindent Podstawiając za całki odpowiednio $n_D$ oraz $f_D$ otrzymamy normę postaci:
 \[
     F_0 n_D + (1-F_0) f_D
 \]
@@ -311,7 +330,7 @@ Stałe $n_D$ oraz $f_D$ powinny zostać wyznaczone podczas szukania optymalnej m
 
 \section{Wybór przekształcenia liniowego}
 
-Pozostaje wybór przekształcenia liniowego, którego będziemy używać do formowania naszego przybliżenia. Dla materiału izotropowego funkcja BRDF zależy tylko i wyłącznie od kąta obserwacji, zatem wektora $V = (\sin\theta, \cos\theta, 0)$ oraz współczynnika chropowatości $\alpha$.
+Pozostaje wybór przekształcenia liniowego, którego będziemy używać do formowania naszego przybliżenia. Dla materiału izotropowego funkcja BRDF zależy tylko i wyłącznie od kąta obserwacji, zatem wektora $V = (\sin\theta, 0, \cos\theta)$ oraz współczynnika chropowatości $\alpha$.
 
 Wróćmy znów do efektów które chcemy wymodelować. Pierwszym, najprostszym z nich jest kontrola chropowatości za pomocą współczynnika $\alpha$, która może zostać zrealizowana poprzez skalowanie niejednorodne próbek (jednorodne w płaszczyźnie $XY$, rys. \ref{fig:LTCEqualScale}):
 \[
@@ -360,7 +379,7 @@ M_{\text{aniso}} =
 
 
 
-Zjawisko off-specular peak przy rosnącej chropowatości może zostać zasymulowane poprzez skorzystanie z macierzy skośnej (rys. \ref{fig:LTCSkew}):
+Zjawisko maksimum poza kątem odbicia przy rosnącej chropowatości może zostać zasymulowane poprzez skorzystanie z macierzy skośnej (rys. \ref{fig:LTCSkew}):
 \[
 M_{\text{skew}} =
 \begin{bmatrix}
@@ -370,17 +389,7 @@ M_{\text{skew}} =
 \end{bmatrix}
 \]
 
-Powyższe przekształcenia dają nam możliwość precyzyjnego modelowania spójnych rozkładów o prostych, ale wystarczających do naszych zastosowań kształtach. Chcielibśmy teraz znaleźć przekształcenie dla danego kąta i współczynnika $\alpha$, tak, aby w rezultacie dostać przybliżenie fizycznie poprawnego rozkładu, np. rozkładu GGX (Torrance-Reitz).
-
-Ostatnią operacją, którą potrzebujemy do precyzyjnego dopasowania rozkładu jest rotacja, pozwalająca nam na dokładne ułożenie uformowanego rozkładu, tak, aby pokryć kierunki o najwyższej wartości (kierunki dominujące). 
-\[
-M_{\text{rot}} =
-\begin{bmatrix}
-\cos\theta  & 0     & \sin\theta \\
-0           & 1     & 0 \\
--\sin\theta & 0     & \cos\theta
-\end{bmatrix}
-\]
+Powyższe przekształcenia dają nam możliwość precyzyjnego modelowania spójnych rozkładów o prostych, ale wystarczających do naszych zastosowań kształtach. Chcielibśmy teraz znaleźć przekształcenie dla danego kąta i współczynnika $\alpha$, tak, aby w rezultacie dostać przybliżenie fizycznie poprawnego rozkładu, np. rozkładu GGX (Torrance-Reitz). Po złożeniu tych macierzy otrzymujemy:
 
 \[
 M_{\text{precise}} =
@@ -413,6 +422,16 @@ a & 0 & c \\
 \end{bmatrix}
 \]
 
+Ostatnią operacją, którą potrzebujemy do precyzyjnego dopasowania rozkładu jest rotacja, pozwalająca nam na dokładne ułożenie uformowanego rozkładu, tak, aby pokryć kierunki o najwyższej wartości (kierunki dominujące). 
+\[
+M_{\text{rot}} =
+\begin{bmatrix}
+\cos\theta  & 0     & \sin\theta \\
+0           & 1     & 0 \\
+-\sin\theta & 0     & \cos\theta
+\end{bmatrix}
+\]
+
 Zatem finalna macierz $M$ ma postać:
 \[
 M = M_{\text{rot}} M_{\text{precise}} = \begin{bmatrix}
@@ -426,7 +445,7 @@ m_{13} & 0 & m_{33}
 \end{bmatrix}
 \]
 
-w której prawdziwymi niewiadomymi są tylko trzy zmienne $a$, $b$ i $c$, które będziemy wyznaczać metodami numerycznymi. Wykorzystamy technikę dopasowywania danych przeprowadzoną jednokrotnie w formie przetwarzania wstępnego i wykorzystamy gotowe rezultaty podczas rysowania sceny.
+Macierz $M$ zawiera cztery niewiadome $a$, $b$, $c$, $\theta$, które będziemy wyznaczać metodami numerycznymi. Wykorzystamy technikę dopasowywania danych przeprowadzoną jednokrotnie w formie przetwarzania wstępnego i wykorzystamy gotowe rezultaty podczas rysowania sceny.
 
 Dokument \cite{ltc_heitz} sugeruje znormalizowanie macierzy tak aby $m_{33}=1$, ale powoduje to problemy z interpolacją między poszczególnymi przekształceniami w stanach pośrednich, w prezentacji \cite{LTCJourneyPresentation} można znaleźć wyjaśnienie i przykłady problemów niesionych przez te rozwiązanie.
 
@@ -440,9 +459,9 @@ W celu przyśpieszenia dopasowywania znajdziemy najpierw kierunek dominujący:
 \[ 
     \omega_d = \left(\sin\theta, 0, \cos\theta\right) 
 \]
-\noindent oraz normę $A$ przybliżanego rozkładu rozkładu. Dane te umożliwią nam wstępne ustawienie rozkładu bazowego tak, aby najważniejsze kierunki tych rozkładów pokryły się. Informacje te są możliwe do wyprowadzenia korzystając z metody Monte Carlo z ważeniem próbek, opisanym przez poniższe równania:
+\noindent oraz normę $n_D$ i $f_D$ przybliżanego rozkładu rozkładu. Dane te umożliwią nam wstępne ustawienie rozkładu bazowego tak, aby najważniejsze kierunki tych rozkładów pokryły się. Informacje te są możliwe do wyprowadzenia korzystając z metody Monte Carlo z ważeniem próbek, opisanym przez poniższe równania:
 \[
-A = \int_{\Omega} D_{\text{BRDF}}(\omega)d\omega
+n_D = \int_{\Omega} D_{\text{BRDF}}(\omega)d\omega
 \stackrel{n \rightarrow \infty}{=}
 \frac{1}{n} \sum_{i=1}^{n} {
   \frac{
@@ -450,6 +469,17 @@ A = \int_{\Omega} D_{\text{BRDF}}(\omega)d\omega
   }{
     \text{pdf}_{\text{BRDF}}(\omega_i)
   }
+}
+\]
+\[
+f_D = \int_{\Omega} D_{\text{BRDF}}(\omega)d\omega
+\stackrel{n \rightarrow \infty}{=}
+\frac{1}{n} \sum_{i=1}^{n} {
+    \frac{
+        D_{\text{BRDF}}(\omega_i) (1 - \omega_i \cdot h)^5
+    }{
+        \text{pdf}_{\text{BRDF}}(\omega_i)
+    }
 }
 \]
 \[
@@ -550,13 +580,13 @@ E(p_1, \ldots, p_n) =
 j = (i+1) \text{ mod } n
 \]
 
-Bezpośrednia implementacja powyższego wzoru niestety nie da nam oczekiwanych rezultatów, ze względu na przybliżenia zastosowane do implementacji $\cos^{-1}$ na kartach graficznych. Błąd, mimo że niewielki, jest zbyt duży do poprawnego wyznaczenia irradiancji wielokąta. W związku z powyższym autorzy \cite{LTCJourneyPresentation} proponują własne przybliżenie.
+Bezpośrednia implementacja powyższego wzoru niestety nie da nam oczekiwanych rezultatów, ze względu na przybliżenia zastosowane do implementacji funkcji $\cos^{-1}$ na kartach graficznych. Błąd, mimo że niewielki, jest zbyt duży do poprawnego wyznaczenia irradiancji wielokąta. W związku z powyższym autorzy \cite{LTCJourneyPresentation} proponują własne przybliżenie.
 
-Okazuje się, że dobre rezultaty daje przybliżenie większej części równania, a mianowicie czynnika $\frac{\theta}{\sin\theta}$ \footnote{Użyteczność tej formy wynika z faktu, że $\norm{p_i \times p_j} = \sin\theta$.}. Metodą prób i błędów autorom udało się dobrać funkcję przybliżającą korzystając z optymalizacji funkcji. Funkcja wyznacza dobre przybliżenie dla parametru:
+Okazuje się, że dobre rezultaty daje przybliżenie większej części równania, a mianowicie czynnika $\frac{\theta}{\sin\theta}$ \footnote{Użyteczność tej formy wynika z faktu, że $\norm{p_i \times p_j} = \norm{p_i}\:\norm{p_j}\sin\theta$.}. Metodą prób i błędów autorom udało się dobrać funkcję przybliżającą korzystając z optymalizacji funkcji. Funkcja wyznacza dobre przybliżenie dla parametru:
 \[
 \gamma = \abs{\cos\theta} = \abs{\langle p_i, p_j \rangle}
 \]
-\noindent gdy, $\cos\theta \in (0,1]$ zachodzi:
+\noindent gdy zachodzi $\cos\theta \in (0,1]$ możemy zapisać:
 \[
 \frac{\theta}{\sin\theta} = f(\gamma) = \frac{
     5.42031 + \left( 3.12829 + 0.0902326 \gamma \right) \gamma
@@ -584,34 +614,10 @@ Pozostaje nam jeszcze obliczenie wpływu czynnika rozproszonego. Do tego wystarc
 
 \subsection{Format danych}
 
-Plik zawierający wyniki dla poszczególnych $\alpha$, $\theta$ rozpoczyna się od nagłówka. Nagłówek pliku zawiera podstawowe informacje na temat rodzaju pliku, wersji i rozmiaru tekstur przechowywanych wewnątrz (tab. \ref{table:ALFHeader}).
+Ze względu na ograniczenia techniczne do zbudowania podglądu przekształceń wykorzystamy równomierną siatkę próbek $n \times n$ na kostce $(\alpha, \theta) \in \left[0,1\right] \times \left[0, \frac{\pi}{2}\right]$.
 
-Wyniki obliczeń zostają zapisane do pliku w formie gotowej do wczytania przez bibliotekę graficzną bezpośrednio do tekstury. Pierwsza tekstura zawiera współczynniki $M_{1}^{1}, M_{1}^{3}, M_{2}^{2}, M_{3}^{1}$ w postaci liczb zmiennoprzecinkowych o pojedynczej precyzji. Druga tekstura zawiera pozostały istotny współczynnik, czyli $M_{3}^{3}$, normę referencyjnego BRDF $n_D$ i oszacowany współczynnik Fresnela $f_D$.
+Plik zawierający wyniki dla poszczególnych $\alpha$, $\theta$ przechowuje je w formie dwóch tablic dwuwymiarowych przetworzonych w taki sposób, aby były gotowe do wczytania przez kartkę graficzną bez dodatkowych obliczeń. Dokładny opis formatu pliku znajduje się w rozdziale poświęconym architekturze aplikacji (rozdział \ref{chapter:TODO}).
 
-Każda z tekstur zajmuje ciągły fragment pamięci w pliku. Poszczególne wartości są przechowywane w kolejności odpowiednio $[M_{1}^{1}, M_{1}^{3}, M_{2}^{2}, M_{3}^{1}]$ i $[M_{3}^{3}, n_D, f_D]$, gdzie offset względem początku tekstury wskazujący na pierwszy bajt sekwencji w pamięci może zostać obliczony ze wzoru:
-\begin{gather*}
-\texttt{offset}_1 = 4 * \texttt{sizeof(float)} * \left(
-i_{\theta} * N_{\alpha} + i_{\alpha}
-\right) \\
-\texttt{offset}_2 = 3 * \texttt{sizeof(float)} * \left(
-i_{\theta} * N_{\alpha} + i_{\alpha}
-\right)
-\end{gather*}
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|l|l|l|}
-        \hline
-        Typ & Rozmiar & Opis \\ \hline
-        \texttt{char[4]} & 4B & identyfikator, ,,ALFS" \\\hline
-        \texttt{short} & 2B & numer główny wersji, obecnie 1 \\\hline
-        \texttt{short} & 2B & numer dodatkowy wersji, obecnie 0 \\\hline
-        \texttt{uint} & 32B & ilość próbek dla kąta \\\hline
-        \texttt{uint} & 32B & ilość próbek dla chropowatości \\\hline
-    \end{tabular}
-    \caption{Struktura nagłówka pliku podglądu używanego w pracy.}
-    \label{table:ALFHeader}
-\end{table}
-
+Pierwsza tekstura zawiera współczynniki $M_{1}^{1}, M_{1}^{3}, M_{2}^{2}, M_{3}^{1}$ w postaci liczb zmiennoprzecinkowych o pojedynczej precyzji. Druga tekstura zawiera pozostały istotny współczynnik, czyli $M_{3}^{3}$, normę referencyjnego BRDF $n_D$ oraz oszacowany współczynnik Fresnela $f_D$.
 
 \end{document}
