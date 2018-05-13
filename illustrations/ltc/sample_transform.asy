@@ -15,14 +15,14 @@ draw(O--axislength*Z, L=Label("$z$", position=Relative(1.1), align=N), Arrow3);
 material lightMaterial = material(diffusepen=gray(0.5)+opacity(0.8), emissivepen=gray(0.6), specularpen=black);
 draw(unithemisphere, lightMaterial);
 
-real ang = 2*pi*(30/360.0);
+real ang = 2*pi*(40/360.0);
 
 /*
 real m11 = cos(ang);
-real m22 = 2.2;
+real m22 = 0.8;
 real m33 = cos(ang);
 real m13 = sin(ang);
-real m31 = -sin(ang) * 0.4;
+real m31 = -sin(ang) * 0.2;
 */
 
 real m11 = 1;
@@ -44,18 +44,18 @@ triple transformltc(triple t0) {
 }
 
 triple quadCenter = transformltc((0,0,1.5));
-triple quadX = transformltc((1,0,0));
-triple quadZ = transformltc((0,1,0));
+triple quadX = transformltc((1,1,-0.5));
+triple quadZ = transformltc((1,0,0));
 
 surface quadSurface = surface(plane(O=(quadCenter-quadX/2-quadZ/2), quadX, quadZ)); 
 
 draw(quadSurface, lightMaterial);
 
-real minX = -0.5, maxX = 0.5;
-real minZ = -0.5, maxZ = 0.5;
+real minX = -1.0, maxX = 1.0;
+real minZ = -1.0, maxZ = 1.0;
 real rayLength = 10;
 
-int nSamples = 8;
+int nSamples = 16;
 
 for (int i = 0; i < nSamples; ++i) {
   real x = minX + (maxX - minX) * ((real)i)/(nSamples-1);
