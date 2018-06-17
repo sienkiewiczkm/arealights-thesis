@@ -37,7 +37,7 @@ W równaniu (\ref{eq:pbr_classic_shading}) pojawiają się pewne dobrane przez a
 
 \item $k_e$ - współczynnik opisujący ilość energii wygenerowanej w badanym punkcie, wartość ta nie jest zależna od żadnego innego czynnika, służy do modelowania materiałów emisyjnych, np. żarzącego się metalu, diód w urządzeniach elektronicznych itp.,
 
-\item $k_a$ - współczynnik odbicia światła otoczenia określa jaka część swiatła pochodzącego z otoczenia jest odbita do obserwatora, 
+\item $k_a$ - współczynnik odbicia światła otoczenia określa jaka część światła pochodzącego z otoczenia jest odbita do obserwatora, 
 
 \item $k_d$ - współczynnik określa stosunek światła odbitego równomiernie w każdym kierunku do światła przychodzącego do tego punktu (ilość odebranego światła przez obserwatora jest niezależna od kąta obserwacji), wartość ta opisuje generalnie kolor materiału,
 
@@ -701,7 +701,7 @@ tego równania, \cite{WalterMicrofacetModels} podaje:
 
 \noindent Równość form (\ref{eq:pbr_classic_ggx}) i (\ref{eq:pbr_walter_ggx})  bardzo łatwo udowodnić korzystając z definicji tangensa oraz jedynki trygonometrycznej.
 
-Można się również spotkać z formą anizotropową \cite{pbrt}:
+Można się również spotkać z formą anizotropową modelu GGX \cite{pbrt}:
 \begin{equation}
   D_{\text{GGXaniso}}(m) =
     \frac{\chi^{+}(n \cdot m)}{
@@ -850,9 +850,9 @@ W tej pracy będziemy korzystać głównie z funkcji rozkładu normalnych GGX (\
 
 \todo[inline]{Dodać część diffuse Cook-Torrance}
 
-\section{Swiatła punktowe}
+\section{Światła punktowe}
 
-Powszechną optymalizacją w grach komputerowych jest zastępowanie naturalnie występujących świateł powierzchniowych światłami punktowymi \cite{pbr_background}. Swiatła takie nie są fizycznie możliwe, lecz bardzo upraszczają obliczenia i w odpowiedniej skali potrafią bardzo dobrze aproksymować efekty świetlne mimo tego, że są nieskończenie małe.
+Powszechną optymalizacją w grach komputerowych jest zastępowanie naturalnie występujących świateł powierzchniowych światłami punktowymi \cite{pbr_background}. Światła takie nie są fizycznie możliwe, lecz bardzo upraszczają obliczenia i w odpowiedniej skali potrafią bardzo dobrze aproksymować efekty świetlne mimo tego, że są nieskończenie małe.
 
 Podczas lokalnych obliczeń wpływu takiego światła, parametrami jest wektor łączący obecnie badany punkt na powierzchni $p$ oraz centrum źródła $p_l$, którego znormalizowaną postać oznaczamy poprzez $l$ oraz kolor światła $\clightcolor$. Kolor światła $\clightcolor$ zdefiniujemy jako całkowitą odbitą radiancję dla 100\% białego materiału Lambertowskiego z normalną w kierunku zgodnym z kierunkiem wyznaczonym przez $l$, tzn:
 \begin{equation}
