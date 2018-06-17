@@ -452,7 +452,7 @@ Podstawiając równanie (\ref{eq:pbr_irradiance_from_radiance}) do (\ref{eq:pbr_
 \begin{equation}
   L_{o}(\omega_o) =
   \int_{\Omega} {
-    f_r(p, \omega_i, \omega_o)
+    f_r(\omega_i, \omega_o)
     L_i(\omega_i)
     (n \cdot \omega_i)
     \dd{\omega_i}
@@ -696,10 +696,10 @@ tego równania, \cite{WalterMicrofacetModels} podaje:
     \frac{\alpha^2 \chi^{+}(n \cdot m)}{
       \pi \cos^{4} (n \cdot m) \left( \alpha^2 + \tan^2 (n \cdot m) \right)^2
     }
+\label{eq:pbr_walter_ggx}
 \end{equation}
 
-\noindent Równość powyższych form bardzo łatwo udowodnić korzystając z
-definicji tangensa oraz jedynki trygonometrycznej.
+\noindent Równość form (\ref{eq:pbr_classic_ggx}) i (\ref{eq:pbr_walter_ggx})  bardzo łatwo udowodnić korzystając z definicji tangensa oraz jedynki trygonometrycznej.
 
 Można się również spotkać z formą anizotropową \cite{pbrt}:
 \begin{equation}
