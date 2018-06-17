@@ -6,18 +6,20 @@
 \section{Wstęp}
 
 Wyprowadzone w poprzednim rozdziale równanie renderingu opisuje wszystkie badane przez nas efekty radiometryczne. Można je zapisać we wspomnianej już wcześniej formie całkowej:
-\[
-  L(\omega_o) = \int_{\Omega} {
-      f_r(\omega_i, \omega_o)
-      L_i(\omega_i)
-      (n \cdot \omega_i)
-      \dd{\omega_i}
-  }
-\]
+\begin{equation*}
+L_{o}(\omega_o) =
+\int_{\Omega} {
+    f_r(\omega_i, \omega_o)
+    L_i(\omega_i)
+    (n \cdot \omega_i)
+    \dd{\omega_i}
+}
+\tag{\ref{eq:pbr_rendering_equation} powtórzone}
+\end{equation*}
 
-W przypadku świateł zajmujących ciągły fragment dziedziny sferycznej, nie jesteśmy w stanie bezpośrednio przedstawić całki w postaci sumy skończonej bez znacznej utraty dokładności. Niestety, również dla większości funkcji $L_i$, $f_r$ rozwiązanie nie jest możliwe do znalezienia metodą analityczną w bardzo ograniczonym czasie wymaganym do zachowania płynności aplikacji.
+W przypadku świateł zajmujących ciągły fragment dziedziny sferycznej, nie jesteśmy w stanie bezpośrednio przedstawić całki (\ref{eq:pbr_rendering_equation}) w postaci sumy skończonej bez znacznej utraty dokładności. Niestety, również dla większości funkcji $L_i$, $f_r$ rozwiązanie nie jest możliwe do znalezienia metodą analityczną w bardzo ograniczonym czasie wymaganym do zachowania płynności aplikacji.
 
-Metody stosujące numeryczne podejście do wyznaczenia przybliżenia wartości tej całki będą opisane w kolejnych podrozdziałach. Wiedza na temat uzyskania przybliżenia oryginalnej całki przyda nam się do zrozumienia metod nie wymagających obliczenia pełnej całki równania renderingu oraz weryfikacji ich poprawności.
+Metody stosujące numeryczne podejście do wyznaczenia przybliżenia wartości całki (\ref{eq:pbr_rendering_equation}) będą opisane w kolejnych podrozdziałach. Wiedza na temat uzyskania tego przybliżenia przyda nam się do zrozumienia metod nie wymagających obliczenia pełnej całki równania renderingu oraz weryfikacji ich poprawności.
 
 \section{Metoda Monte Carlo}
 
@@ -31,38 +33,38 @@ Funkcją rozkładu prawdopodobieństwa $P$ nazywamy funkcję przypisującą praw
 % Jak to się ma dla zmiennych losowych ciągłych?
 
 Dystrybuanta (ang. \textit{cumulative distribution function}, \textit{CDF}) wyznacza prawdopodobieństwo, że zdarzenie losowe $\mathbb{X}$, które zachodzi, ma wartość $\eta$ nie przekraczającą $x$.
-\[
+\begin{equation}
     F(x) = P(\mathbb{X} \leq x)
-\]
+\end{equation}
 
 Funkcją gęstości prawdopodobieństwa $f_{\mathbb{X}}$ (ang. \textit{probability density function}, \textit{PDF}) nazywamy pochodną dystrybuanty:
-\[
+\begin{equation}
     f_{\mathbb{X}}(x) = \frac{\dd F}{\dd x}(x)
-\]
+\end{equation}
 
 Wartości funkcji gęstości prawdopodobieństwa muszą być nieujemne oraz całka po całej dziedzinie zmiennej losowej $\Omega$ musi być równa $1$:
-\[
+\begin{equation}
     \int_{\Omega} f_{\mathbb{X}}(x) \dd x = 1
-\]
+\end{equation}
 
 Dla zmiennej losowej określonej na pewnym przedziale $\Lambda \in \mathbb{R}$ tż. $[a,b] \in \Lambda$ mamy:
-\[
+\begin{equation}
     \int_{a}^{b} f_{\mathbb{X}}(x) \dd x = P(a \leq x \leq b)
-\]
+\end{equation}
 
 Weżmy funkcję gęstości prawdopobieństwa $f_{\mathbb{X}}$ ciągłej zmiennej losowej $\mathbb{X}$. Wartość oczekiwana funkcji $g$ na ciągłej zmiennej losowej $\mathbb{X}$ wynosi:
-\[
+\begin{equation}
 \mathbb{E}\left[ g(x) \right] =
 \int_{\Omega}{
 	g(x) f_{\mathbb{X}}(x)
 	\: \dd x
 }
-\]
+\end{equation}
 
 Wartość oczekiwaną możemy interpretować jako średnią wartość funkcji $g$, której parametry są wybierane zgodnie z rozkładem reprezentowanym przez $f$.
 
 Wariancją nazywamy funkcję wyznaczającą kwadrat oczekiwanych odchyleń od wartości oczekiwanej. Wariancja $V$ funkcji $g$ zdefiniowana jest intuicyjnie jako:
-\[
+\begin{equation}
 V\left[ g(x) \right] 
 	=
 	\mathbb{E}\left[ 
@@ -76,17 +78,19 @@ V\left[ g(x) \right]
 	\right] - \mathbb{E}\left[
 		f(x)
 	\right]^2
-\]
+ \end{equation}
 
 Własności wartości oczekiwanej i wariancji:
-\begin{gather*}
+\begin{equation}
+\begin{gathered}
 \mathbb{E}\left[ag(x)\right] = a \mathbb{E} \left[g(x)\right] \\
 \mathbb{E}\left[\sum_{i} g(x_i)\right] = \sum_{i} \mathbb{E} \left[g(x_i)\right] \\
 V\left[ ag(x) \right] = a^2 V\left[g(x)\right]
-\end{gather*}
+\end{gathered}
+\end{equation}
 
 Jeżeli zmienne losowe $\mathbb{X}_i$ są niezależne, to również zachodzi:
-\[
+\begin{equation}
 \sum_{i} V \left[
 	g(\mathbb{X}_i)
 \right]
@@ -94,20 +98,21 @@ Jeżeli zmienne losowe $\mathbb{X}_i$ są niezależne, to również zachodzi:
 V \left[
 	\sum_{i} g(\mathbb{X}_i)
 \right]
-\]
+\end{equation}
 
 Estymatorem Monte Carlo przybliżającym wartość $\mathbb{E}(g(x))$ opartym na prawie wielkich liczb nazywamy:
-\[
+\begin{equation}
 \widetilde{g_n}(x) =
 	\frac{1}{n}
 	\sum_{i=1}^{n}g(x_i)
-\]
+\end{equation}
 
 \noindent gdzie $x=(x_1, \ldots, x_n)$ jest zbiorem $n$ próbek zmiennej losowej $\mathbb{X}$.
 
 \section{Generowanie próbek}
 
-Próbki Monte-Carlo można wybierać w sposób całkowicie losowy, jednak taka metoda nie daje nam żadnej gwarancji, że wybrane próbki będą pokrywały dziedzinę w sposób równomierny, co łatwo zaobserwować na rys. \ref{fig:RandomSamples}. Z pomocą przychodzą nam ciągi \textit{quasi-losowe}, które pokrywają zadaną dziedzinę w sposób, który gwarantuje nam jednorodne pokrycie dziedziny. Załóżmy, że nasza dziedzina jest kostką $n$-wymiarową $[0,1]^{n}$.
+Próbki Monte-Carlo można wybierać w sposób całkowicie losowy, jednak taka metoda nie daje nam żadnej gwarancji, że wybrane próbki będą pokrywały dziedzinę w sposób równomierny, co łatwo zaobserwować na rys. \ref{fig:RandomSamples}. Z pomocą przychodzą nam ciągi quasi-losowe, które pokrywają zadaną dziedzinę w sposób, który gwarantuje nam jednorodne pokrycie dziedziny. Załóżmy, że nasza dziedzina jest kostką $n$-wymiarową 
+$[0,1]^{n}$.
 
 \begin{figure}[h]
   \centering
@@ -132,14 +137,15 @@ Najbardziej znanymi ciągami tego typu jest ciąg \textit{van der Corputa} oraz 
 \subsection{Ciąg van der Corputa}
 
 Ciąg van der Corputa \cite{WongSamplingWH} jest jednowymiarowym ciągiem o niskiej rozbieżności, zdefiniowanym na zbiorze $[0,1]$ zbudowanym poprzez odwrócenie bazy reprezentacji w danym systemie o podstawie $b$. Każda liczba całkowita $i$ może zostać przedstawiona w pewnej zadanej bazie w sposób następujący:
-\[ 
-i = \sum_{j=0}^{\infty} {a_j b^j} \quad \forall_{j}\: a_j < b
-\]
+\begin{equation}
+    i = \sum_{j=0}^{\infty} {a_j b^j} \quad \forall_{j}\: a_j < b
+    \label{eq:mc_corput_normal_representation}
+\end{equation}
 
-Ciąg van der Corputa transformuje powyższą reprezentację (ciąg $a_k$), dla $n$-tego elementu otrzymujemy:
-\[ 
-v_b(n) = \sum_{j=0}^{\infty} {a_j b^{-j-1}} 
-\]
+Ciąg van der Corputa transformuje reprezentację (\ref{eq:mc_corput_normal_representation}) (ciąg $a_k$). Dla $n$-tego elementu otrzymujemy:
+\begin{equation}
+    v_b(n) = \sum_{j=0}^{\infty} {a_j b^{-j-1}} 
+\end{equation}
 
 \begin{example}
   Weźmy liczbę $7$ i bazę $2$. Reprezentacja tej liczby może zostać rozpisana jako (bez zer nieznaczących):
@@ -159,7 +165,7 @@ v_b(n) = \sum_{j=0}^{\infty} {a_j b^{-j-1}}
 
 Warto zauważyć, że $\sum_{n=1}^{\infty} \frac{b-1}{b^n} = 1$ dla $b>1$.
 
-Kod realizujący powyższe zadanie może być zapisany w formie:
+Kod realizujący zadanie odwrócenia podstawy może być zapisany w formie:
 
 \begin{lstlisting}[language=c++]
 double VanDerCorput(unsigned int n, unsigned int base) {
@@ -176,7 +182,7 @@ double VanDerCorput(unsigned int n, unsigned int base) {
 }
 \end{lstlisting}
 
-Istnieje alternatywne rozwiązanie korzystające z właściwości operacji takiej odwrotności. Warto zauważyć, że obie liczby $n$ oraz $v_b(n)$ zapisane w systemie o podstawie $b$ (tutaj $b=2$) są odbiciem lustrzanym:
+Istnieje alternatywne rozwiązanie korzystające z właściwości operacji takiej odwrotności. Warto zauważyć, że liczby $n$ oraz $v_b(n)$ zapisane w systemie o podstawie $b$ (tutaj $b=2$) są odbiciem lustrzanym:
 \[
   5 = 1 + 4 = (101.0)_{b} \quad
   (0.101)_{b} = 0.625 = \frac{1}{2} + \frac{1}{8} = v_2(5)
@@ -202,9 +208,9 @@ double VanDerCorputRadicalInverse(unsigned int bits)
 Ciąg Haltona jest uogólnieniem ciągu van der Corputa do wyższych wymiarów. Weźmy $n$ wzajemnie względnie pierwszych liczb $b_i$ większych od 1, czyli takiego zbioru w którym dla dowolnej pary liczb ich jedynym wspólnym dzielnikiem jest 1.
 
 $i$-ty $n$-wymiarowy element ciągu Haltona równy jest:
-\[ 
+\begin{equation}\
 x(i) = \left( v_{b_1}(i), v_{b_2}(i), \cdots, v_{b_n}(i) \right) 
-\]
+\end{equation}
 
 \begin{figure}[h]
   \centering
@@ -216,11 +222,11 @@ x(i) = \left( v_{b_1}(i), v_{b_2}(i), \cdots, v_{b_n}(i) \right)
 \subsection{Zbiór Hammersleya}
 
 Zbiór Hammersleya jest ciągiem bardzo podobnym do ciągu Haltona, również korzystającym z ciągu van der Corputa. Chcemy wygenerować $m$ punktów, weźmy $n-1$ wzajemnie względnie pierwszych liczb $b_i$ większych od 1. $i$-tym $n$ wymiarowym elementem ciągu jest:
-\[
+\begin{equation}
   x(i) = \left(
     \frac{i}{m}, v_{b_1}(i), v_{b_2}(i), \cdots, v_{b_{n-1}}(i)
   \right)
-\]
+\end{equation}
 
 Warto zauważyć, że dla wielu zastosowań potrzebujemy jedynie dwuwymiarowej parametryzacji. W takim przypadku będziemy potrzebować jednego ciągu składowego van der Corputa, zatem bardzo wygodnie jest skorzystać z  z wersji bitowej do generowania liczb. Ten zbiór będzie wykorzystywany w kodzie pracy.
 
@@ -235,38 +241,42 @@ Warto zauważyć, że dla wielu zastosowań potrzebujemy jedynie dwuwymiarowej p
 \label{section:pdfsampling}
 
 Weźmy funkcję gęstości prawdopodobieństwa $f(x)$. Jej dystrybuanta jest równa:
-\[ 
+\begin{equation}
 F(s_x) = \int_{-\infty}^{s_{x}} f(x) dx \in [0,1] 
-\]
+\end{equation}
 
 Załóżmy, że mamy do dyspozycji parametr $\xi \in [0,1]$ wygenerowany dowolną metodą. Zbudujmy równanie w którym niewiadomą będzie $s_x$:
-\[ 
+\begin{equation}
 F(s_x) = \xi
-\]
+\label{eq:mc_inverse_equation_to_solve}
+\end{equation}
 
-Rozwiązując powyższe równanie dla $s_x$ otrzymamy funkcję odwrotną generującą próbkę $s_x$:
-\[
+Rozwiązując równanie (\ref{eq:mc_inverse_equation_to_solve}) dla $s_x$ otrzymamy funkcję odwrotną generującą próbkę $s_x$:
+\begin{equation}
 s_x = F^{-1}(\xi)
-\]
+\end{equation}
 
-Dla niektórych funkcji, nie omawianych w tej pracy, obliczenie wartości całki lub znalezienie rozwiązania może nie być możliwe. Istnieją jednak inne metody próbkowania takich funkcji: metoda odrzucania (ang. \textit{rejection method}) oraz transformacja Boxa-Mullera \cite{pbrt}.
+Dla niektórych funkcji, nie omawianych w tej pracy, obliczenie wartości całki lub znalezienie rozwiązania może nie być możliwe. Istnieją jednak inne metody próbkowania takich funkcji, między innymi metoda odrzucania (ang. \textit{rejection method}) oraz transformacja Boxa-Mullera \cite{pbrt}.
 
 \subsection{Generowanie punktów na półsferze}
 
-Generowanie punktów na półsferze jest bardzo ważnym zagadnieniem związanym z wykorzystaniem metody Monte-Carlo. Próbkowanie równania renderingu wymaga wyznaczenia zbioru testowych kierunków padania światła. Najczęściej, wszystkie możliwe kierunki przychodzące oraz wychodzące promieni znajdują się w obszarze półsfery zdefiniowanej przez punkt oraz normalną do symulowanej powierzchni w tym punkcie. Mając, więc metodę generowania równomiernego zbioru punktów na sferze będziemy znać sposób wyznaczania kierunków.
+Generowanie punktów na półsferze jest bardzo ważnym zagadnieniem związanym z wykorzystaniem metody Monte-Carlo. Próbkowanie równania renderingu wymaga wyznaczenia zbioru testowych kierunków padania światła. Najczęściej, wszystkie możliwe kierunki przychodzące oraz wychodzące promieni znajdują się w obszarze półsfery zdefiniowanej przez punkt oraz normalną do symulowanej powierzchni w tym punkcie. Mając więc metodę generowania równomiernego zbioru punktów na sferze, będziemy znać sposób wyznaczania kierunków.
 
 Do wygenerowania punktów na półsferze możemy wykorzystamy parametryzację z kostki dwuwymiarowej do współrzędnych sferycznych:
-\[
+\begin{equation}
   (u,v) \in [0,1]^2 \rightarrow (\theta, \phi) \in \mathcal{H}
-\]
+\end{equation}
 
 Parametry wejściowe $(u,v)$ wygenerujemy za pomocą ciągów pseudolosowych przedstawionych wcześniej. Obrazki poglądowe wykorzystują ciąg Hammersleya jako generator liczb wejściowych.
 
 Niestety, proste przeskalowanie dziedziny źródłowej tzn. przekształcenie parametrów przekształceniem liniowym postaci:
-\begin{align*}
-	\phi &= \frac{1}{2} \pi u \\
- 	\theta &= 2 \pi v
-\end{align*}
+\begin{equation}	
+\begin{aligned}
+    \phi &= \frac{1}{2} \pi u \\
+    \theta &= 2 \pi v
+\end{aligned}
+\end{equation}
+
 \noindent nie będzie wystarczające, ponieważ otrzymany rozkład nie będzie równomierny na powierzchni półsfery (więcej punktów jest skupionych w okolicach biegunów, rys. \ref{fig:SpherePointsNaive}) \cite{WolframSpherePointPicking}.
 
 \begin{figure}[h]
@@ -277,10 +287,12 @@ Niestety, proste przeskalowanie dziedziny źródłowej tzn. przekształcenie par
 \end{figure}
 
 Alternatywne rozwiązanie znajdziemy stosując metodę przedstawioną w sekcji \ref{section:pdfsampling}  przy założeniu, że funkcja gęstości prawdopodobieństwa jest stała \cite{dammertz_2012, AdvancedCGRenderingEq}:
-\begin{align*}
+\begin{equation}	
+\begin{aligned}
 	\phi &= \cos^{-1}(1-u) \\
 	\theta &= 2 \pi v
-\end{align*}
+\end{aligned}
+\end{equation}
 
 Na rysunku \ref{fig:SpherePointsUniform} wyraźnie widać, że punkty przestały być skupione wokół bieguna.
 
@@ -292,10 +304,12 @@ Na rysunku \ref{fig:SpherePointsUniform} wyraźnie widać, że punkty przestały
 \end{figure}
 
 Dla funkcji które są zależą od kosinusa kąta $\phi$ możemy wykorzystać alternatywną metodę generowania, która będzie generować mniej punktów w okolicach horyzontu (rys. \ref{fig:SpherePointsCosine}), gdzie $\cos\phi \approx 0$. Do wyznaczenia takiego rozkładu wykorzystamy funkcję gęstości prawdopodobieństwa $p$ proporcjonalną do czynnika $\cos \phi$, finalnie otrzymamy \cite{AdvancedCGRenderingEq}:
-\begin{align*}
+\begin{equation}	
+\begin{aligned}
   \phi &= \cos^{-1}(\sqrt{1-u}) \\
   \theta &= 2 \pi v
-\end{align*}
+\end{aligned}
+\end{equation}
 
 \begin{figure}[h]
     \centering
@@ -311,15 +325,19 @@ Metoda Monte-Carlo ze względu na swoją złożoność obliczeniową nie umożli
 Wygodnym kompromisem jest podzielenie obliczeń na wiele etapów, z których każdy może zostać wyświetlony jako częściowy podgląd. Dłuższy czas oczekiwania bez zmian w scenie pozwala nam uzyskać większą jakość.
 
 Spróbujmy zbudować rekurencyjny ciąg podsum Monte-Carlo wyznaczających wynik dla $n$-tej próbki oraz po dołączeniu $n+1$ próbki:
-\begin{align*}
+\begin{equation}	
+\begin{aligned}
 I_n &= \frac{1}{n} \sum_{i=1}^{n} f(x_i) \\
 I_{n+1} &= \frac{1}{n+1} \sum_{i=1}^{n+1}f(x_i) \\
 	&= \frac{n}{(n+1)n} \sum_{i=1}^{n}f(x_i) + \frac{1}{n+1}f(x_{n+1}) \\
 	&= \frac{n}{n+1} I_{n} + \frac{1}{n+1}f(x_{n+1})
-\end{align*}
+\end{aligned}
+\label{eq:mc_incremental_mc_single}
+\end{equation}
 
-Dodatkowy czas potrzebny na przygotowanie ramki, policzenie sumy ważonej i wyświetlenie rezultatu na ekranie sprawia, że uzyskamy szybszą zbieżność przez zgrupowanie próbkek w pakiety, które mogą zostać potencjalnie policzone jednocześnie. Okazuje się, że rozpisanie analogicznego równania dla paczek danego, stałego rozmiaru jest trywialne:
-\begin{align*}
+Dodatkowy czas potrzebny na przygotowanie ramki, policzenie sumy ważonej i wyświetlenie rezultatu na ekranie sprawia, że uzyskamy szybszą zbieżność przez zgrupowanie próbek w pakiety, które mogą zostać potencjalnie policzone jednocześnie. Okazuje się, że rozpisanie analogicznego równania dla paczek danego, stałego rozmiaru jest trywialne:
+\begin{equation}	
+\begin{aligned}
   I_{(m+1)n} &= \frac{1}{(m+1)n} \sum_{i=1}^{(m+1)n} f(x_i)
   = \frac{1}{(m+1)n} \sum_{i=1}^{mn} f(x_i)
     + \frac{1}{(m+1)n} \sum_{i=mn+1}^{(m+1)n} f(x_i) = \\
@@ -329,9 +347,11 @@ Dodatkowy czas potrzebny na przygotowanie ramki, policzenie sumy ważonej i wyś
     + \frac{1}{m+1} \left(
         \frac{1}{n} \sum_{i=mn+1}^{(m+1)n} f(x_i)
     \right)
-\end{align*}
+\end{aligned}
+\label{eq:mc_incremental_mc_packets}
+\end{equation}
 
-Powyższe obliczenie sumy ważonej może zostać zrealizowane za pomocą łańcucha buforów ramki i obliczone za pomocą wspartego sprzętowo mechanizmu łączenia kolorów (ang. \textit{blending}). Obecna partia musi być liczona w osobnym buforze oraz potem skopiowana do docelowego z wykorzystaniem mieszania. Można zastosować uproszczenie, w którym wykorzystamy tylko jeden bufor, ale często ze względu na istnienie wielu świateł i wybraną technikę np. odroczone cieniowanie (ang. \textit{deferred shading}) może być koniecznie zastosowanie przynajmniej dwóch.
+Obliczenie sum ważonych (\ref{eq:mc_incremental_mc_single}) i (\ref{eq:mc_incremental_mc_packets}) może zostać zrealizowane za pomocą łańcucha buforów ramki i obliczone za pomocą wspartego sprzętowo mechanizmu łączenia kolorów (ang. \textit{blending}). Obecna partia musi być liczona w osobnym buforze oraz potem skopiowana do docelowego z wykorzystaniem mieszania. Można zastosować uproszczenie, w którym wykorzystamy tylko jeden bufor, ale często ze względu na istnienie wielu świateł i wybraną technikę np. odroczone cieniowanie (ang. \textit{deferred shading}) może być koniecznie zastosowanie przynajmniej dwóch.
 
 \section{Metoda funkcji ważności}
 
@@ -340,12 +360,12 @@ Metoda funkcji ważności (ang. \textit{importance sampling}) jest jedną z meto
 Publikacje \cite{Veach,MonteCarloAnderson} sugerują zastosowanie innej techniki generowania próbek tak, aby znacznie częściej wybierać próbki istotne dla wyniku.
 
 Mając funkcję gęstości $h(x)$ zmiennej losowej $\mathbb{X}$ na której potrafimy całkować, wyznaczać jej wartość w punkcie oraz jest prawie proporcjonalna do całkowanej funkcji $g(x)$ możemy przepisać:
-\[
+\begin{equation}
   \int_{x \in \mathbb{A}} { g(x) dx } =
   \int_{x \in \mathbb{A}} { g(x) \frac{h(x)}{h(x)} dx } =
   \int_{x \in \mathbb{A}} { \frac{g(x)}{h(x)} h(x) dx } =
   \mathbb{E}_{h}\left({ \frac{g(x)}{h(x)} }\right)
-\]
+\end{equation}
 
 Jeżeli funkcja gęstości prawdopodobieństwa $h(x)$ zostanie wybrana w odpowiedni sposób to wariancja estymatora Monte-Carlo zmniejszy się. Aby funkcja $h(x)$ była użyteczna, musi spełniać kilka warunków:
 
@@ -362,11 +382,12 @@ Jeżeli funkcja gęstości prawdopodobieństwa $h(x)$ zostanie wybrana w odpowie
 \end{itemize}
 
 Teoretycznie najlepszym wyborem jest funkcja $g'(x) = cg(x)$, gdzie:
-\[
-	c \propto \frac{1}{\int_{\Omega}{g(x)dx}}
-\]
+\begin{equation}
+    c \propto \frac{1}{\int_{\Omega}{g(x)dx}}
+    \label{eq:mc_importance_best_function}
+\end{equation}
 
-\noindent Niestety, taka funkcja jest niemożliwa do wykorzystania praktycznego w sposób bezpośredni, ponieważ mianownik w stałej $c$ jest naszą szukaną całką, której przecież nie potrafimy policzyć. Będziemy szukać funkcji $h$ podobnych kształtem do $g$.
+\noindent Niestety, funkcja (\ref{eq:mc_importance_best_function}) jest niemożliwa do wykorzystania praktycznego w sposób bezpośredni, ponieważ mianownik w stałej $c$ jest naszą szukaną całką, której przecież nie potrafimy policzyć. Będziemy szukać funkcji $h$ podobnych kształtem do $g$.
 
 Istotnym problemem tej metody jest to, że nieuważny wybór funkcji $h$ może znacząco pogorszyć wariancję (rys. \ref{fig:ImportanceSamplingProblems}).
 
@@ -396,27 +417,27 @@ Pozostaje jeszcze kwestia znalezienia konkretnej funkcji $h(x)$ z której będzi
 \subsection{Phong BRDF}
 
 Znajdźmy funkcję gęstości prawdopodobieństwa nadającą się do generowania próbek dla BRDF Phonga \cite{NotesImportanceSampling,ImportanceSamplingForProduction}:
-\[
+\begin{equation}
   L_o(\omega_o) = \int_{\Omega} {
     L_i(\omega_i) \cos^{n}\theta_s \cos\theta_i \dd \omega_i
   }
-\]
+\end{equation}
 
 Będziemy poszukiwać funkcji $p(\theta, \phi)$ z której będziemy mogli wygenerować próbki korzystając z funkcji odwrotnych:
-\begin{align*}
+\begin{equation}\begin{aligned}
   s_\theta &= F_{\theta}^{-1}(\xi_\theta) \\
   s_\phi &= F_{\phi}^{-1}(\xi_\phi)
-\end{align*}
+\end{aligned}\end{equation}
 
 \noindent użytecznych do oszacowania całki:
 
 Interesuje nas odwzorowanie kształtu części $\cos^{n}\theta_s$ w odniesieniu do kąta bryłowego $\dd \omega_i$. Wykorzystajmy tą funkcję jako kształt dla szukanej funkcji gęstości prawdopodobieństwa. Funkcja gęstości $p(x)$ musi spełniać warunek:
-\[ 
+\begin{equation}
 \int_{-\infty}^{\infty} p(x) \dd x = 1 
-\]
+\end{equation}
 
 \noindent stąd (czynnik $\sin\theta$ pochodzi z zamiany do współrzędnych sferycznych z kątów bryłowych):
-\[
+\begin{equation}
   p(\theta, \phi) = \frac{
     \cos^{n}{\theta} \sin\theta
   }{
@@ -424,33 +445,34 @@ Interesuje nas odwzorowanie kształtu części $\cos^{n}\theta_s$ w odniesieniu 
       \cos^{n}{\theta} \sin\theta \dd \theta
     }
   }
-\]
+\label{eq:mc_phong_p_unsolved}
+\end{equation}
 
-Rozwiązując poniższą całkę otrzymujemy poniższy dwuwymiarowy rozkład gęstości prawdopodobieństwa (patrz listing \ref{appendix:maxima_phong}):
-\[
+Rozwiązując (\ref{eq:mc_phong_p_unsolved}) otrzymujemy dwuwymiarowy rozkład gęstości prawdopodobieństwa (patrz listing \ref{appendix:maxima_phong}):
+\begin{equation}
   p(\theta, \phi) =
     \frac{n+1}{2\pi} \cos^{n}\theta \sin\theta
-\]
+\end{equation}
 
 Rozbijmy zmienne $\theta$ oraz $\phi$ na dwie oddzielne niezależne funkcje korzystając z rozkładu brzegowego (ang. \textit{marginal density function}):
-\[
+\begin{equation}
   p(\theta) = \int_{0}^{2\pi} {
     p(\theta, \phi) \dd \theta
   } =
   (n+1) \cos^{n}{\theta} \sin\theta
-\]
+\end{equation}
 
 Korzystając z twierdzenie Bayesa możemy obliczyć rozkład warunkowy $p(\phi | \theta)$:
-\[
+\begin{equation}
   p(\phi | \theta) = \frac{
     p(\theta, \phi)
 	}{
 		p(\theta)
 	} = \frac{1}{2\pi}
-\]
+\end{equation}
 
-Oba rozkłady konwertujemy do postaci dystrybuanty którą będziemy próbkować korzystając ze zmiennych losowych $(\xi_{\theta}, \xi_{\phi}) \in [0,1]^2$:
-\[
+Oba rozkłady przekształcamy do postaci dystrybuanty którą będziemy próbkować korzystając ze zmiennych losowych $(\xi_{\theta}, \xi_{\phi}) \in [0,1]^2$:
+\begin{equation}
 	\xi_\phi = P(s_{\phi}) =
 	\int_{0}^{s_{\phi}} {
 		p(\phi) \dd \phi
@@ -459,15 +481,15 @@ Oba rozkłady konwertujemy do postaci dystrybuanty którą będziemy próbkować
 		\frac{1}{2\pi} \dd \phi
 	} =
 	\frac{s_{\phi}}{2\pi}
-\]
+\end{equation}
 
 Stąd możemy wyznaczyć:
-\[
+\begin{equation}
 	s_{\phi} = 2 \pi \xi_{\phi}
-\]
+\end{equation}
 
 Analogicznie postępujemy z rozkładem brzegowym:
-\[
+\begin{equation}
   \xi_{\theta} = P(s_{\theta}) =
 	\int_{0}^{s_{\theta}} {
 		p(\theta) \dd \theta
@@ -476,44 +498,48 @@ Analogicznie postępujemy z rozkładem brzegowym:
 		\frac{n+1}{2\pi} \cos^{n}\theta \sin\theta \dd\phi
 	} =
 	1 - \cos^{n+1}(s_{\theta})
-\]
+\end{equation}
 
 Z czego mamy:
-\[
+\begin{equation}
 	s_{\theta} =
 	\cos^{-1}\left[
 		(1 - \xi_{\theta})^{\frac{1}{n+1}}
 	\right]
-\]
+\end{equation}
 
 lub ze względu na losowość rozkładu (rozkład uzyskany przez lustrzane odbicie dalej jest losowy i spełnia wszystkie założenia):
-\[
+\begin{equation}
 	s_{\theta} =
 	\cos^{-1}\left(
 		\xi_{\theta}^{\frac{1}{n+1}}
 	\right)
-\]
+\end{equation}
 
 \subsection{Trowbridge-Reitz BRDF (GGX)}
 
 Nieco bardziej skomplikowanym rozkładem jest rozkład GGX, który wykorzystuję jako główny model w pracy. GGX jest modelem opartym na mikropowierzchniach, więc rozsądnym wyborem do próbkowania jest jego funkcja rozkładu normalnych $D$ \cite{NotesImportanceSampling}. Będziemy zainteresowani częścią:
-\[
+\begin{equation}
   \int_{\Omega} D(m) (n \cdot m) \dd m = \left(\int_{\Omega} D(m) cos\theta \dd m\right) = 1
-\]
+\end{equation}
 
 Dla przypomnienia, funkcja rozkładu normalnych dla funkcji GGX wyraża się wzorem (w jednej z jego równoważnych wersji):
-\[
-	D(m) = \frac{
-		\alpha^2
-	}{
+\begin{equation*}
+D_{\text{GGX}}(m) =
+\frac{
+    \alpha^2 \chi^{+}(n \cdot m)
+}{
     \pi \left(
-      \cos^{2}(n \cdot m)(\alpha^2 - 1) + 1
-    \right)^{2}
-  }
-\]
+    \left(n \cdot m \right)^{2}
+    \left(\alpha^2 - 1 \right)
+    + 1
+    \right)^2
+}
+\tag{\ref{eq:pbr_classic_ggx} powtórzone}
+\end{equation*}
 
-Przekształcając powyższy wzór z kątów bryłowych na współrzędne sferyczne otrzymujemy:
-\[
+Przekształcając wzór (\ref{eq:pbr_classic_ggx}) z kątów bryłowych na współrzędne sferyczne otrzymujemy:
+\begin{equation}
   p(\theta, \phi) =
 	\frac{
     \alpha^2 \cos\theta \sin\theta
@@ -522,10 +548,10 @@ Przekształcając powyższy wzór z kątów bryłowych na współrzędne sferycz
       \cos^{2}\theta (\alpha^2 - 1) + 1
     \right)^{2}
   }
-\]
+\end{equation}
 
 Analogicznie do poprzedniego przykładu, oba rozkłady konwertujemy do postaci dystrybuanty którą będziemy próbkować korzystając ze zmiennych losowych $(\xi_{\theta}, \xi_{\phi}) \in [0,1]^2$:
-\[
+\begin{equation}\
   p(\theta) = \int_{0}^{2\pi} {
     p(\theta, \phi) d \theta
   } =
@@ -534,17 +560,17 @@ Analogicznie do poprzedniego przykładu, oba rozkłady konwertujemy do postaci d
       \cos^{2}\theta (\alpha^2 - 1) + 1
     \right)^{2}
   }
-\]
+\end{equation}
 
 Dla $\phi$ proces wygląda analogicznie do BRDF Phonga:
-\[
+\begin{equation}
   p(\phi | \theta) = \frac{
     p(\theta, \phi)
 	}{
 		p(\theta)
 	} = \frac{1}{2\pi}
-\]
-\[
+\end{equation}
+\begin{equation}
 	\xi_\phi = P(s_{\phi}) =
 	\int_{0}^{s_{\phi}} {
 		p(\phi) d\phi
@@ -556,10 +582,10 @@ Dla $\phi$ proces wygląda analogicznie do BRDF Phonga:
 	\frac{s_{\phi}}{2\pi}
   \Rightarrow
 	s_{\phi} = 2 \pi \xi_{\phi}
-\]
+\end{equation}
 
 Dla $\theta$ korzystamy z rozkładu brzegowego:
-\[
+\begin{equation}\
   \xi_\theta = P(s_{\theta}) =
 	\int_{0}^{s_{\theta}} {
 		p(\theta) d\theta
@@ -571,22 +597,23 @@ Dla $\theta$ korzystamy z rozkładu brzegowego:
       2\alpha^4 - 2\alpha^2
     }
   \right)
-\]
+\label{eq:mc_ggx_xi_theta}
+\end{equation}
 
-Po przekształceniu powyższego wzoru uzyskujemy:
-\begin{align*}
+Po przekształceniu wzoru (\ref{eq:mc_ggx_xi_theta}) uzyskujemy:
+\begin{equation}\begin{aligned}
   s_\theta &= \cos^{-1}\left(
     \sqrt{
       \frac{1 - \xi_\theta}{\alpha^2 \xi_\theta - \xi_\theta + 1}
     }
   \right) \\
   s_{\phi} &= 2 \pi \xi_{\phi}
-\end{align*}
+\end{aligned}\end{equation}
 
 Istotnym jest to, co właściwie reprezentuje $s_\theta$ oraz $s_\phi$, tzn. co zostało wygeneorwane. Kąty te, generują nam zgodnie z definicją $D$ kierunek wektora połówkowego względem makropowierzchni (rys. \ref{fig:GGXSampleMReflect}). Znając kierunek obserwacji $\omega_o$, kierunek padania światła musi zostać obliczony ze wzoru na odbicie względem normalnej wyznaczonej przez parę $m = [s_\theta, s_\phi]$ (odwrócona prawa strona wynika z notacji: $\omega_o$ reprezentuje kierunek od punktu na powierzchni do obserwatora, zatem odwrotnie niż założono przy wyprowadzeniu wzoru na odbicie):
-\[
+\begin{equation}
 	\omega_i = 2(\omega_o \cdot m)m - \omega_o
-\]
+\end{equation}
 
 \begin{figure}[h]
     \centering
@@ -598,17 +625,19 @@ Istotnym jest to, co właściwie reprezentuje $s_\theta$ oraz $s_\phi$, tzn. co 
 \section{Monte-Carlo z wieloma funkcjami ważności}
 \label{Chapter:MIS}
 
-Załóżmy, że mamy $n$ różnych funkcji gęstości prawodpodobieństwa $p_{i}(x)$ dla $i \in \{ 1, \ldots, n \}$ opisujących istotność poszczególnych próbek dla danych czynników szukanej funkcji $f(x)$. Każda z tych strategii działa lepiej w pewnych obszarach dziedziny, jednakże gorzej od nich w każdym innym miesjcu. Chcielibyśmy dynamicznie wybierać, której strategii używać w danym momencie, tak aby wariancja spadła jeszcze bardziej.
+Załóżmy, że mamy $n$ różnych funkcji gęstości prawodpodobieństwa $p_{i}(x)$ dla $i \in \{ 1, \ldots, n \}$ opisujących istotność poszczególnych próbek dla danych czynników szukanej funkcji $f(x)$. Każda z tych strategii działa lepiej w pewnych obszarach dziedziny, jednakże gorzej od nich w każdym innym miejscu. Chcielibyśmy dynamicznie wybierać, której strategii używać w danym momencie, tak aby wariancja spadła jeszcze bardziej.
 
 Przykładem zastosowania tej metody jest równanie renderingu:
-\[
-L_o(\omega_o) = \int_{\Omega} {
-	L_i(\omega_{i})
-	f_r(\omega_{i}, \omega_{o})
-	\cos \theta_{i}
-	\dd\omega_{i}
+\begin{equation*}
+L_{o}(\omega_o) =
+\int_{\Omega} {
+    f_r(\omega_i, \omega_o)
+    L_i(\omega_i)
+    (n \cdot \omega_i)
+    \dd{\omega_i}
 }
-\]
+\tag{\ref{eq:pbr_rendering_equation} powtórzone}
+\end{equation*}
 
 Jedną ze strategii modelowania jest modelowanie funkcji $f_r$, jednak nie zawsze kierunki istotne dla BRDF będą pokrywać się z kierunkami z których przychodzi światło tzn. $L_i$. Najlepszą strategią, byłoby generowanie kierunków istotnych z punktu widzenia $f_r$ oraz $L_i$. Dla większości materii nie będzie to tak istotne, jednak jeżeli zaczniemy rozpatywać powierzchnie lustrzane z niewielkim pojedyńczym źródłem światła w otoczeniu problem stanie się oczywisty: większość próbek wygenerowanych na podstawie BRDF będzie posiadała $L_i(\omega_i) \approx 0$. Podobnie dla strategii generowania próbek z $L_i$, dla większości kierunków $f_r(\omega_i) \approx 0$.
 
@@ -619,13 +648,13 @@ W tej pracy technika ta nie będzie wykorzystywana do generowania obrazu w spoś
 Naiwnym podejściem do tego problemu jest obliczenie całki korzystając z każdej ze strategii i uśrednienie wyniku uzyskanego przez każdą z nich. Po dłuższym zastanowieniu widać jednak, że takie podejście nie da nam pożądanego rezultatu, wariancja nie spadnie ponieważ zmienne losowe są niezależne i wariancja końcowa będzie sumą wariancji poszczególnych strategii.
 
 Zbudujemy więc model wielopróbkowy (ang. \textit{multi-sample model}) \cite{pbrt,ImportanceSamplingForProduction} korzystający z wygenerowanych próbek z wielu źródeł jednocześnie, których wyniki będą mieszane zgodnie z pewną rodziną funkcji ważących $w_i$. Nasz estymator Monte-Carlo funkcji $f$ w takiej sytuacji będzie wyglądał następująco:
-\[
+\begin{equation}
   F = \sum_{i=1}^{n} \frac{1}{n_i} \sum_{j=1}^{n_i} w_{i}(X_{i,j}) \frac{
     f(X_{i,j})
   }{
     p_{i}(X_{i,j})
   }
-\]
+\end{equation}
 \noindent gdzie:
 \begin{itemize}
 	\item $n$ - ilość strategii próbkowania,
@@ -637,14 +666,16 @@ Zbudujemy więc model wielopróbkowy (ang. \textit{multi-sample model}) \cite{pb
 
 % Źródło: MIS p.261
 Aby estymator $F$ pozostał nieobciążony (ang. \textit{unbiased}) funkcja $w_i$ musi spełniać następujące warunki:
-\[ \sum_{i = 1}^{n} w_{i}(x) = 1 \text{ dla } f(x) \neq 0 \]
-\[
+\begin{equation}
+\sum_{i = 1}^{n} w_{i}(x) = 1 \text{ dla } f(x) \neq 0
+\end{equation}
+\begin{equation}
   \forall i \in \{ 1, \ldots, n \} \quad
   w_{i}(x) = 0 \Leftrightarrow p_i(x) = 0
-\]
+\end{equation}
 
 Za najlepszy wybór funkcji mieszającej $w_i$ sprawdzającej się w większości zastosowań uważa się funkcję postaci:
-\[
+\begin{equation}
   w_{i}(x) = \frac{
     n_{i} p_{i}(x)
   }{
@@ -652,11 +683,11 @@ Za najlepszy wybór funkcji mieszającej $w_i$ sprawdzającej się w większośc
       n_{k} p_{k}(x)
     }
   }
-\]
+\end{equation}
 
 % pbrt p799
 \noindent biorącą pod uwagę wszystkie sposoby generacji próbki nazywaną heurystyką bilansującą (ang. \textit{balance heuristics}). Istnieje również kwadratowa heurystyka bilansująca \cite{pbrt}, która w praktyce bardzo często sprawdza się jeszcze lepiej \cite{pbrt,Veach}:
-\[
+\begin{equation}
   w_{i}(x) = 
   \frac{
 	\left( n_{i} p_{i}(x) \right)^{\beta}
@@ -665,7 +696,7 @@ Za najlepszy wybór funkcji mieszającej $w_i$ sprawdzającej się w większośc
 		\left(n_{k} p_{k}(x)\right)^{\beta}
 	}
   }
-\]
+\end{equation}
 
 Z doświadczeń \cite{Veach} wynika, że wartość $\beta = 2$ jest bardzo dobrym wyborem.
 
