@@ -30,15 +30,12 @@ Zmienną losową $\mathbb{X}$ nazywamy funkcję przypisującą zdarzeniom elemen
 Funkcją rozkładu prawdopodobieństwa $P$ nazywamy funkcję przypisującą prawdopodobieństwo wartościom zmiennej losowej. 
 % Jak to się ma dla zmiennych losowych ciągłych?
 
-Dystrybuanta (ang. \textit{cumulative distribution function}, \textit{CDF})
-wyznacza prawdopodobieństwo, że zdarzenie losowe $\mathbb{X}$, które zachodzi,
-ma wartość $\eta$ nie przekraczającą $x$.
+Dystrybuanta (ang. \textit{cumulative distribution function}, \textit{CDF}) wyznacza prawdopodobieństwo, że zdarzenie losowe $\mathbb{X}$, które zachodzi, ma wartość $\eta$ nie przekraczającą $x$.
 \[
     F(x) = P(\mathbb{X} \leq x)
 \]
 
-Funkcją gęstości prawdopodobieństwa $f_{\mathbb{X}}$ (ang. \textit{probability density
-function}, \textit{PDF}) nazywamy pochodną dystrybuanty:
+Funkcją gęstości prawdopodobieństwa $f_{\mathbb{X}}$ (ang. \textit{probability density function}, \textit{PDF}) nazywamy pochodną dystrybuanty:
 \[
     f_{\mathbb{X}}(x) = \frac{\dd F}{\dd x}(x)
 \]
@@ -53,9 +50,7 @@ Dla zmiennej losowej określonej na pewnym przedziale $\Lambda \in \mathbb{R}$ t
     \int_{a}^{b} f_{\mathbb{X}}(x) \dd x = P(a \leq x \leq b)
 \]
 
-Weżmy funkcję gęstości prawdopobieństwa $f_{\mathbb{X}}$ ciągłej zmiennej
-losowej $\mathbb{X}$. Wartość oczekiwana funkcji $g$ na ciągłej zmiennej
-losowej $\mathbb{X}$ wynosi:
+Weżmy funkcję gęstości prawdopobieństwa $f_{\mathbb{X}}$ ciągłej zmiennej losowej $\mathbb{X}$. Wartość oczekiwana funkcji $g$ na ciągłej zmiennej losowej $\mathbb{X}$ wynosi:
 \[
 \mathbb{E}\left[ g(x) \right] =
 \int_{\Omega}{
@@ -101,16 +96,14 @@ V \left[
 \right]
 \]
 
-Estymatorem Monte Carlo przybliżającym wartość $\mathbb{E}(g(x))$ opartym na
-prawie wielkich liczb nazywamy:
+Estymatorem Monte Carlo przybliżającym wartość $\mathbb{E}(g(x))$ opartym na prawie wielkich liczb nazywamy:
 \[
 \widetilde{g_n}(x) =
 	\frac{1}{n}
 	\sum_{i=1}^{n}g(x_i)
 \]
 
-\noindent gdzie $x=(x_1, \ldots, x_n)$ jest zbiorem $n$ próbek zmiennej
-losowej $\mathbb{X}$.
+\noindent gdzie $x=(x_1, \ldots, x_n)$ jest zbiorem $n$ próbek zmiennej losowej $\mathbb{X}$.
 
 \section{Generowanie próbek}
 
@@ -132,18 +125,13 @@ Pierwszą metodą jednorodną (rys. \ref{fig:UniformSamples}) jaka się narzuca 
   \label{fig:UniformSamples}
 \end{figure}
 
-Ciągi o niskiej rozbieżności są rozwiązaniem tego problemu: są to ciągi
-deterministyczne, które na pierwszy rzut oka wydają się losowe przez co posiadają ich zalety oraz pokrywają równomiernie całą dziedzinę niezależnie od wybranej ilości punktów.
+Ciągi o niskiej rozbieżności są rozwiązaniem tego problemu: są to ciągi deterministyczne, które na pierwszy rzut oka wydają się losowe przez co posiadają ich zalety oraz pokrywają równomiernie całą dziedzinę niezależnie od wybranej ilości punktów.
 
 Najbardziej znanymi ciągami tego typu jest ciąg \textit{van der Corputa} oraz jego pochodne czyli ciąg Haltona, zbiór Hammersleya.
 
 \subsection{Ciąg van der Corputa}
 
-Ciąg van der Corputa \cite{WongSamplingWH} jest jednowymiarowym ciągiem o
-niskiej rozbieżności, zdefiniowanym na zbiorze $[0,1]$ zbudowanym poprzez
-odwrócenie bazy reprezentacji w danym systemie o podstawie $b$. Każda liczba
-całkowita $i$ może zostać przedstawiona w pewnej zadanej bazie w sposób
-następujący:
+Ciąg van der Corputa \cite{WongSamplingWH} jest jednowymiarowym ciągiem o niskiej rozbieżności, zdefiniowanym na zbiorze $[0,1]$ zbudowanym poprzez odwrócenie bazy reprezentacji w danym systemie o podstawie $b$. Każda liczba całkowita $i$ może zostać przedstawiona w pewnej zadanej bazie w sposób następujący:
 \[ 
 i = \sum_{j=0}^{\infty} {a_j b^j} \quad \forall_{j}\: a_j < b
 \]
@@ -154,8 +142,7 @@ v_b(n) = \sum_{j=0}^{\infty} {a_j b^{-j-1}}
 \]
 
 \begin{example}
-  Weźmy liczbę $7$ i bazę $2$. Reprezentacja tej liczby może zostać rozpisana
-  jako (bez zer nieznaczących):
+  Weźmy liczbę $7$ i bazę $2$. Reprezentacja tej liczby może zostać rozpisana jako (bez zer nieznaczących):
   \[ 
   7 = 1 * 2^0 + 1 * 2^1 + 1 * 2^2 = (111)_{b} 
   \]
@@ -189,16 +176,13 @@ double VanDerCorput(unsigned int n, unsigned int base) {
 }
 \end{lstlisting}
 
-Istnieje alternatywne rozwiązanie korzystające z właściwości operacji takiej
-odwrotności. Warto zauważyć, że obie liczby $n$ oraz $v_b(n)$ zapisane w systemie o podstawie $b$ (tutaj $b=2$) są odbiciem lustrzanym:
+Istnieje alternatywne rozwiązanie korzystające z właściwości operacji takiej odwrotności. Warto zauważyć, że obie liczby $n$ oraz $v_b(n)$ zapisane w systemie o podstawie $b$ (tutaj $b=2$) są odbiciem lustrzanym:
 \[
   5 = 1 + 4 = (101.0)_{b} \quad
   (0.101)_{b} = 0.625 = \frac{1}{2} + \frac{1}{8} = v_2(5)
 \]
 
-Dla $b=2$ odpowiednio skonstruowana operacja bitowa tego typu pozwoli na
-uzyskanie poprawnego wyniku i zwiększenie wydajności obliczeń
-\cite{dammertz_2012,MultidimensionalSampling}:
+Dla $b=2$ odpowiednio skonstruowana operacja bitowa tego typu pozwoli na uzyskanie poprawnego wyniku i zwiększenie wydajności obliczeń \cite{dammertz_2012,MultidimensionalSampling}:
 
 \begin{lstlisting}[language=c++]
 double VanDerCorputRadicalInverse(unsigned int bits)
@@ -215,10 +199,7 @@ double VanDerCorputRadicalInverse(unsigned int bits)
 
 \subsection{Ciąg Haltona}
 
-Ciąg Haltona jest uogólnieniem ciągu van der Corputa do wyższych
-wymiarów. Weźmy $n$ wzajemnie względnie pierwszych liczb $b_i$ większych od 1,
-czyli takiego zbioru w którym dla dowolnej pary liczb ich jedynym wspólnym
-dzielnikiem jest 1.
+Ciąg Haltona jest uogólnieniem ciągu van der Corputa do wyższych wymiarów. Weźmy $n$ wzajemnie względnie pierwszych liczb $b_i$ większych od 1, czyli takiego zbioru w którym dla dowolnej pary liczb ich jedynym wspólnym dzielnikiem jest 1.
 
 $i$-ty $n$-wymiarowy element ciągu Haltona równy jest:
 \[ 
@@ -234,10 +215,7 @@ x(i) = \left( v_{b_1}(i), v_{b_2}(i), \cdots, v_{b_n}(i) \right)
 
 \subsection{Zbiór Hammersleya}
 
-Zbiór Hammersleya jest ciągiem bardzo podobnym do ciągu Haltona, również
-korzystającym z ciągu van der Corputa. Chcemy wygenerować $m$ punktów, weźmy
-$n-1$ wzajemnie względnie pierwszych liczb $b_i$ większych od 1. $i$-tym $n$
-wymiarowym elementem ciągu jest:
+Zbiór Hammersleya jest ciągiem bardzo podobnym do ciągu Haltona, również korzystającym z ciągu van der Corputa. Chcemy wygenerować $m$ punktów, weźmy $n-1$ wzajemnie względnie pierwszych liczb $b_i$ większych od 1. $i$-tym $n$ wymiarowym elementem ciągu jest:
 \[
   x(i) = \left(
     \frac{i}{m}, v_{b_1}(i), v_{b_2}(i), \cdots, v_{b_{n-1}}(i)
@@ -330,9 +308,7 @@ Dla funkcji które są zależą od kosinusa kąta $\phi$ możemy wykorzystać al
 
 Metoda Monte-Carlo ze względu na swoją złożoność obliczeniową nie umożliwia uzyskania rezultatu w czasie rzeczywistym. Możliwość operowania sceną, precyzyjnego ustawienia kamery i obiektów nie jest łatwe w takim środowisku. Często nie potrzebujemy również bardzo dużej szczegółowości - w niektórych przypadkach wystarczy nam konkretna ilość iteracji do znalezienia problemu obecnej implementacji lub oceny głównych różnic między metodami.
 
-Wygodnym kompromisem jest podzielenie obliczeń na wiele etapów, z których każdy
-może zostać wyświetlony jako częściowy podgląd. Dłuższy czas oczekiwania bez
-zmian w scenie pozwala nam uzyskać większą jakość.
+Wygodnym kompromisem jest podzielenie obliczeń na wiele etapów, z których każdy może zostać wyświetlony jako częściowy podgląd. Dłuższy czas oczekiwania bez zmian w scenie pozwala nam uzyskać większą jakość.
 
 Spróbujmy zbudować rekurencyjny ciąg podsum Monte-Carlo wyznaczających wynik dla $n$-tej próbki oraz po dołączeniu $n+1$ próbki:
 \begin{align*}
@@ -342,11 +318,7 @@ I_{n+1} &= \frac{1}{n+1} \sum_{i=1}^{n+1}f(x_i) \\
 	&= \frac{n}{n+1} I_{n} + \frac{1}{n+1}f(x_{n+1})
 \end{align*}
 
-Dodatkowy czas potrzebny na przygotowanie ramki, policzenie sumy ważonej i
-wyświetlenie rezultatu na ekranie sprawia, że uzyskamy szybszą zbieżność przez
-zgrupowanie próbkek w pakiety, które mogą zostać potencjalnie policzone
-jednocześnie. Okazuje się, że rozpisanie analogicznego równania dla paczek
-danego, stałego rozmiaru jest trywialne:
+Dodatkowy czas potrzebny na przygotowanie ramki, policzenie sumy ważonej i wyświetlenie rezultatu na ekranie sprawia, że uzyskamy szybszą zbieżność przez zgrupowanie próbkek w pakiety, które mogą zostać potencjalnie policzone jednocześnie. Okazuje się, że rozpisanie analogicznego równania dla paczek danego, stałego rozmiaru jest trywialne:
 \begin{align*}
   I_{(m+1)n} &= \frac{1}{(m+1)n} \sum_{i=1}^{(m+1)n} f(x_i)
   = \frac{1}{(m+1)n} \sum_{i=1}^{mn} f(x_i)
@@ -363,9 +335,7 @@ Powyższe obliczenie sumy ważonej może zostać zrealizowane za pomocą łańcu
 
 \section{Metoda funkcji ważności}
 
-Metoda funkcji ważności (ang. \textit{importance sampling}) jest jedną z metod ograniczania wariancji metody
-Monte-Carlo. Innymi słowy, zastosowanie tej techniki poprawnie powinno
-skrócić czas w którym ciąg zbiegnie do odpowiednio bliskiej wartości całki.
+Metoda funkcji ważności (ang. \textit{importance sampling}) jest jedną z metod ograniczania wariancji metody Monte-Carlo. Innymi słowy, zastosowanie tej techniki poprawnie powinno skrócić czas w którym ciąg zbiegnie do odpowiednio bliskiej wartości całki.
 
 Publikacje \cite{Veach,MonteCarloAnderson} sugerują zastosowanie innej techniki generowania próbek tak, aby znacznie częściej wybierać próbki istotne dla wyniku.
 
@@ -398,8 +368,7 @@ Teoretycznie najlepszym wyborem jest funkcja $g'(x) = cg(x)$, gdzie:
 
 \noindent Niestety, taka funkcja jest niemożliwa do wykorzystania praktycznego w sposób bezpośredni, ponieważ mianownik w stałej $c$ jest naszą szukaną całką, której przecież nie potrafimy policzyć. Będziemy szukać funkcji $h$ podobnych kształtem do $g$.
 
-Istotnym problemem tej metody jest to, że nieuważny wybór funkcji $h$ może
-znacząco pogorszyć wariancję (rys. \ref{fig:ImportanceSamplingProblems}).
+Istotnym problemem tej metody jest to, że nieuważny wybór funkcji $h$ może znacząco pogorszyć wariancję (rys. \ref{fig:ImportanceSamplingProblems}).
 
 \begin{figure}
   \centering
@@ -441,15 +410,12 @@ Będziemy poszukiwać funkcji $p(\theta, \phi)$ z której będziemy mogli wygene
 
 \noindent użytecznych do oszacowania całki:
 
-Interesuje nas odwzorowanie kształtu części $\cos^{n}\theta_s$ w odniesieniu do kąta bryłowego
-$\dd \omega_i$. Wykorzystajmy tą funkcję jako kształt dla szukanej funkcji gęstości
-prawdopodobieństwa. Funkcja gęstości $p(x)$ musi spełniać warunek:
+Interesuje nas odwzorowanie kształtu części $\cos^{n}\theta_s$ w odniesieniu do kąta bryłowego $\dd \omega_i$. Wykorzystajmy tą funkcję jako kształt dla szukanej funkcji gęstości prawdopodobieństwa. Funkcja gęstości $p(x)$ musi spełniać warunek:
 \[ 
 \int_{-\infty}^{\infty} p(x) \dd x = 1 
 \]
 
-\noindent stąd (czynnik $\sin\theta$ pochodzi z zamiany do współrzędnych
-sferycznych z kątów bryłowych):
+\noindent stąd (czynnik $\sin\theta$ pochodzi z zamiany do współrzędnych sferycznych z kątów bryłowych):
 \[
   p(\theta, \phi) = \frac{
     \cos^{n}{\theta} \sin\theta
@@ -460,15 +426,13 @@ sferycznych z kątów bryłowych):
   }
 \]
 
-Rozwiązując poniższą całkę otrzymujemy poniższy dwuwymiarowy rozkład gęstości
-prawdopodobieństwa (patrz listing \ref{appendix:maxima_phong}):
+Rozwiązując poniższą całkę otrzymujemy poniższy dwuwymiarowy rozkład gęstości prawdopodobieństwa (patrz listing \ref{appendix:maxima_phong}):
 \[
   p(\theta, \phi) =
     \frac{n+1}{2\pi} \cos^{n}\theta \sin\theta
 \]
 
-Rozbijmy zmienne $\theta$ oraz $\phi$ na dwie oddzielne niezależne funkcje
-korzystając z rozkładu brzegowego (ang. \textit{marginal density function}):
+Rozbijmy zmienne $\theta$ oraz $\phi$ na dwie oddzielne niezależne funkcje korzystając z rozkładu brzegowego (ang. \textit{marginal density function}):
 \[
   p(\theta) = \int_{0}^{2\pi} {
     p(\theta, \phi) \dd \theta
@@ -485,8 +449,7 @@ Korzystając z twierdzenie Bayesa możemy obliczyć rozkład warunkowy $p(\phi |
 	} = \frac{1}{2\pi}
 \]
 
-Oba rozkłady konwertujemy do postaci dystrybuanty którą będziemy próbkować
-korzystając ze zmiennych losowych $(\xi_{\theta}, \xi_{\phi}) \in [0,1]^2$:
+Oba rozkłady konwertujemy do postaci dystrybuanty którą będziemy próbkować korzystając ze zmiennych losowych $(\xi_{\theta}, \xi_{\phi}) \in [0,1]^2$:
 \[
 	\xi_\phi = P(s_{\phi}) =
 	\int_{0}^{s_{\phi}} {
@@ -523,8 +486,7 @@ Z czego mamy:
 	\right]
 \]
 
-lub ze względu na losowość rozkładu (rozkład uzyskany przez lustrzane odbicie
-dalej jest losowy i spełnia wszystkie założenia):
+lub ze względu na losowość rozkładu (rozkład uzyskany przez lustrzane odbicie dalej jest losowy i spełnia wszystkie założenia):
 \[
 	s_{\theta} =
 	\cos^{-1}\left(
@@ -562,9 +524,7 @@ Przekształcając powyższy wzór z kątów bryłowych na współrzędne sferycz
   }
 \]
 
-Analogicznie do poprzedniego przykładu, oba rozkłady konwertujemy do postaci
-dystrybuanty którą będziemy próbkować korzystając ze zmiennych losowych
-  $(\xi_{\theta}, \xi_{\phi}) \in [0,1]^2$:
+Analogicznie do poprzedniego przykładu, oba rozkłady konwertujemy do postaci dystrybuanty którą będziemy próbkować korzystając ze zmiennych losowych $(\xi_{\theta}, \xi_{\phi}) \in [0,1]^2$:
 \[
   p(\theta) = \int_{0}^{2\pi} {
     p(\theta, \phi) d \theta
@@ -638,12 +598,7 @@ Istotnym jest to, co właściwie reprezentuje $s_\theta$ oraz $s_\phi$, tzn. co 
 \section{Monte-Carlo z wieloma funkcjami ważności}
 \label{Chapter:MIS}
 
-Załóżmy, że mamy $n$ różnych funkcji gęstości prawodpodobieństwa $p_{i}(x)$ dla
-$i \in \{ 1, \ldots, n \}$ opisujących istotność poszczególnych próbek dla
-danych czynników szukanej funkcji $f(x)$. Każda z tych strategii działa lepiej
-w pewnych obszarach dziedziny, jednakże gorzej od nich w każdym innym miesjcu.
-Chcielibyśmy dynamicznie wybierać, której strategii używać w danym momencie,
-tak aby wariancja spadła jeszcze bardziej.
+Załóżmy, że mamy $n$ różnych funkcji gęstości prawodpodobieństwa $p_{i}(x)$ dla $i \in \{ 1, \ldots, n \}$ opisujących istotność poszczególnych próbek dla danych czynników szukanej funkcji $f(x)$. Każda z tych strategii działa lepiej w pewnych obszarach dziedziny, jednakże gorzej od nich w każdym innym miesjcu. Chcielibyśmy dynamicznie wybierać, której strategii używać w danym momencie, tak aby wariancja spadła jeszcze bardziej.
 
 Przykładem zastosowania tej metody jest równanie renderingu:
 \[
