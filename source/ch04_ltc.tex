@@ -248,10 +248,11 @@ E(p_1, \ldots, p_n) =
 \frac{1}{2\pi}
 \sum_{i=0}^{n} {
   \acos(p_i \cdot p_j)
-  \left\langle {
-    \frac{p_i \times p_j}{\norm{p_i \times p_j}},
+  \left( {
+    \frac{p_i \times p_j}{\norm{p_i \times p_j}}
+    \cdot
     \left[ \begin{matrix} 0 \\ 0 \\ 1 \end{matrix} \right]
-  } \right\rangle
+  } \right)
 } \\
 j = (i+1) \text{ mod } n
 \end{gathered}
@@ -476,7 +477,7 @@ Macierz $M$ ze specyfiki metody musi być odwracalna, zatem: $\det M \neq 0 \Rig
 
 W celu dopasowania przekształcenia liniowego dla danych $\alpha$ i $\theta$ wykorzystamy algorytm optymalizacji numerycznej.
 
-W celu przyśpieszenia dopasowywania znajdziemy najpierw kierunek dominujący $\omega_d$ (\ref{eq:ltc_wd_def}), normę $n_D$ i współczynnik $f_D$ przybliżanego rozkładu. Dane te umożliwią nam wstępne ustawienie rozkładu bazowego tak, aby najważniejsze kierunki tych rozkładów pokryły oraz przy okazji poznamy normy oryginalnego rozkładu ($n_D$ i $f_D$). Informacje te są możliwe do wyprowadzenia korzystając z metody Monte Carlo z ważeniem próbek, opisanym przez równania (\ref{eq:ltc_montecarlo_equations}).
+W celu przyśpieszenia dopasowywania znajdziemy najpierw kierunek dominujący $\omega_d$ (\ref{eq:ltc_wd_def}), normę $n_D$ i współczynnik $f_D$ przybliżanego rozkładu. Dane te umożliwią nam wstępne ustawienie rozkładu bazowego tak, aby najważniejsze kierunki tych rozkładów pokryły oraz przy okazji poznamy normy oryginalnego rozkładu ($n_D$ i $f_D$). Korzystając z metody Monte Carlo z ważeniem próbek i oznaczając funkcję gęstości prawdopodobieństwa $\text{pdf}(\omega)$ możemy zapisać równania na $\omega_d$, $n_D$ i $f_D$ (\ref{eq:ltc_montecarlo_equations}).
     
 \begin{equation}
     \omega_d = \left( \sin\theta_d, 0, \cos\theta_d \right)
