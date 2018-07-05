@@ -44,7 +44,7 @@ L_o(\omega_o) =
     D_A(\omega_i)
     \dd \omega_i
 } = \int_{P} {
-    L *
+    L
     D_A(\omega_i)
     \dd \omega_i
 } = L \int_{P} {
@@ -55,7 +55,7 @@ L_o(\omega_o) =
 \end{equation}
 
 \section{Wybór rozkładu aproksymującego $D_A(\omega)$}
-
+\label{ltc:chapter:choosingD}
 Rozpocznijmy od zdefiniowania warunków, które funkcja $D_A(\omega)$ musi spełniać, aby nadawała się do zastosowania jako element przybliżenia. W zaawansowanych modelach oświetlenia bazowanych na zjawiskach fizycznych występuje kilka ważnych efektów, które muszą zostać zachowane. Ze względu na różnorodność materiałów występujących w typowej scenie, metoda musi wspierać zmienną chropowatość powierzchni określoną przez parametr $\alpha$.
 
 Pierwszym z istotnych efektów jest odpowiedź funkcji BRDF dla powierzchni obserwowanych pod odpowiednio dużym kątem, która zostaje rozciągnięta wzdłuż jednej z osi formując kształt eliptyczny (rys. \ref{fig:BRDFGrazingAnisotropy}).
@@ -176,9 +176,9 @@ Drugim efektem jest przesuwanie się maksimum rozproszenia bliżej normalnej, gd
 %    \label{fig:BRDFOffSpecular}
 %\end{figure}
 
-Warto zauważyć, że gdy $D_A(\omega)$ jest rozkładem gęstości prawdopodobieństwa to całka (\ref{eq:LTCDInt}) definiuje całkowite prawdopodobieństwo, że próbka wygenerowana z rozkładu $D_A$ przetnie wielokąt $P$. W takim przypadku, gdy korzystając z metody Monte-Carlo wielokrotnie wybierzemy losowy wektor z rozkładu $D_A(\omega)$ i sprawdzimy istnienie punktu przecięcia tego promienia z wielokątem $P$ to dla odpowiednio dużej liczby próbek stosunek trafień do ilości przetestowanych promieni będzie przybliżał naszą szukaną całkę.
+Warto zauważyć, że gdy $D_A(\omega)$ jest rozkładem gęstości prawdopodobieństwa to całka (\ref{eq:LTCDInt}) definiuje całkowite prawdopodobieństwo, że próbka wygenerowana z rozkładu $D_A$ przetnie wielokąt $P$. W takim przypadku, gdy korzystając z metody Monte-Carlo wielokrotnie wybierzemy losowy wektor z rozkładu $D_A(\omega)$ i sprawdzimy istnienie punktu przecięcia tego promienia z wielokątem $P$ to dla odpowiednio dużej liczby próbek stosunek trafień do ilości przetestowanych promieni będzie przybliżał szukaną całkę.
 
-Kluczową obserwacją jest to, że rozkład jest równoważny nieskończonej ilości próbek tego rozkładu. Każdą z tych form da się przekształcić na drugą w sposób bezpośredni i bezstratny. Zatem rozkład na sferze jest obiektem dualnym do nieskończonego zbioru ilości próbek tego samego rozkładu. Wynika z tego to, że po zmodyfikowaniu jednego otrzymamy nowy obiekt matematyczny, który potem będziemy mogli przekształcić w drugi.
+Kluczową obserwacją jest to, że rozkład jest równoważny nieskończonej liczbie próbek tego rozkładu. Każdą z tych form da się przekształcić na drugą w sposób bezpośredni i bezstratny. Zatem rozkład na sferze jest obiektem dualnym do nieskończonego zbioru próbek tego samego rozkładu. Wynika z tego to, że po zmodyfikowaniu jednego otrzymamy nowy obiekt matematyczny, który potem będziemy mogli przekształcić w drugi.
 
 Przykładem takiej operacji może być przekształcenie liniowe modyfikujące kierunek próbki. Będziemy zakładać, że próbka po przekształceniu liniowym w dalszym ciągu jest jednostkowej długości tzn. zawsze zostaje z powrotem znormalizowana. Takie przekształcenie ma kilka bardzo ważnych właściwości, które będziemy wykorzystywać. Warto zauważyć, że jeżeli przekształcimy rozkład prawdopodobieństwa przekształceniem $M$, to gdy zrobimy to samo z wielokątem $P$, otrzymując wielokąt $P^\prime$, prawdopodobieństwo, że nowa próbka przetnie nowy wielokąt nie zmieni się. Widać to wyraźnie z faktu, że przekształcone próbki podążają za przekształcanym wielokątem. Zachodzi więc równość (\ref{fig:LTCTransformEquality}).
 \begin{equation}
@@ -219,7 +219,7 @@ Rozumowanie można przeprowadzić na odwrót dla przekształcenia $M^{-1}$. Wyni
 
 \subsection{Wybór rozkładu bazowego $D_0(\omega)$}
 
-Kolejnym krokiem jest wybór rozkładu bazowego, który po przekształceniu liniowym da nam oczekiwany rozkład spełniający założenia postawione na samym początku.
+Kolejnym krokiem jest wybór rozkładu bazowego, który po przekształceniu liniowym da nam oczekiwany rozkład spełniający założenia postawione na początku rozdziału \ref{ltc:chapter:choosingD}.
 
 Rozpocznijmy poszukiwania od najprostszego rozwiązywalnego rozkładu, a mianowicie rozkładu jednorodnego. Jeżeli rozkład $D_A$ przyjmuje taką samą wartość w każdym punkcie to całka na wielokącie sferycznym (ang. \textit{spherical polygon}) jest równoważna kątowi bryłowemu przemnożonym przez odpowiedni stały współczynnik. Istnieje wzór jawny obliczający tą wartość, jest on przedstawiony w publikacjach \cite{Arvo,Snyder}. Bardzo podobnie sytuacja wygląda z półsferą z tym, że wielokąt musi zostać przycięty do horyzontu. Rozkład jednorodny opisany na półsferze możemy opisać równaniem (\ref{eq:LTCUniformD}).
 \begin{equation}
@@ -247,7 +247,7 @@ Zaletą rozkładu kosinusowego jest fakt, że przechodzi on gładko do $0$ oraz 
 E(p_1, \ldots, p_n) =
 \frac{1}{2\pi}
 \sum_{i=0}^{n} {
-  \cos^{-1}(\langle p_i, p_j \rangle)
+  \acos(p_i \cdot p_j)
   \left\langle {
     \frac{p_i \times p_j}{\norm{p_i \times p_j}},
     \left[ \begin{matrix} 0 \\ 0 \\ 1 \end{matrix} \right]
@@ -260,7 +260,7 @@ j = (i+1) \text{ mod } n
 
 Złożoność wzoru (\ref{eq:ltc_lambert_int}) jest liniowo zależna od stopnia złożoności wielokąta, co umożliwia zastosowanie go w aplikacjach czasu rzeczywistego.
 
-Istnieją również inne potencjalne rozkłady bazowe, ale niestety, w większości przypadków nie nadają się one do zastosowania praktycznego. Rozkłady opisywane przez sferyczne gaussowskie (ang. \textit{spherical gaussian}) nie posiadają wzoru jawnego, rozkład Phong’a posiada wzór jawny, jednak zmienna złożoność zależna liniowo od wykładnika sprawia, że metoda jest niepraktyczna. Bardziej kompleksowe objaśnienia można znaleźć w pracy \cite{ltc_heitz}.
+Istnieją również inne potencjalne rozkłady bazowe, ale niestety, w większości przypadków nie nadają się one do zastosowania praktycznego. Rozkłady opisywane przez sferyczne gaussowskie (ang. \textit{spherical gaussian}) nie posiadają wzoru jawnego, rozkład Phonga posiada wzór jawny, jednak zmienna złożoność zależna liniowo od wykładnika sprawia, że metoda jest niepraktyczna. Bardziej kompleksowe objaśnienia można znaleźć w pracy \cite{ltc_heitz}.
 
 Z powyższych rozważań, wynika, że przycięty rozkład kosinusowy jest dobrym kandydatem na rozkład bazowy ze względu na swoje właściwości i prostą konstrukcję. Będziemy go wykorzystywać w tym celu w dalszej części pracy i oznaczać $D_0(\omega)$.
 
@@ -409,7 +409,7 @@ Przekształcenia (\ref{eq:ltc_uniform_xy_scale}), (\ref{eq:ltc_nonuniform_xy_sca
 \begin{aligned}
 M_{\text{precise}} &=
 \begin{bmatrix}
-1 & 0 & \lambda_{\text{skew}} \\
+1 & 0 & \lambda_{\text{s}} \\
 0 & 1 & 0 \\
 0 & 0 & 1
 \end{bmatrix}
@@ -427,7 +427,7 @@ M_{\text{precise}} &=
 \\
 &=
 \begin{bmatrix}
-\lambda\lambda_x & 0 & \lambda_{\text{skew}} \\
+\lambda\lambda_x & 0 & \lambda_{\text{s}} \\
 0 & \lambda\lambda_y & 0 \\
 0 & 0 & 1
 \end{bmatrix}
@@ -548,7 +548,7 @@ M_{\text{rot}} =
 
 Kolejnym krokiem jest ukształtowanie rozkładu do formy uwzględniającej parametry wejściowe i występujące zjawiska tj. chropowatość ($\alpha$), anizotropowość przy dużych kątach obserwacji i efekt skośny (występujący na jednej z osi), co wymaga numerycznego wyznaczenia parametrów $a$, $b$ i $c$ opisanych w poprzednim podrozdziale.
 
-\subsection{Metoda pływającego sympleksu}
+\subsection{Metoda pełzającego sympleksu}
 
 Zdefiniujmy nasz problem w postaci problemu optymalizacyjnego. Chcielibyśmy zminimalizować funkcję $f(a,b,c)$, będącą miarą różnicy (błędu) absolutnej pomiędzy oryginalnym rozkładem, a przybliżonym. Mając pewne parametry $a$, $b$, $c$ będące wynikiem kroku algorytmu optymalizacji chcielibyśmy ocenić jakość przybliżenia wyznaczonego przez te parametry. W tym celu stworzymy funkcję błędu (\ref{eq:ltc_error_fn}), która może zostać obliczona z wykorzystaniem techniki MIS opisanej w rozdziale \ref{Chapter:MIS}.
 
@@ -562,10 +562,9 @@ f(a,b,c) =
 \label{eq:ltc_error_fn}
 \end{equation}
 
-Funkcja (\ref{eq:ltc_error_fn}) posiada dwa ograniczenia narzucone przez warunek $\det M \neq 0$, a mianowicie:
-  $a > 0 \wedge b > 0$
+Funkcja (\ref{eq:ltc_error_fn}) posiada dwa ograniczenia narzucone przez warunek $\det M \neq 0$, a mianowicie $a > 0$ i $b > 0$
 
-Oryginalna metoda pływającego sympleksu \cite{NelderMead65} nie posiada mechanizmu dla ograniczeń, ale istnieją techniki pozwalające rozwiązać ten problem. W mojej implementacji wykorzystałem logarytmiczną wewnętrzną (barierową) funkcję kary $p_{\mathbb{L}}(x, \rho)$ (\ref{eq:ltc_penalty_fn_barrier}). Alternatywną funkcją kary jest funkcja hiperboliczna $p_{\mathbb{H}}(x, \rho)$ (\ref{eq:ltc_penalty_fn_hiper}).
+Oryginalna metoda pełzającego sympleksu (Neldera-Meada) \cite{NelderMead65} nie posiada mechanizmu dla ograniczeń, ale istnieją techniki pozwalające rozwiązać ten problem. W mojej implementacji wykorzystałem logarytmiczną wewnętrzną (barierową) funkcję kary $p_{\mathbb{L}}(x, \rho)$ (\ref{eq:ltc_penalty_fn_barrier}). Alternatywną funkcją kary jest funkcja hiperboliczna $p_{\mathbb{H}}(x, \rho)$ (\ref{eq:ltc_penalty_fn_hiper}).
 
 \begin{equation}
   p_{\mathbb{L}}(x, \rho) = - \frac{1}{\rho} \sum_{i=1}^{m} \log(-g_i(x))
@@ -591,12 +590,51 @@ Pierwszym krokiem jest przekształcenie wielokąta $P$ transformacją $M$ do prz
     \label{fig:QuadClip}
 \end{figure}
 
-Kolejnym krokiem jest obliczenie irradiancji tego wielokąta przy użyciu wzoru   Lamberta (\ref{eq:ltc_lambert_int}). Bezpośrednia implementacja niestety nie da nam oczekiwanych rezultatów, ze względu na przybliżenia zastosowane do implementacji funkcji $\cos^{-1}$ na kartach graficznych. Błąd, mimo że jest niewielki i wystarczający do większości zastosowań, jest zbyt duży do poprawnego wyznaczenia irradiancji wielokąta. W związku z powyższym autorzy \cite{LTCJourneyPresentation} proponują własne przybliżenie.
+Kolejnym krokiem jest obliczenie irradiancji tego wielokąta przy użyciu wzoru   Lamberta (\ref{eq:ltc_lambert_int}). Bezpośrednia implementacja niestety nie da nam oczekiwanych rezultatów, ze względu na przybliżenia zastosowane do implementacji funkcji $\acos$ na kartach graficznych. Błąd, mimo że jest niewielki i wystarczający do większości zastosowań, jest zbyt duży do poprawnego wyznaczenia irradiancji wielokąta. W związku z powyższym autorzy \cite{LTCJourneyPresentation} proponują własne przybliżenie.
 
-Okazuje się, że dobre rezultaty daje przybliżenie większej części równania, a mianowicie czynnika\footnote{Użyteczność tej formy wynika z faktu, że $\norm{p_i \times p_j} = \norm{p_i}\:\norm{p_j}\sin\theta$.}: $\frac{\theta}{\sin\theta}$. Metodą prób i błędów autorom udało się dobrać funkcję przybliżającą korzystając z optymalizacji funkcji. Znaleziona funkcja wyznacza dobre przybliżenie dla parametru $\langle p_i, p_j \rangle$ w przedziale $(0,1]$. Wprowadzając oznaczenie $\gamma$ (\ref{eq:ltc_gamma_def}) możemy zapisać równanie (\ref{ltc_gamma_approx_positive}). W przypadku, gdy $\langle p_i, p_j \rangle \in [-1, 0)$, możemy wyznaczyć wartość przybliżenia korzystając z własności (\ref{ltc_gamma_approx_negative}).
+Korzystając z faktu, że obliczenia przeprowadzamy na powierzchni sfery jednostkowej, więc $\forall_{i}  \norm{p_i} = 1$, możemy uprościć równanie (\ref{eq:ltc_lambert_int}):
+\begin{equation}
+\begin{gathered}
+\begin{aligned}
+E(p_1, \ldots, p_n) &=
+\frac{1}{2\pi}
+\sum_{i=0}^{n} {
+    \acos( p_i \cdot p_j )
+    \left( {
+        \frac{p_i \times p_j}{\norm{p_i \times p_j}}
+        \cdot
+        \left[ \begin{matrix} 0 \\ 0 \\ 1 \end{matrix} \right]
+    } \right)
+} = \\
+&= \frac{1}{2\pi}
+\sum_{i=0}^{n} {
+    \acos( p_i \cdot p_j )
+    \left( {
+        \frac{p_i \times p_j}{\norm{p_i}\norm{p_j}\sin\theta}
+        \cdot
+        \left[ \begin{matrix} 0 \\ 0 \\ 1 \end{matrix} \right]
+    } \right)
+} = \\
+&= \frac{1}{2\pi}
+\sum_{i=0}^{n} {
+    \frac{\theta_i}{\sin\theta_i}
+    \left( {
+        \left( p_i \times p_j \right)
+        \cdot
+        \left[ \begin{matrix} 0 \\ 0 \\ 1 \end{matrix} \right]
+    } \right)
+}
+\end{aligned} \\
+\theta_i = \acos(p_i \cdot p_j) \\
+j = (i+1) \text{ mod } n
+\end{gathered}
+\label{eq:ltc_lambert_int_practical}
+\end{equation}
+
+Okazuje się, że dobre rezultaty daje przybliżenie większej części równania, a mianowicie zamiast szukać lepszego przybliżenia samego $\theta_i$ możemy przybliżyć całe wyrażenie zależne od kąta, czyli $\frac{\theta}{\sin\theta}$ sparametryzowane $\cos\theta = p_i \cdot p_j$. Metodą prób i błędów autorom udało się dobrać funkcję przybliżającą korzystając z optymalizacji funkcji. Znaleziona funkcja wyznacza dobre przybliżenie dla parametru $\cos\theta$ w przedziale $(0,1]$. Wprowadzając oznaczenie $\gamma$ (\ref{eq:ltc_gamma_def}) możemy zapisać równanie (\ref{ltc_gamma_approx_positive}). W przypadku, gdy $\langle p_i, p_j \rangle \in [-1, 0)$, możemy wyznaczyć wartość przybliżenia korzystając z własności (\ref{ltc_gamma_approx_negative}).
 
 \begin{equation}
-\gamma = \abs{\cos\theta} = \abs{\langle p_i, p_j \rangle}
+\gamma = \abs{\cos\theta} = \abs{p_i \cdot p_j}
 \label{eq:ltc_gamma_def}
 \end{equation}
 
