@@ -2,7 +2,7 @@
 
 \begin{document}
 
-\chapter{Pliki Maxima}
+\chapter{Rozwiązywanie równań do generowania próbek z rozkładów}
 \label{appendix:maxima}
 
 Do obliczeń symbolicznych został wykorzystany pakiet Maxima na licencji GNU
@@ -16,13 +16,16 @@ Dobre wprowadzenie do obsługi tego programu stanowią:
 \item \url{http://www.knf.ifd.uni.wroc.pl/materialy/maxima.pdf}
 \end{itemize}
 
-\subsection*{Generowanie próbek dla BRDF Phonga}
+\section{Generowanie próbek dla BRDF Phonga}
 \lstinputlisting[
   label=appendix:maxima_phong,
   caption=phong.maxima
 ]{maxima/phong.maxima}
 
-\subsection*{Generowanie próbek dla BRDF Trowbridge-Reitz (GGX)}
-\lstinputlisting{maxima/ggx.maxima}
+\section{Generowanie próbek dla BRDF Trowbridge-Reitz (GGX)}
+\lstinputlisting[
+    label=appendix:maxima_ggx,
+    caption=ggx.maxima
+]{maxima/ggx.maxima}
 
 \end{document}

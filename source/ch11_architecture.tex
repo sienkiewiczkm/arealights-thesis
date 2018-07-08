@@ -13,14 +13,17 @@ Kod programu można znaleźć na dołączonej płycie CD lub w repozytorium onli
 
 \subsection{Opis użytkowania}
 
-Aplikacja \texttt{ltc\_fitter} jest aplikacją linii poleceń, po uruchomieniu terminala i przejściu do odpowiedniego katalogu możemy wywołać:
+Aplikacja \texttt{ltc\_fitter} jest programem wywoływanym z linii poleceń, po uruchomieniu terminala i przejściu do odpowiedniego katalogu możemy uruchomić proces wyznaczenia parametrów z domyślnymi ustawieniami wywołując komendy z listingu \ref{lst:ltc_fitter_default}.
 
-\begin{lstlisting}[language=bash,numbers=none]
+\begin{lstlisting}[
+    language=bash,
+    numbers=none,
+    label={lst:ltc_fitter_default},
+    caption={Uruchomienie programu dopasowywującego z domyślnymi parametrami}
+]
        (unix) $ ./ltc_fitter
     (windows) $ ltc_fitter
 \end{lstlisting}
-
-\noindent co spowoduje uruchomienie procesu wyznaczania parametrów z domyślnymi ustawieniami.
 
 Ustawienia mogą zostać zmodyfikowane przy użyciu następujących modyfikatorów:
 \begin{description}
@@ -33,9 +36,14 @@ Ustawienia mogą zostać zmodyfikowane przy użyciu następujących modyfikator�
     \item[\texttt{--output=\textit{<string>}}] nazwa pliku wyjściowego, domyślnie nazwa pliku będzie zbudowana w następujący sposób: \texttt{result\_\textit{<rozdzielczość>}\_\textit{<rozdzielczość>}.ltc}
 \end{description}
 
-Przykłady:
+Przykłady wywołań z niestandardowymi ustawieniami znajdują się na listingu \ref{lst:ltc_fitter_custom_parameters}
 
-\begin{lstlisting}[language=bash,numbers=none]
+\begin{lstlisting}[
+    language=bash,
+    numbers=none,
+    label={lst:ltc_fitter_custom_parameters},
+    caption={Uruchomienie programu dopasowywującego z własnymi parametrami}
+]
 (unix) $ ./ltc_fitter --brdf=ggx --resolution=16 --output=quick16x16.ltc
 (unix) $ ./ltc_fitter  --min-roughness=0.01 --output=large128.ltc --resolution=128
 \end{lstlisting}
@@ -43,11 +51,17 @@ Przykłady:
 \subsection{Kompilacja}
 \label{section:ltcFitterCompilation}
 
-Aplikacja wykorzystuje pakiet CMake do wygenerowania projektu dla konkretnego kompilatora/środowiska np. clang czy Visual Studio IDE, który będzie można wykorzystać potem do właściwego zbudowania aplikacji. Dokładny opis użytkowania tego programu można znaleźć w dokumentacji projektu CMake \cite{CMakeDoc}. Przykładowa kompilacja w systemie z rodziny Unix może wyglądać następująco (przy użyciu domyślnego kompilatora C++ dla systemu):
-\begin{lstlisting}[language=bash,numbers=none]
- >ltc_fitter       $ mkdir build && cd build
- >ltc_fitter/build $ cmake ..
- >ltc_fitter/build $ make -j4
+Aplikacja wykorzystuje pakiet CMake do wygenerowania projektu dla konkretnego kompilatora/środowiska (np. clang, Visual Studio IDE), który będzie można wykorzystać potem do właściwego zbudowania aplikacji. Dokładny opis użytkowania tego programu można znaleźć w dokumentacji projektu CMake \cite{CMakeDoc}. Przykładowa kompilacja w systemie z rodziny Unix (przy użyciu domyślnego kompilatora C++ dla systemu) może zostać przeprowadzona w sposób przedstawiony na listingu \ref{lst:ltc_fitter_compilation}.
+
+\begin{lstlisting}[
+    language=bash,
+    numbers=none,
+    label={lst:ltc_fitter_compilation},
+    caption={Kompilacja programu dopasowywującego}
+]
+ ~/ltc_fitter       $ mkdir build && cd build
+ ~/ltc_fitter/build $ cmake ..
+ ~/ltc_fitter/build $ make -j4
 \end{lstlisting}
 
 Dla środowiska Windows można wykorzystać nakładkę CMake GUI ułatwiającą wygenerowanie projektu. Przykładowy proces wygenerowania projektu przedstawiony jest na rys. \ref{fig:CMakeGUIUsage}.
