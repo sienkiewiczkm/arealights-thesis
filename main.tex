@@ -11,7 +11,6 @@
 \renewcommand{\appendixpagename}{Załączniki}
 
 \usepackage{hyperref}
-
 \usepackage{amsmath} % text in math
 \usepackage{amssymb} % extended math symbol collection (Cap, Cup etc.)
 \usepackage{listings} % code listings (lstlisting)
@@ -47,6 +46,7 @@
   columns=fullflexible,
   keepspaces=true,
   numbers=left,
+  frame=lines
 }
 
 %-------------------------------------------------------------------------------
@@ -61,8 +61,21 @@
 \album{254210}
 \supervisor{dr~inż. Joanna Porter}
 \date{2017}
-\klucze{światła, pbr}
-\keywords{k1, k2}
+\klucze{
+    grafika trójwymiarowa czasu rzeczywistego, 
+    światła powierzchniowe,
+    oświetlenie, 
+    oświetlenie bazowane na zjawiskach fizycznych,
+    liniowo transformowane konsinusy
+}
+\keywords{
+    real-time 3D graphics,
+    area lights,
+    lighting,
+    physically based rendering,
+    physically based shading,
+    linearly transformed cosines
+}
 %-------------------------------------------------------------------------------
 
 \sisetup{
@@ -73,16 +86,25 @@
 \sloppy
 \setcounter{page}{1}
 
-% TODO: Odkomentować i uzupełnić przed oddaniem pracy.
-%\begin{streszczenie}
-%Streszczenie
-%\end{streszczenie}
+\begin{streszczenie}
+Wykorzystanie świateł powierzchniowych wyraźnie zwiększa realizm generowanej grafiki komputerowej.
 
-%\begin{abstract}
-%Abstract
-%\end{abstract}
+Praca magisterka omawia kilka metod generowania oświetlenia pochodzącego ze świateł powierzchniowych oraz wprowadza potrzebną teorię do zrozumienia tematu.
 
-%\makestatement
+Wprowadzone zostają pojęcia związane z oświetleniem bazowanym na zjawiskach fizycznych, omówione są podstawowe pojęcia optyki, radiometrii i kolorymetrii. Omówione zostało uproszczenie odległych lub niewielkich źródeł światła światłami punktowymi. Pierwszą omówioną metodą jest przybliżenie większego światła powierzchniowego chmurą świateł punktowych.
+
+Przypomniana została metoda Monte-Carlo w kontekście generowania grafiki trójwymiarowej wliczając w to światła powierzchniowe. Metoda ta może zostać potraktowana jako metoda referencyjna do dalszych badań.
+
+Kolejno została przedstawiona metoda liniowo transformowanych kosinusów działająca w czasie rzeczywistym i dająca bardzo dobre rezultaty.
+
+Do tekstu pracy dołączona jest aplikacja realizująca omówione algorytmy. Struktura i architektura aplikacji jest opisana w pracy.
+\end{streszczenie}
+
+\begin{abstract}
+\textit{Przetłumaczyć po zaakceptowaniu polskiej wersji.}
+\end{abstract}
+
+\makestatement
 
 %\cleardoublepage
 \tableofcontents
@@ -93,19 +115,17 @@
 \pagestyle{fancy}
 
 \subfile{source/notation_table}
-%\subfile{source/ch01_introduction}
-%\subfile{source/ch02_pbr}
+\subfile{source/ch01_introduction}
+\subfile{source/ch02_pbr}
 \subfile{source/ch03_montecarlo}
-%\subfile{source/ch04_ltc}
-%\subfile{source/ch11_architecture}
+\subfile{source/ch04_ltc}
+\subfile{source/ch05_results}
+\subfile{source/ch06_architecture}
+\subfile{source/ch07_summary}
 
-%latexdiff old new > diff.tex
-%afterwards fix requirepackage in diff.tex
-%\subfile{source/diff}
-
-%\begin{appendices}
-%\subfile{source/appendix_pdf_maxima}
-%\end{appendices}
+\begin{appendices}
+\subfile{source/appendix_pdf_maxima}
+\end{appendices}
 
 \printbibliography
 

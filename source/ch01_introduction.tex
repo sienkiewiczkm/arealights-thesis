@@ -2,4 +2,25 @@
 
 \begin{document}
 \chapter*{Wstęp}
+
+Modelowanie zachowania światła w scenie jest najistotniejszym aspektem każdego systemu renderowania niezależnie od zastosowania. Twórcy aplikacji czasu rzeczywistego przez bardzo długi czas nie mogli sobie pozwolić na wykorzystanie nawet średnio zaawansowanych technik symulacji oświetlenia. Rozwój sprzętu komputerowego, szczególnie kart graficznych, pozwala nam jednak na wykorzystanie bardziej wymagających metod bez poświęcania płynności aplikacji.
+
+Z natury naszego świata źródła światła posiadają pewną skończoną powierzchnię, która emituje protony, które potem krążą w otoczeniu by trafić w końcu do naszego oka. W zależności od rozmiaru i kształtu źródeł, inaczej wpływają one na estetykę pomieszczenia.
+
+Stan sprzętu komputerowego i złożoność metod symulacji światła sprawiają, że projektanci aplikacji graficznych musieli pójść na bardzo dużo kompromisów, w tym, rezygnacja z powierzchni świateł. Taka modyfikacja sprawia, że sceny nie mogą zawierać pełnego wachlarza gładkości, ponieważ źródła o naturze punktowej sprawiają, że takie ,,oszustwo'' jest bardzo łatwo wychwytywane przez człowieka.
+
+Niestety, takie istnienie takiego ograniczenia sprawia, że nie jesteśmy w stanie precyzyjnie symulować naszego świata. Pewne materiały są dla nas niedostępne, ich wykorzystanie zburzy całkowicie iluzję rzeczywistości. Z tego powodu, firmy oraz entuzjaści zajmującą się grafiką komputerową poświęcają coraz więcej czasu na opracowywanie metod pozwalających na zastosowanie świateł powierzchniowych również w grach i aplikacjach czasu rzeczywistego. 
+
+W pierwszym rozdziale tej pracy zostaną omówione podstawowe pojęcia związane z zachowaniem wiązek światła w naszym świecie oraz metodami analizy i modelowania używanymi obecnie przez zarówno przemysł filmowy oraz przemysł gier komputerowych.
+
+W drugim rozdziale wprowadzam uproszczoną metodę wykorzystującą algorytm Monte-Carlo, którą może służyć jako model referencyjny. Jest to metoda bazowana bezpośrednio na właściwościach świateł powierzchniowych przez wynik jest bardzo zbliżony do realnego. Metody tego typu wykorzystywane są w przemyśle filmowym, gdzie ograniczenia czasowe oraz zasoby obliczeniowe nie grają tak istotnej roli. Niestety, na obecnych domowych komputerach takie metody nie mogą zostać z powodzeniem w pełni wykorzystane w aplikacjach czasu rzeczywistego. 
+
+Trzeci rozdział zawiera opis metody liniowo transformowanych konsinusów. Jest to obiecująca metoda, która zamiast rozwiązywać oryginalne równania znajduje ich przybliżenie, bez dużej zmiany założeń.
+
+Czwarty rozdział zawiera rezultaty uzyskane w aplikacji dołączonej do pracy oraz krótkie porównanie zbadanych metod. Dołączone są wizualne porównania jak i średnie czas wygenerowania danej klatki obrazu.
+
+Piąty rozdział opisuje sposób użytkowania aplikacji przykładowych, metodę ich budowania oraz architekturę kodu.
+
+
+
 \end{document}
