@@ -280,12 +280,6 @@ Dane drugiej tekstury znajdują się od razu po danych pierwszej tekstury. Rekor
 %    \end{tabular}
 %\end{table}
 
-\subsection{Proponowane rozszerzenia}
-
-Architektura aplikacji pozwala na dodawanie dodatkowych modeli BRDF bez znaczących modyfikacji programu, przez co możliwe jest dodanie wparcia dla innych modeli oświetlenia.
-
-Obecnie obliczenia wykonywane są w jednym wątku, ale specyfika obliczeń umożliwia zrównoleglenie dużej części operacji przez co czas wykonania może być skrócony wielokrotnie. Trudniejszym, ale i potencjalnie bardziej efektywnym, podejściem byłoby przeniesienie części obliczeń na procesory graficzne z wykorzystaniem technologii takich jak CUDA czy OpenCL.
-
 \section{Program \texttt{arealights}}
 
 Program \texttt{arealights} jest aplikacją graficzną realizującą algorytmy symulujące światła powierzchniowe zamieszczone w tej pracy.
@@ -357,10 +351,6 @@ W głównym katalogu repozytorium znajdują się poszczególne pliki i katalogi:
 \end{description}
 
 \subsection{Architektura aplikacji}
-\subsection{Proponowane rozszerzenia}
 
-Aplikację można rozszerzyć o wiele dodatkowych funkcjonalności. Najprostszymi rozszerzeniami są dodatkowe metody oświetlenia oraz wsparcie dla bardziej skomplikowanych kształtów świateł powierzchniowych takich jak gwiazdy planarne, dyski i inne.
-
-Implementacje mogą być również rozszerzone o wsparcie dla kolorowych (teksturowanych) świateł.
 
 \end{document}

@@ -3,4 +3,20 @@
 \begin{document}
 \chapter{Podsumowanie}
 
+Wykorzystanie świateł powierzchniowych w grach na pewno przyniesie nam znaczną poprawę jakości obrazu, lecz nie istnieją jeszcze uniwersalne techniki, które zadziałają w każdej sytuacji. 
+
+\section{Kontynuacja pracy}
+
+Aplikację przykładową można rozszerzyć o wiele dodatkowych funkcjonalności. Najprostszymi rozszerzeniami są dodatkowe metody oświetlenia oraz wsparcie dla bardziej skomplikowanych kształtów świateł powierzchniowych takich jak gwiazdy planarne, dyski i inne. Implementacje mogą być również rozszerzone o wsparcie dla kolorowych (teksturowanych) świateł.
+
+Metoda liniowo transformowanych kosinusów może zostać wykorzystana do aproksymacji innych modeli BRDF bez znaczących modyfikacji programu - wystarczy dodać odpowiedni opis modelu i dodać kilka właściwości do kodu startowego.
+
+Kolejnym elementem który można usprawnić jest jakość przybliżeń dla bardzo gładkich powierzchni, obecna implementacja liniowo transformowanych kosinusów nie radzi sobie bardzo dobrze z niskimi wartościami tego parametru.
+
+Obecnie wyszukiwanie parametrów dla macierzy wykorzystanej w metodzie liniowo transformowanych kosinusów jest wykonywane są w jednym wątku, ale specyfika tych obliczeń umożliwia zrównoleglenie dużej części operacji przez co czas wykonania może być skrócony wielokrotnie. Trudniejszym, ale i potencjalnie bardziej efektywnym, podejściem byłoby przeniesienie części wymaganych obliczeń na procesory graficzne z wykorzystaniem technologii takich jak CUDA czy OpenCL.
+
+Otwartym problemem jest również wparcie dla cieni, jednak te zagadnienie jest wielokrotnie trudniejsze niż dla świateł o naturze punktowej.
+
+
+
 \end{document}
