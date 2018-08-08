@@ -67,7 +67,8 @@
     światła powierzchniowe,
     oświetlenie, 
     oświetlenie bazowane na zjawiskach fizycznych,
-    liniowo transformowane konsinusy
+    liniowo transformowane konsinusy,
+    radiometria
 }
 \keywords{
     real-time 3D graphics,
@@ -75,7 +76,8 @@
     lighting,
     physically based rendering,
     physically based shading,
-    linearly transformed cosines
+    linearly transformed cosines,
+    radiometry
 }
 %-------------------------------------------------------------------------------
 
@@ -88,33 +90,21 @@
 \setcounter{page}{1}
 
 \begin{streszczenie}
-
-
-Praca magisterka wprowadza potrzebną teorię do zrozumienia prac naukowych omawiających tematykę świateł powierzchniowych oraz przedstawia kilka metod generowania oświetlenia tego typu.
-
-Wprowadzone zostają pojęcia związane z oświetleniem o podłożu fizycznym, omówione są podstawowe pojęcia optyki i radiometrii w kontekście grafiki komputerowej. 
-
-Przedstawione metody generowania obrazu obejmują uproszczenie odległych lub niewielkich źródeł światła światłami punktowymi oraz przybliżenie większego światła powierzchniowego chmurą świateł punktowych.
-
-Przypomniana została metoda Monte-Carlo w kontekście generowania grafiki trójwymiarowej wliczając w to światła powierzchniowe. Metoda ta może zostać potraktowana jako metoda referencyjna do dalszych badań.
-
-Kolejno została przedstawiona metoda liniowo transformowanych kosinusów działająca w czasie rzeczywistym i dająca bardzo dobre rezultaty przy akceptowalnej utracie jakości.
-
-Do tekstu pracy dołączona jest aplikacja realizująca omówione algorytmy. Struktura i architektura aplikacji jest opisana w pracy.
+Praca magisterka wprowadza potrzebną teorię do zrozumienia prac naukowych omawiających tematykę świateł powierzchniowych oraz przedstawia kilka metod generowania oświetlenia tego typu. Wytłumaczone zostają pojęcia związane z oświetleniem o podłożu fizycznym, omówione są podstawowe pojęcia optyki i radiometrii w kontekście grafiki komputerowej. Przedstawione metody generowania obrazu obejmują uproszczenie odległych lub niewielkich źródeł światła światłami punktowymi oraz przybliżenie większego światła powierzchniowego chmurą świateł punktowych. Kolejno przypomniana została metoda Monte-Carlo w kontekście generowania grafiki trójwymiarowej wliczając w to światła powierzchniowe. Metoda ta może zostać potraktowana jako metoda referencyjna do dalszych badań. Następnie wprowadzono technikę liniowo transformowanych kosinusów działającą w czasie rzeczywistym i dająca bardzo dobre rezultaty. Do tekstu pracy dołączona jest aplikacja realizująca omówione algorytmy. Struktura i architektura aplikacji jest opisana w pracy.
 \end{streszczenie}
 
 \begin{abstract}
-\textit{Do przetłumaczenia po zaakceptowaniu polskiej wersji.}
+Master thesis introduces necessary theory required to understand authoritative reports about area lights and presents a few methods of simulating them. Physically based rendering methods are presented along with basic optics and radiometry concepts required. Mentioned methods of image generation include far or small area light approximation by point lights and approximation of bigger ones with a cluster of point lights. Next, Monte-Carlo method is recalled in computer graphcis context including area lights application. This method can be treated as a reference technique which can be used to measure accuracy. Last method is based on linearly transformed cosines which runs in real-time and yields believable results. This thesis includes an example application which implements discussed alghoritms along with structure and architecture documentation.
 \end{abstract}
 
 \makestatement
 
-%\cleardoublepage
+\cleardoublepage
 \tableofcontents
 
 %\listoftodos
 
-%\cleardoublepage
+\cleardoublepage
 \pagestyle{fancy}
 
 \subfile{source/notation_table}
@@ -126,6 +116,7 @@ Do tekstu pracy dołączona jest aplikacja realizująca omówione algorytmy. Str
 \subfile{source/ch06_architecture}
 \subfile{source/ch07_summary}
 
+\cleardoublepage
 \begin{appendices}
 \subfile{source/appendix_pdf_maxima}
 \end{appendices}

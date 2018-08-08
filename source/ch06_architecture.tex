@@ -316,13 +316,22 @@ Aplikacja przykładowa posiada bardzo prosty interfejs składający się z okna 
 
 Widok ustawień podzielony jest na sekcje: ustawienia światła (ang. \textit{Light settings}), ustawienia sceny (ang. \textit{Scene settings}) oraz ustawienia zależne od wybranej metody oświetlenia.
 
-Ustawienia światła (rys. \ref{fig:app_arealights_light_settings}) umożliwiają wybór jednej z opisanych w tej pracy metod oraz ustawienia światła w scenie oraz zdefiniowanie energii całkowitej źródła.
+Ustawienia światła (oznaczone numerem 1 na rys. \ref{fig:app_arealights_settings}) umożliwiają wybór jednej z opisanych w tej pracy metod oraz ustawienia światła w scenie oraz zdefiniowanie energii całkowitej źródła. W przypadku metody chmury punktów, możemy jeszcze ustawić rozmiar macierzy klastra (3 na rys. \ref{fig:app_arealights_settings}) Parametry sceny umożliwiają ustawienie odpowiedniej chropowatości, wybór rodzaju materiału oraz opcjonalne włączenie mapowania tekstur (2 i 4 na rys. \ref{fig:app_arealights_settings}).
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7\linewidth]{architecture/arealights/light_settings}
-    \caption{Ustawienia światła, kolejno są to: aktualnie używana metoda, pozycja światła prostokątnego, rozmiar źródła, obrót, energia światła.}
-    \label{fig:app_arealights_light_settings}
+    \begin{subfigure}[t]{0.40\linewidth}
+        \includegraphics[width=\linewidth]{architecture/arealights/full-settings}
+        \caption{1. Ustawienia światła, kolejno są to: aktualnie używana metoda, pozycja światła prostokątnego, rozmiar źródła, obrót, energia światła. 2. Ustawienia sceny. Kolejno ustawienia oznaczają: wybór rodzaju materiału (stały i wykorzystujący tekstury), w przypadku stałego również właściwości przewodnictwa oraz parametr szorstkości.}
+    \end{subfigure}
+    \hspace{0.05\textwidth}
+    \begin{subfigure}[t]{0.40\linewidth}
+        \includegraphics[width=\linewidth]{architecture/arealights/full-settings-2}
+        \caption{W przypadku wyboru tekstury, nie możemy dowolnie ustawiać gładkości powierzchni, pobierana jest ona z tekstury, która może zostać wybrana z listy oznaczonej cyfrą 4.}
+    \end{subfigure}
+
+    \caption{Widok ustawień aplikacji przykładowej. Opracowanie własne.}
+    \label{fig:app_arealights_settings}
 \end{figure}
 
 \subsection{Kompilacja}
@@ -352,11 +361,13 @@ W głównym katalogu repozytorium znajdują się poszczególne pliki i katalogi:
 
 \subsection{Architektura aplikacji}
 
-Architektura aplikacji \texttt{arealights} jest znacznie prostsza. Kod źródłowy podzielony jest na kilka podmodułów:
-\begin{description}
-    \item[\texttt{Application} (\texttt{Application.hpp}, \texttt{Application.cpp})] \hfill \\
-    Główna klasa aplikacji stanowiąca odrębny moduł. Spina ona wszystkie pozostałe moduły, przygotowuje wszystkie wymagane zasoby oraz w odpowiedni sposób przygotowuje kontekst OpenGL. Klasa ta dziedziczy po klasie \texttt{ImGuiApplication} będącej częścią wewnętrznego szkieletu umieszczonego w katalogu \texttt{framework/}.
-\end{itemize}
+Hierarchia klas w aplikacji \texttt{arealights} jest znacznie mniej skomplikowana. Kod źródłowy podzielony jest na kilka głównych klas (wyłączając szkielet aplikacji, który zajmuje się podstawowymi operacjami typu stworzenie okna, odczytywanie urządzeń wejścia itd.).
+
+Klasa \texttt{Application} jest główną klasą programu. Zarządza ona całym procesem: przygotowuje wszystkie moduły zależne, scenę testową oraz zasoby wymagane podczas pracy, konfiguruje kontekst OpenGL, odczytuje wejście z urządzeń i przestawia parametry zależnie od intencji użytkownika. Klasy \texttt{GroundTruth}, \texttt{PointLightCluster}, \texttt{LinearlyTransformedCosines} zawierają kod realizujący odpowiednie metody symulacji świateł powierzchniowych uruchamiane w konkretnym etapie renderowania przez instancję klasy \texttt{Application}.
+
+W klasie \texttt{Interface} znajduje się definicja interfejsu użytkownika zrealizowanego za pomocą darmowej biblioteki ImGui \cite{ImGui}. Parametry są przekazywane przez główny obiekt programu do odpowiednich modułów.
+
+Architektura aplikacji jest bardzo prosta i starałem się tutaj nie wykorzystywać przesadnie abstrakcji, ponieważ w tym przypadku trudno jest przewidzieć, jakich zasobów będzie potrzebować nowa metoda, a na tym etapie zaciemniłoby to zapis.
 
 
 \end{document}
