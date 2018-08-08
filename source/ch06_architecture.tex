@@ -352,5 +352,11 @@ W głównym katalogu repozytorium znajdują się poszczególne pliki i katalogi:
 
 \subsection{Architektura aplikacji}
 
+Architektura aplikacji \texttt{arealights} jest znacznie prostsza. Kod źródłowy podzielony jest na kilka podmodułów:
+\begin{description}
+    \item[\texttt{Application} (\texttt{Application.hpp}, \texttt{Application.cpp})] \hfill \\
+    Główna klasa aplikacji stanowiąca odrębny moduł. Spina ona wszystkie pozostałe moduły, przygotowuje wszystkie wymagane zasoby oraz w odpowiedni sposób przygotowuje kontekst OpenGL. Klasa ta dziedziczy po klasie \texttt{ImGuiApplication} będącej częścią wewnętrznego szkieletu umieszczonego w katalogu \texttt{framework/}.
+\end{itemize}
+
 
 \end{document}

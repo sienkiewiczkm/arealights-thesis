@@ -5,45 +5,83 @@
 \begin{document}
 \chapter{Rezultaty}
 
-Metody przedstawione w poprzednich rozdziałach zostały zaimplementowane dla jednolitych świateł o prostokątnym kształcie. W tabelach \ref{tab:results:metal}, \ref{tab:results:conductor} przedstawione zostały rezultaty dla materiałów o stałych właściwościach przy zmiennej chropowatości powierzchni. Metoda referencyjna generuje 1280 próbek w celu wyznaczenia wartości całki (100 iteracji po 128 próbek każda).
+Metody przedstawione w poprzednich rozdziałach zostały zaimplementowane dla jednolitych świateł o prostokątnym kształcie. W tabelach \ref{tab:results:metal} i \ref{tab:results:isolator} przedstawione zostały rezultaty dla materiałów o stałych właściwościach przy zmiennej chropowatości powierzchni. Metoda referencyjna generuje 12800 próbek w celu wyznaczenia wartości całki (1000 iteracji po 128 próbek każda). Kolejna tabela (\ref{tab:results:textured}) zawiera rezultaty wygenerowane z pomocą tekstur przystosowanych do silników wspierających renderowanie bazowane na zjawiskich fizycznych (mapy albedo, normalnych, chropowatości i metaliczności).
 
-W tabeli \ref{tab:performance} zostały przedstawione średnie czasy generowania jednej ramki obrazu. Platforma testowa posiada składa się z procesora i5-8600K 3.60GHz, 16GB pamięci RAM i karty graficznej NVIDIA GeForce GTX1080.
+W tabeli \ref{tab:performance} zostały przedstawione średnie czasy generowania jednej ramki obrazu w rozdzielczości 1024x1024 pikseli. Platforma testowa posiada składa się z procesora i5-8600K 3.60GHz, 16GB pamięci RAM i karty graficznej Nvidia GeForce GTX1080.
 
-Z tych rezultatów możemy wyciągnąć wniosek, że metoda chmury świateł punktowych nie skaluje się dobrze oraz nie spełnia swojej funkcji przy niskich wartościach chropowatości, dla odpowiednio niskich wartości wyraźnie widać strukturę światła powierzchniowego (rys. \ref{fig:results:pointManyLowAlpha}).
+Na podstawie rezultatów możemy wyciągnąć wniosek, że metoda liniowo transformowanych konsinusów radzi sobie znacznie lepiej od metody chmury świateł punktowych, która nie daje dobrych rezultatów w pełnym spektrum chropowatości. Dla odpowiednio niskiego parametru wyraźnie widać strukturę światła powierzchniowego (rys. \ref{fig:results:pointManyLowAlpha}), a tego właśnie chcieliśmy uniknąć na samym początku. Zwiększanie ilości świateł poprawia wynik, ale bardzo wpływa na wydajność jak wyraźnie widać w tabeli \ref{tab:performance}.
 
-\begin{figure}[h]
+Wyznaczenie parametrów dla metody liniowo transformowanych kosinusów w obecnej implementacji zajmuje bardzo dużo czasu (8-10 godzin do wyznaczenia mapy podglądowej o rozmiarze 64x64). Podzbiór rezultatu nadający się do wizualnego porównania został umieszczony na rysunku \ref{fig:results:fitMatrix}, obrazek podglądowy dla każdego przybliżenia został dołączony do pracy wraz z kodem źródłowym.
+
+\begin{figure}
     \centering
-    \includegraphics[width=0.4\linewidth]{results/misc/point-16x16-low-alpha}
-    \caption{Klaster świateł punktowych 16 na 16 przy niskiej chropowatości. Opracowanie własne.}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\textwidth]{results/misc/point16x16-low-rough}
+        \caption{16x16}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\textwidth]{results/misc/point32x32-low-rough}
+        \caption{32x32}
+    \end{subfigure}
+    \caption{Klastry świateł punktowych przy niskiej chropowatości. Opracowanie własne.}
     \label{fig:results:pointManyLowAlpha}
 \end{figure}
 
-Metoda liniowo przekształconych kosinusów wygenerowała satysfakcjonujące rezultaty dla większości 
+\begin{table}
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Metoda & Czas\footnote{Wygenerowana ramka ma rozdzielczość 1024 na 1024 pikseli} & Maksymalny FPS\footnote{} \\ \hline
+        Klaster świateł punktowych (4x4) & 16ms & 62 \\ \hline
+        Klaster świateł punktowych (6x6) & 16ms & 62 \\ \hline
+        Klaster świateł punktowych (8x8) & 16ms & 62 \\ \hline
+        Klaster świateł punktowych (10x10) & 16ms & 62 \\ \hline
+        Klaster świateł punktowych (12x12) & 17ms & 58 \\ \hline
+        Klaster świateł punktowych (14x14) & 24ms & 41 \\ \hline
+        Klaster świateł puntkowych (16x16) & 30ms & 33 \\ \hline
+        Klaster świateł puntkowych (20x20) & 47ms & 21 \\ \hline
+        Klaster świateł puntkowych (32x32) & 120ms & 8 \\ \hline
+        Liniowo transformowane kosinusy & 16ms & 62 \\ \hline
+        Ground-truth & 16442ms & 0.05 \\
+        \hline
+    \end{tabular}
+    \caption{Czas potrzebny na wygenerowanie pojedynczej ramki o wymiarach 1024 na 1024 pikseli. Teoretyczny maksymalny FPS jest wynikiem $\left \lfloor \frac{1\text{s}}{/\text{czas generowania ramki}}\right \rfloor$. Opracowanie własne.}
+    \label{tab:performance}
+\end{table}
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{C{0.5cm}C{4cm}C{4cm}C{4cm}}
+    \begin{tabular}{C{0.5cm}C{3cm}C{3cm}C{3cm}}
         $\alpha$ & Monte-Carlo & Światła punktowe (8x8) & LTC \\
+        $0.05$ 
+            & \includegraphics[width=3cm]{results/metal/{gt-flux-10-roughness-0.05}.png}
+            & \includegraphics[width=3cm]{results/metal/{point8x8-flux-10-roughness-0.05}.png}
+            & \includegraphics[width=3cm]{results/metal/{ltc-flux-10-roughness-0.05}.png} 
+            \\
         $0.2$ 
-            & \includegraphics[width=4cm]{results/metal/{gt-flux-10-roughness-0.2}.png}
-            & \includegraphics[width=4cm]{results/metal/{ltc-flux-10-roughness-0.2}.png}
-            & \includegraphics[width=4cm]{results/metal/{point-flux-10-roughness-0.2}.png} \\
+            & \includegraphics[width=3cm]{results/metal/{gt-flux-10-roughness-0.2}.png}
+            & \includegraphics[width=3cm]{results/metal/{point8x8-flux-10-roughness-0.2}.png}
+            & \includegraphics[width=3cm]{results/metal/{ltc-flux-10-roughness-0.2}.png} 
+            \\
         $0.4$ 
-            & \includegraphics[width=4cm]{results/metal/{gt-flux-10-roughness-0.4}.png}
-            & \includegraphics[width=4cm]{results/metal/{ltc-flux-10-roughness-0.4}.png}
-            & \includegraphics[width=4cm]{results/metal/{point-flux-10-roughness-0.4}.png} \\
+            & \includegraphics[width=3cm]{results/metal/{gt-flux-10-roughness-0.4}.png}
+            & \includegraphics[width=3cm]{results/metal/{point8x8-flux-10-roughness-0.4}.png}
+            & \includegraphics[width=3cm]{results/metal/{ltc-flux-10-roughness-0.4}.png} 
+            \\
         $0.6$
-            & \includegraphics[width=4cm]{results/metal/{gt-flux-10-roughness-0.6}.png}
-            & \includegraphics[width=4cm]{results/metal/{ltc-flux-10-roughness-0.6}.png}
-            & \includegraphics[width=4cm]{results/metal/{point-flux-10-roughness-0.6}.png} \\
+            & \includegraphics[width=3cm]{results/metal/{gt-flux-10-roughness-0.6}.png}
+            & \includegraphics[width=3cm]{results/metal/{point8x8-flux-10-roughness-0.6}.png}
+            & \includegraphics[width=3cm]{results/metal/{ltc-flux-10-roughness-0.6}.png}
+            \\
         $0.8$ 
-            & \includegraphics[width=4cm]{results/metal/{gt-flux-10-roughness-0.8}.png}
-            & \includegraphics[width=4cm]{results/metal/{ltc-flux-10-roughness-0.8}.png}
-            & \includegraphics[width=4cm]{results/metal/{point-flux-10-roughness-0.8}.png} \\
+            & \includegraphics[width=3cm]{results/metal/{gt-flux-10-roughness-0.8}.png}
+            & \includegraphics[width=3cm]{results/metal/{point8x8-flux-10-roughness-0.8}.png}
+            & \includegraphics[width=3cm]{results/metal/{ltc-flux-10-roughness-0.8}.png}
+            \\
         $1.0$ 
-            & \includegraphics[width=4cm]{results/metal/{gt-flux-10-roughness-1}.png}
-            & \includegraphics[width=4cm]{results/metal/{ltc-flux-10-roughness-1}.png}
-            & \includegraphics[width=4cm]{results/metal/{point-flux-10-roughness-1}.png}
+            & \includegraphics[width=3cm]{results/metal/{gt-flux-10-roughness-1}.png}
+            & \includegraphics[width=3cm]{results/metal/{point8x8-flux-10-roughness-1}.png}
+            & \includegraphics[width=3cm]{results/metal/{ltc-flux-10-roughness-1}.png}
     \end{tabular}
     \caption{Jednolita metalowa powierzchnia o różnym współczynniku chropowatości $\alpha$. Opracowanie własne.}
     \label{tab:results:metal}
@@ -51,31 +89,80 @@ Metoda liniowo przekształconych kosinusów wygenerowała satysfakcjonujące rez
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{C{0.5cm}C{4cm}C{4cm}C{4cm}}
-        $\alpha$ & Monte-Carlo & Światła punktowe (8x8) & LTC \\
-        $0.2$ 
-        & \includegraphics[width=4cm]{results/conductor/{gt-flux-10-roughness-0.2}.png}
-        & \includegraphics[width=4cm]{results/conductor/{ltc-flux-10-roughness-0.2}.png}
-        & \includegraphics[width=4cm]{results/conductor/{point-flux-10-roughness-0.2}.png} \\
-        $0.4$ 
-        & \includegraphics[width=4cm]{results/conductor/{gt-flux-10-roughness-0.4}.png}
-        & \includegraphics[width=4cm]{results/conductor/{ltc-flux-10-roughness-0.4}.png}
-        & \includegraphics[width=4cm]{results/conductor/{point-flux-10-roughness-0.4}.png} \\
-        $0.6$
-        & \includegraphics[width=4cm]{results/conductor/{gt-flux-10-roughness-0.6}.png}
-        & \includegraphics[width=4cm]{results/conductor/{ltc-flux-10-roughness-0.6}.png}
-        & \includegraphics[width=4cm]{results/conductor/{point-flux-10-roughness-0.6}.png} \\
-        $0.8$ 
-        & \includegraphics[width=4cm]{results/conductor/{gt-flux-10-roughness-0.8}.png}
-        & \includegraphics[width=4cm]{results/conductor/{ltc-flux-10-roughness-0.8}.png}
-        & \includegraphics[width=4cm]{results/conductor/{point-flux-10-roughness-0.8}.png} \\
-        $1.0$ 
-        & \includegraphics[width=4cm]{results/conductor/{gt-flux-10-roughness-1}.png}
-        & \includegraphics[width=4cm]{results/conductor/{ltc-flux-10-roughness-1}.png}
-        & \includegraphics[width=4cm]{results/conductor/{point-flux-10-roughness-1}.png}
+    \begin{tabular}{C{0.5cm}C{3cm}C{3cm}C{3cm}}
+    $\alpha$ & Monte-Carlo & Światła punktowe (8x8) & LTC \\
+    $0.05$ 
+        & \includegraphics[width=3cm]{results/isolator/{gt-flux-10-roughness-0.05}.png}
+        & \includegraphics[width=3cm]{results/isolator/{point8x8-flux-10-roughness-0.05}.png}
+        & \includegraphics[width=3cm]{results/isolator/{ltc-flux-10-roughness-0.05}.png} 
+        \\
+    $0.2$ 
+        & \includegraphics[width=3cm]{results/isolator/{gt-flux-10-roughness-0.2}.png}
+        & \includegraphics[width=3cm]{results/isolator/{point8x8-flux-10-roughness-0.2}.png}
+        & \includegraphics[width=3cm]{results/isolator/{ltc-flux-10-roughness-0.2}.png} 
+        \\
+    $0.4$ 
+        & \includegraphics[width=3cm]{results/isolator/{gt-flux-10-roughness-0.4}.png}
+        & \includegraphics[width=3cm]{results/isolator/{point8x8-flux-10-roughness-0.4}.png}
+        & \includegraphics[width=3cm]{results/isolator/{ltc-flux-10-roughness-0.4}.png} 
+        \\
+    $0.6$
+        & \includegraphics[width=3cm]{results/isolator/{gt-flux-10-roughness-0.6}.png}
+        & \includegraphics[width=3cm]{results/isolator/{point8x8-flux-10-roughness-0.6}.png}
+        & \includegraphics[width=3cm]{results/isolator/{ltc-flux-10-roughness-0.6}.png}
+        \\
+    $0.8$ 
+        & \includegraphics[width=3cm]{results/isolator/{gt-flux-10-roughness-0.8}.png}
+        & \includegraphics[width=3cm]{results/isolator/{point8x8-flux-10-roughness-0.8}.png}
+        & \includegraphics[width=3cm]{results/isolator/{ltc-flux-10-roughness-0.8}.png}
+        \\
+    $1.0$ 
+        & \includegraphics[width=3cm]{results/isolator/{gt-flux-10-roughness-1}.png}
+        & \includegraphics[width=3cm]{results/isolator/{point8x8-flux-10-roughness-1}.png}
+        & \includegraphics[width=3cm]{results/isolator/{ltc-flux-10-roughness-1}.png}
     \end{tabular}
     \caption{Izolator o różnym współczynniku chropowatości $\alpha$. Opracowanie własne.}
-    \label{tab:results:conductor}
+    \label{tab:results:isolator}
 \end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{C{2cm}C{3cm}C{3cm}C{3cm}}
+    Rodzaj & Monte-Carlo & Światła punktowe (8x8) & LTC \\
+    Żelazo 
+        & \includegraphics[width=3cm]{results/textured/{gt-scuffed-iron}.png}
+        & \includegraphics[width=3cm]{results/textured/{point8x8-scuffed-iron}.png}
+        & \includegraphics[width=3cm]{results/textured/{ltc-scuffed-iron}.png}
+        \\
+    Miedź 
+        & \includegraphics[width=3cm]{results/textured/{gt-polished-copper}.png}
+        & \includegraphics[width=3cm]{results/textured/{point8x8-polished-copper}.png}
+        & \includegraphics[width=3cm]{results/textured/{ltc-polished-copper}.png}
+        \\
+    Polypropylen 
+        & \includegraphics[width=3cm]{results/textured/{gt-polypropylene}.png}
+        & \includegraphics[width=3cm]{results/textured/{point8x8-polypropylene}.png}
+        & \includegraphics[width=3cm]{results/textured/{ltc-polypropylene}.png}
+        \\
+    Marmur
+        & \includegraphics[width=3cm]{results/textured/{gt-marble-checkerboard}.png}
+        & \includegraphics[width=3cm]{results/textured/{point8x8-marble-checkerboard}.png}
+        & \includegraphics[width=3cm]{results/textured/{ltc-marble-checkerboard}.png}
+        \\
+    Kafelki
+        & \includegraphics[width=3cm]{results/textured/{gt-vintage-tiles}.png}
+        & \includegraphics[width=3cm]{results/textured/{point8x8-vintage-tiles}.png}
+        & \includegraphics[width=3cm]{results/textured/{ltc-vintage-tiles}.png}
+    \end{tabular}
+    \caption{Różne materiały opisane teksturami. Wykorzystane tekstury pochodzą ze strony \url{http://freepbr.com} oraz \url{http://textures.com}. Opracowanie własne.}
+    \label{tab:results:textured}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{results/misc/fit_matrix}
+    \caption{Wizualne porównanie oryginalnej odpowiedzi BRDF (GGX) oraz wyznaczonego przybliżenia LTC. Od lewej do prawej zwiększa się kąt obserwacji, od góry do dołu rośnie chropowatość powierzchni. Pary wierszy obrazują wynik dla tego samego parametru chropowatości. Opracowanie własne.}
+    \label{fig:results:fitMatrix}
+\end{figure}
 
 \end{document}
