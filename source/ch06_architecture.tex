@@ -29,7 +29,7 @@ Ustawienia mogą zostać zmodyfikowane przy użyciu następujących modyfikator�
 \begin{description}
     \item[\texttt{--brdf=\textit{<method>}}] zmiana referencyjnego modelu BRDF, obecnie wspierany jest tylko model \texttt{ggx}
     
-    \item[\texttt{--resolution=\textit{<uint>}}] rozdzielczość podglądu, oznacza liczbę podziałów kąta padania i parametru chropowatości $\alpha$, domyślnie jest równy $32$
+    \item[\texttt{--resolution=\textit{<uint>}}] rozdzielczość podglądu, oznacza liczbę podziałów kąta padania i parametru chropowatości $\alpha$, domyślnie jest równy $64$
     
     \item[\texttt{--min-roughness=\textit{<floating>}}] minimalna wartość parametru chropowatości, zbyt niskie wartości będą skutkować błędami obliczeń, domyślnie $0.001$
     
@@ -64,7 +64,7 @@ Aplikacja wykorzystuje pakiet CMake do wygenerowania projektu dla konkretnego ko
  ~/ltc_fitter/build $ make -j4
 \end{lstlisting}
 
-Dla środowiska Windows można wykorzystać nakładkę CMake GUI ułatwiającą wygenerowanie projektu. Przykładowy proces wygenerowania projektu przedstawiony jest na rys. \ref{fig:CMakeGUIUsage}.
+Dla środowiska Windows można wykorzystać nakładkę CMake GUI ułatwiającą wygenerowanie projektu. Przykładowy proces wygenerowania projektu w ten sposób przedstawiony jest na rys. \ref{fig:CMakeGUIUsage}.
 
 Projekt został przetestowany pod kątem błędów kompilacji z użyciem poniższych kompilatorów/środowisk:
 \begin{itemize}
@@ -173,7 +173,7 @@ Znalezienie parametrów opowiadającym minimum dla danej funkcji wymaga implemen
     \label{fig:FunctionSolveClassDiagram}
 \end{figure}
 
-W celu wykonania obliczeń koniecznych do znalezienia macierzy $M$ transformującej rozkład kosinusowy do postaci bliskiej rozkładowi referencyjnemu musimy dodać kilka elementów do powyższej struktury. Dzięki interfejsom, dodanie rozszerzeń jest bardzo proste. Pierwszym krokiem, jest implementacja BRDF referencyjnego, w naszym przypadku GGX (rys. \ref{fig:BRDFClassDiagram}).
+W celu wykonania obliczeń koniecznych do znalezienia macierzy $M$ przekształcającej rozkład kosinusowy do postaci bliskiej rozkładowi referencyjnemu, musimy dodać kilka elementów do powyższej struktury. Dzięki interfejsom, dodanie rozszerzeń jest bardzo proste. Pierwszym krokiem, jest implementacja BRDF referencyjnego, w naszym przypadku GGX (rys. \ref{fig:BRDFClassDiagram}).
 
 \begin{figure}[h]
     \centering
@@ -182,7 +182,7 @@ W celu wykonania obliczeń koniecznych do znalezienia macierzy $M$ transformują
     \label{fig:BRDFClassDiagram}
 \end{figure}
 
-Kolejnym krokiem jest implementacja kolejno: 
+Kolejnymi krokami jest implementacja: 
 \begin{enumerate}
     \item reprezentacji liniowo transformowanych kosinusów, którą będziemy traktować jak BRDF,
     \item estymator błędu między obecnym przybliżeniem, a BRDF referencyjnym,

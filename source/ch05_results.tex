@@ -5,13 +5,13 @@
 \begin{document}
 \chapter{Rezultaty}
 
-Metody przedstawione w poprzednich rozdziałach zostały zaimplementowane dla jednolitych świateł o prostokątnym kształcie. W tabelach \ref{tab:results:metal} i \ref{tab:results:isolator} przedstawione zostały rezultaty dla materiałów o stałych właściwościach przy zmiennej chropowatości powierzchni. Metoda referencyjna generuje 12800 próbek w celu wyznaczenia wartości całki (1000 iteracji po 128 próbek każda). Kolejna tabela (\ref{tab:results:textured}) zawiera rezultaty wygenerowane z pomocą tekstur przystosowanych do silników wspierających renderowanie bazowane na zjawiskich fizycznych (mapy albedo, normalnych, chropowatości i metaliczności).
+Wszystkie metody przedstawione w poprzednich rozdziałach zostały zaimplementowane dla jednolitych, białych źródeł światła o prostokątnym kształcie. Rezultaty dla materiałów o stałym parametrze chropowatości na całej powierzchni, w danej grupie, zostały przedstawione w tabelach \ref{tab:results:metal} i \ref{tab:results:isolator}. Metoda referencyjna Monte-Carlo generuje $12 800$ próbek na piksel, w celu wyznaczenia wartości całki ($100$ iteracji po $128$ próbek na piksel każda). Obrazy wynikowe wygenerowane z pomocą tekstur opisujących niejednorodne materiały zróżnicowane pod względem normalnej, albedo, chropowatości czy też metaliczności znajdują się w tabeli \ref{tab:results:textured}. Tekstury te, są standardowymi zestawami obrazów przystosowanych do silników wspierających renderowanie bazowane na zjawiskach fizycznych.
 
-W tabeli \ref{tab:performance} zostały przedstawione średnie czasy generowania jednej ramki obrazu w rozdzielczości 1024x1024 pikseli. Platforma testowa posiada składa się z procesora i5-8600K 3.60GHz, 16GB pamięci RAM i karty graficznej Nvidia GeForce GTX1080.
+Średnie czasy generowania jednej ramki obrazu w rozdzielczości $1024$x$1024$ pikseli znajdują się w tabeli \ref{tab:performance}. Platforma testowa składa się z procesora i5-8600K 3.60GHz, 16GB pamięci RAM i karty graficznej Nvidia GeForce GTX1080.
 
-Na podstawie rezultatów możemy wyciągnąć wniosek, że metoda liniowo transformowanych konsinusów radzi sobie znacznie lepiej od metody chmury świateł punktowych, która nie daje dobrych rezultatów w pełnym spektrum chropowatości. Dla odpowiednio niskiego parametru wyraźnie widać strukturę światła powierzchniowego (rys. \ref{fig:results:pointManyLowAlpha}), a tego właśnie chcieliśmy uniknąć na samym początku. Zwiększanie ilości świateł poprawia wynik, ale bardzo wpływa na wydajność jak wyraźnie widać w tabeli \ref{tab:performance}.
+Na podstawie rezultatów możemy wyciągnąć wniosek, że metoda liniowo transformowanych konsinusów radzi sobie znacznie lepiej od metody chmury świateł punktowych, która nie daje dobrych rezultatów w pełnym spektrum chropowatości. Dla odpowiednio niskiego parametru wyraźnie widać strukturę światła powierzchniowego (rys. \ref{fig:results:pointManyLowAlpha}), a tego właśnie chcieliśmy uniknąć na samym początku. Zwiększanie ilości świateł poprawia wynik, ale bardzo wpływa na wydajność, jak wyraźnie widać w tabeli \ref{tab:performance}. Metoda liniowo transformowanych kosinusów nieznacznie różni się od metody referencyjnej i na pierwszy rzut oka wygląda bardzo podobnie, przez co utrata jakości percepcyjnie jest minimalna.
 
-Wyznaczenie parametrów dla metody liniowo transformowanych kosinusów w obecnej implementacji zajmuje bardzo dużo czasu (8-10 godzin do wyznaczenia mapy podglądowej o rozmiarze 64x64). Podzbiór rezultatu nadający się do wizualnego porównania został umieszczony na rysunku \ref{fig:results:fitMatrix}, obrazek podglądowy dla każdego przybliżenia został dołączony do pracy wraz z kodem źródłowym.
+Wyznaczenie parametrów dla metody liniowo transformowanych kosinusów w obecnej implementacji zajmuje bardzo dużo czasu. Wygenerowanie mapy poglądowej o rozmiarze $64$x$64$ zajmuje około 9 godzin na platformie testowej. Podzbiór rezultatu nadający się do wizualnego porównania został umieszczony na rysunku \ref{fig:results:fitMatrix}, obrazek podglądowy dla każdego poszczególnego przybliżenia został dołączony do pracy wraz z kodem źródłowym.
 
 \begin{figure}
     \centering
@@ -31,7 +31,7 @@ Wyznaczenie parametrów dla metody liniowo transformowanych kosinusów w obecnej
     \centering
     \begin{tabular}{|c|c|c|}
         \hline
-        Metoda & Czas\footnote{Wygenerowana ramka ma rozdzielczość 1024 na 1024 pikseli} & Maksymalny FPS\footnote{} \\ \hline
+        Metoda & Czas generacji & Maksymalny FPS \\ \hline
         Klaster świateł punktowych (4x4) & 16ms & 62 \\ \hline
         Klaster świateł punktowych (6x6) & 16ms & 62 \\ \hline
         Klaster świateł punktowych (8x8) & 16ms & 62 \\ \hline
@@ -45,7 +45,7 @@ Wyznaczenie parametrów dla metody liniowo transformowanych kosinusów w obecnej
         Ground-truth & 16442ms & 0.05 \\
         \hline
     \end{tabular}
-    \caption{Czas potrzebny na wygenerowanie pojedynczej ramki o wymiarach 1024 na 1024 pikseli. Teoretyczny maksymalny FPS jest wynikiem $\left \lfloor \frac{1\text{s}}{/\text{czas generowania ramki}}\right \rfloor$. Opracowanie własne.}
+    \caption{Czas potrzebny na wygenerowanie pojedynczej ramki o wymiarach 1024 na 1024 pikseli. Teoretyczny maksymalny FPS jest wynikiem $\left \lfloor \frac{1\text{s}}{\text{czas generowania ramki}}\right \rfloor$. Opracowanie własne.}
     \label{tab:performance}
 \end{table}
 

@@ -3,28 +3,18 @@
 \begin{document}
 \chapter{Podsumowanie}
 
-Wykorzystanie świateł powierzchniowych w grach na pewno przyniesie nam znaczną poprawę jakości obrazu, lecz nie istnieją jeszcze uniwersalne techniki, które zadziałają w każdej sytuacji przez co jeszcze będziemy zmuszeni do pozostania w przy światłach punktowych do opisu większości oświetlenia scen. W szczególnych przypadkach, w których cienie nie są wymagane - metoda liniowo transformowanych kosinusów daje rezultaty bliskie wynikom referencyjnym, więc rekomendowałbym ją jako pierwszą metodę, którą powinniśmy się zainteresować.
+Wykorzystanie świateł powierzchniowych w grach na pewno przyniesie nam znaczną poprawę jakości obrazu, lecz nie istnieją uniwersalne techniki, które zadziałają w każdej sytuacji. Przez pewien czas będziemy jeszcze zmuszeni do pozostania przy światłach punktowych do opisu większości oświetlenia sceny. W wielu przypadkach, w których cienie nie są wymagane, metoda liniowo transformowanych kosinusów daje rezultaty bliskie wynikom referencyjnym, więc rekomendowałbym ją jako pierwszą metodę, którą powinniśmy się zainteresować.
 
 \section{Kontynuacja pracy}
 
-Aplikację przykładową można rozszerzyć o wiele dodatkowych funkcjonalności. Najprostszymi rozszerzeniami są dodatkowe metody oświetlenia oraz wsparcie dla bardziej skomplikowanych kształtów świateł powierzchniowych takich jak gwiazdy planarne, dyski i inne. Implementacje mogą być również rozszerzone o wsparcie dla kolorowych (teksturowanych) świateł.
+Aplikację przykładową można rozszerzyć o wiele dodatkowych funkcjonalności. Najprostszymi rozszerzeniami są dodatkowe metody oświetlenia oraz wsparcie dla bardziej skomplikowanych kształtów świateł powierzchniowych takich jak gwiazdy planarne, dyski i inne. Implementacje mogą być również rozszerzone o wsparcie dla kolorowych świateł, w tym takich, które są opisane teksturą.
 
 Metoda liniowo transformowanych kosinusów może zostać wykorzystana do aproksymacji innych modeli BRDF bez znaczących modyfikacji programu - wystarczy dodać odpowiedni opis modelu i dodać kilka właściwości do kodu startowego.
 
-Obecnie wyszukiwanie parametrów dla macierzy wykorzystanej w metodzie liniowo transformowanych kosinusów jest wykonywane są w jednym wątku, ale specyfika tych obliczeń umożliwia zrównoleglenie dużej części operacji przez co czas wykonania może być skrócony wielokrotnie. Trudniejszym, ale i potencjalnie bardziej efektywnym, podejściem byłoby przeniesienie części wymaganych obliczeń na procesory graficzne z wykorzystaniem technologii takich jak CUDA czy OpenCL.
+Obecnie wyszukiwanie parametrów macierzy przekształcenia w metodzie liniowo transformowanych kosinusów jest wykonywane w jednym wątku, ale specyfika tych obliczeń umożliwia zrównoleglenie dużej części operacji przez co czas wykonania może być skrócony wielokrotnie. Trudniejszym, ale i potencjalnie bardziej efektywnym, podejściem byłoby przeniesienie części wymaganych obliczeń na procesory graficzne z wykorzystaniem technologii takich jak CUDA czy OpenCL.
 
-Istnieje jeszcze kilka metod symulacji świateł powierzchniowych między innymi
-metoda punktu reprezentatywnego
-\cite{pbr_ue4},
-\cite{Drobot}
-oraz
-różne metody analityczne
-\cite{Snyder}
-\cite{LecoqAnalyticApproximationsForALS}
-.
+Implementacja innych algorytmów oświetlenia i porównanie z metodami przedstawionymi w tej pracy może rzucić więcej światła na ten temat. Wartymi uwagi metodami, między innymi, jest metoda punktu reprezentatywnego \cite{pbr_ue4, Drobot} oraz różne metody analityczne \cite{Snyder, LecoqAnalyticApproximationsForALS}.
 
-Otwartym problemem jest również wparcie dla cieni, jednak te zagadnienie jest wielokrotnie trudniejsze niż dla świateł o naturze punktowej.
-
-
+Otwartym problemem jest również wparcie dla cieni, jednak te zagadnienie jest wielokrotnie trudniejsze niż dla świateł o naturze punktowej i nie istnieją jeszcze żadne dobre propozycje rozwiązujące ten problem.
 
 \end{document}
