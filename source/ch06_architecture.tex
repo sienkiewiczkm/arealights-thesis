@@ -51,7 +51,7 @@ Przykłady wywołań z niestandardowymi ustawieniami znajdują się na listingu 
 \subsection{Kompilacja}
 \label{section:ltcFitterCompilation}
 
-Aplikacja wykorzystuje pakiet CMake do wygenerowania projektu dla konkretnego kompilatora/środowiska (np. clang, Visual Studio IDE), który będzie można wykorzystać potem do właściwego zbudowania aplikacji. Dokładny opis użytkowania tego programu można znaleźć w dokumentacji projektu CMake \cite{CMakeDoc}. Przykładowa kompilacja w systemie z rodziny Unix (przy użyciu domyślnego kompilatora C++ dla systemu) może zostać przeprowadzona w sposób przedstawiony na listingu \ref{lst:ltc_fitter_compilation}.
+Aplikacja wykorzystuje pakiet CMake do wygenerowania projektu dla konkretnego kompilatora lub środowiska (np. clang, Visual Studio IDE), który będzie można wykorzystać potem do właściwego zbudowania aplikacji. Dokładny opis użytkowania tego programu można znaleźć w dokumentacji projektu CMake \cite{CMakeDoc}. Przykładowa kompilacja w systemie z rodziny Unix (przy użyciu domyślnego kompilatora C++ dla systemu) może zostać przeprowadzona w sposób przedstawiony na listingu \ref{lst:ltc_fitter_compilation}.
 
 \begin{lstlisting}[
     language=bash,
@@ -164,7 +164,7 @@ W główym katalogu repozytorium znajdziemy poszczególne pliki oraz katalogi za
 
 Sercem programu jest elastyczna implementacja algorytmu pełzającego sympleksu z możliwością uruchomienia go w wariancie z funkcją kary. Diagram klas zawierający kluczowe elementy do zrozumienia architektury dopasowywania funkcji znajduje się na rys. \ref{fig:FunctionSolveClassDiagram}. 
 
-Znalezienie parametrów opowiadającym minimum dla danej funkcji wymaga implementacji interfejsu \texttt{error\_estimator}, klasa ta wyznacza wartość błędu dla danych parametrów. Błąd ten minimalizowany jest w trakcie poszukiwania rozwiązania optymalnego. W przypadku funkcji kary, istnieje konieczność wyznaczenia wartości ograniczeń, które potem są przeliczane na dodatkowy, karny błąd zastosowany przez estymator \texttt{penalty\_error\_estimator}. 
+Znalezienie parametrów opowiadającym minimum dla danej funkcji wymaga implementacji interfejsu \texttt{error\_estimator}, klasa ta wyznacza wartość błędu dla danych parametrów. Błąd ten minimalizowany jest w trakcie poszukiwania rozwiązania optymalnego. W przypadku funkcji kary, istnieje konieczność wyznaczenia wartości ograniczeń, które potem są przeliczane na dodatkowy (karny) błąd zastosowany przez estymator \texttt{penalty\_error\_estimator}. 
 
 \begin{figure}[h]
     \centering
@@ -202,7 +202,6 @@ Implementacja już istniejących interfejsów (rys. \ref{fig:LTCClassDiagram}) p
 Procedurę wyznaczania parametrów wejściowych dla BRDF referencyjnego oraz ich zapisu do pliku możemy znaleźć w funkcji \texttt{build\_lookup}. Funkcja ta, dzieli dziedzinę na zadaną liczbę próbek, znajduje przybliżone rozwiązanie początkowe i uruchamia funkcję \texttt{ltc\_fit}, która z kolei buduje drzewo zależności wymagane przez algorytm pływającego sympleksu i znajduje optymalne rozwiązanie dla danych parametrów wejściowych.
 
 \subsection{Format plików wyjściowych}
-
 
 Plik wyjściowy został zoptymalizowany w taki sposób, by jego wczytanie do pamięci karty graficznej nie wymagało żadnych modyfikacji danych. Plik ten możemy podzielić na trzy części: nagłówek, teksturę pierwszą i drugą.
 
