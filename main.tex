@@ -60,7 +60,7 @@
 \specjal{Projektowanie systemów CAD/CAM}
 \author{Kamil Sienkiewicz}
 \album{254210}
-\supervisor{dr~inż. Joanna Porter}
+\supervisor{dr~inż. Joanna Porter-Sobieraj}
 \date{2017}
 \klucze{
     grafika trójwymiarowa czasu rzeczywistego, 
@@ -68,7 +68,9 @@
     oświetlenie, 
     oświetlenie bazowane na zjawiskach fizycznych,
     liniowo transformowane konsinusy,
-    radiometria
+    radiometria,
+    optymalizacja nieliniowa,
+    metoda pełzającego sympleksu
 }
 \keywords{
     real-time 3D graphics,
@@ -77,7 +79,9 @@
     physically based rendering,
     physically based shading,
     linearly transformed cosines,
-    radiometry
+    radiometry,
+    non-linear optimization,
+    Nelder-Mead algorithm
 }
 %-------------------------------------------------------------------------------
 
@@ -90,11 +94,35 @@
 \setcounter{page}{1}
 
 \begin{streszczenie}
-Praca magisterka wprowadza potrzebną teorię do zrozumienia prac naukowych, omawiających tematykę świateł powierzchniowych oraz przedstawia kilka metod generowania obrazu z oświetleniem tego typu. Wytłumaczone zostają podstawowe pojęcia optyki i radiometrii w kontekście grafiki komputerowej, następnie bazujące na nich modele cieniowania nazywanymi modelami opartymi na zjawiskach fizycznych. Przedstawione metody symulacji obejmują uproszczenie odległych lub niewielkich źródeł powierzchniowych punktowymi oraz technikę przybliżenia większych chmurami świateł punktowych. Przypomniana została metoda Monte-Carlo, która, z odpowiednimi usprawnieniami, może zostać potraktowana jako metoda referencyjna do dalszych badań. Wprowadzono również technikę liniowo transformowanych kosinusów, działającą w czasie rzeczywistym i dającą bardzo dobre rezultaty. Do tekstu pracy dołączona jest aplikacja realizująca omówione algorytmy. Struktura i architektura załączonych aplikacji jest opisana w pracy.
+Praca magisterska poświęcona jest tematyce świateł powierzchniowych, czyli takich, które emitują światło na pewnej powierzchni. Każde źródło występujące w naturze jest światłem tego typu, stąd prawidłowa ich symulacja jest kluczem do uzyskania fotorealistycznych rezultatów. Praca wprowadza potrzebną teorię do zrozumienia prac naukowych, omawiających tę tematykę oraz przedstawia kilka metod generowania obrazu z oświetleniem tego typu. 
+
+Wytłumaczone zostają podstawowe pojęcia optyki i radiometrii w kontekście grafiki komputerowej, następnie bazujące na nich modele cieniowania nazywanymi modelami opartymi na zjawiskach fizycznych. W pierwszym rozdziale opisane są najprostsze metody symulacji obejmujące uproszczenie odległych lub niewielkich źródeł powierzchniowych punktowymi oraz technikę przybliżenia większych chmurami świateł punktowych. 
+
+W kolejnym rozdziale przypomniana została metoda Monte-Carlo wraz z jej wariantami, która może zostać wykorzystana, ze względu na swój bezpośredni związek z modelem fizycznym, jako metoda referencyjna do dalszych badań. 
+
+Następnie wprowadzono technikę liniowo transformowanych kosinusów, która opiera się na przybliżeniu problematycznych obliczeniowo wyrażeń całkowych takimi, które posiadają wzór jawny. Metoda ta działa w czasie rzeczywistym, ale wymaga przeprowadzenia kosztownego procesu wyznaczenia współczynników. Współczynniki te jednak mogą zostać zachowane i wykorzystane w aplikacji w formie tabel podglądowych. 
+
+Uzyskane rezultaty z wykorzystaniem metody liniowo transformowanych kosinusów są bardzo zbliżone do dokładnej metody referencyjnej opartej o Monte-Carlo, przy założeniu braku zjawiska rzucania cieni. Różnica w czasie wykonania jednak sprawia, że metoda ta jest bardzo obiecująca i może zostać wykorzystana z powodzeniem w wielu zastosowaniach już dziś.
+
+Do tekstu pracy dołączone są aplikacje realizujące omówione algorytmy. Pierwsza z nich implementuje metody opisane w tej pracy i umożliwia ich podgląd w czasie rzeczywistym. Druga generuje współczynniki potrzebne do wykorzystania w metodzie liniowo transformowanych kosinusów poprzez optymalizację nieliniową. Struktura i architektura załączonych aplikacji jest opisana w pracy.
+
+\vspace{0.5cm}
 \end{streszczenie}
 
 \begin{abstract}
-Master thesis introduces necessary theory required to understand authoritative reports discussing the subject of area lights and presents a few methods of image generation with lighting of this type. Basic optics and radiometry concepts have been explained in context of computer graphics. Physically based rendering models have been derived from mentioned physics laws. The presented simulation methods include far or small area light approximation by point light and general technique for approximating bigger area lights with point light clusters. Monte-Carlo algorithm has been recalled, which with some adjustments is suitable for the reference method. Linearly transformed cosines method has been explained. This method is suitable for real-time and gives very good resources. This thesis includes an example applications implementing discussed algorithms. The structure and architecture of this application is included.
+The following master thesis covers the basics of area lights. Area light is a light source with noticeable area. Every light in nature is in fact an area light, hence correct simulation of lights of this type is the key to photo-realistic results. The thesis contains necessary theory required to understand authoritative reports discussing this subject and presents a few methods of simulation. 
+
+First chapter explains basic optics and radiometry concepts in context of computer graphics, physically based rendering models based on mentioned physics laws and simplest area light simulation methods: far or small area light approximation by point light and general technique for approximating bigger area lights with point light clusters.
+
+In the next chapter Monte-Carlo algorithm is recalled along with a few variants for performance improvement. Due to the direct use of physically correct formulas this method can be used as a reference method in further research.
+
+Afterwards, linearly transformed cosines method is introduced. It approaches the problem differently by finding good approximation of physically based integrals by integrals with closed-form expression. This method works well in real-time, but getting right coefficients required by the mathematical model is costly. However, those coefficients can be generated once in preprocessing stage and saved in lookup tables.
+
+Under assumption, that shadows are not cast, results yielded by linearly transformed cosines method are very close to the reference generated by Monte-Carlo. This method is very promising and can be successfully applied today in many use-cases due to the low performance cost.
+
+This thesis includes example applications implementing discussed algorithms. First one supports major methods introduced in this thesis and allows to inspect the results interactively. Second, generated the results required by linearly transformed cosines method. The structure and architecture of this application is included in the appendix.
+
+\vspace{0.5cm}
 \end{abstract}
 
 \makestatement
@@ -113,12 +141,14 @@ Master thesis introduces necessary theory required to understand authoritative r
 \subfile{source/ch03_montecarlo}
 \subfile{source/ch04_ltc}
 \subfile{source/ch05_results}
-\subfile{source/ch06_architecture}
 \subfile{source/ch07_summary}
 
 \cleardoublepage
+\renewcommand\appendixtocname{Dodatki}
+\renewcommand\appendixpagename{Dodatki}
 \begin{appendices}
 \subfile{source/appendix_pdf_maxima}
+\subfile{source/ch06_architecture}
 \end{appendices}
 
 \printbibliography

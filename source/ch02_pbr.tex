@@ -433,11 +433,7 @@ f_r(\omega_i, \omega_o) = \frac{
 
 \section{Równanie renderingu}
 
-\textbf{Równanie renderingu} to równanie całkowe, określające radiancję wychodzącą z danego punktu $p$ w danym kierunku $\omega_o$ znając radiancję przychodzącą do tego punktu. Równanie te możemy wyprowadzić z poprzednio przedstawionych definicji  (\ref{eq:pbr_irradiance_from_radiance}) i (\ref{eq:pbr_brdf}):
-\begin{equation*}
-\dd E(\omega) = L_i(p, \omega) \cos\theta \dd\omega
-\tag{\ref{eq:pbr_irradiance_from_radiance} powtórzone}
-\end{equation*}
+\textbf{Równanie renderingu} to równanie całkowe, określające radiancję wychodzącą z danego punktu $p$ w danym kierunku $\omega_o$ znając radiancję przychodzącą do tego punktu. Równanie te możemy wyprowadzić podstawiając równanie (\ref{eq:pbr_irradiance_from_radiance}) do równania (\ref{eq:pbr_brdf_modified_for_render}) uzyskanego z definicji (\ref{eq:pbr_brdf}):
 \begin{equation}
 f_r(\omega_i, \omega_o) = \frac{
     \dd L_{o}(\omega_o)
@@ -447,8 +443,6 @@ f_r(\omega_i, \omega_o) = \frac{
 \dd L_{o}(\omega_o) =  f_r(\omega_i, \omega_o) \dd E(\omega_i)
 \label{eq:pbr_brdf_modified_for_render}
 \end{equation}
-
-Podstawiając równanie (\ref{eq:pbr_irradiance_from_radiance}) do (\ref{eq:pbr_brdf_modified_for_render}) i całkując otrzymujemy:
 \begin{equation}
   L_{o}(\omega_o) =
   \int_{\Omega} {
@@ -736,7 +730,7 @@ Istotną cechą współczynnika Fresnela jest jego związek z kątem padania. Je
 \begin{figure}[h]
     \centering
     \includegraphics[width=6cm]{pbr/fresnel}
-    \caption{Odwrócony współczynnik Fresnela, aproksymacja Schlicka dla $F_0 = 0.04$. Źródło światła znajduje się w tym samym miejscu co obserwator. Opracowanie własne.}
+    \caption{Odwrotność współczynnika Fresnela, aproksymacja Schlicka dla $F_0 = 0.04$. Źródło światła znajduje się w tym samym miejscu co obserwator. Opracowanie własne.}
     \label{fig:schlick_fresnel}
 \end{figure}
 

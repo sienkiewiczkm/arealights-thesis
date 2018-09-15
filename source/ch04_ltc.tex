@@ -104,7 +104,7 @@ Drugim efektem jest przesuwanie się maksimum rozproszenia bliżej normalnej, gd
         \includegraphics[width=\textwidth]{ltc/offspecular/fit_r45_a60_brdf}
     \end{subfigure}
     
-    \caption{Zjawisko przesuwania się maksimum w kierunku normalnej. Do wygnerowania podglądu wykorzystano model GGX. Opracowanie własne.}
+    \caption{Zjawisko przesuwania się maksimum w kierunku normalnej. Do wygenerowania podglądu wykorzystano model GGX. Opracowanie własne.}
     \label{fig:BRDFOffSpecular}
 \end{figure}
 
@@ -662,7 +662,7 @@ W zależności od tego, czy światło jest dwustronne czy nie, należy wziąć w
 
 Ze względu na ograniczenia techniczne do zbudowania podglądu przekształceń wykorzystamy równomierną siatkę próbek $n \times n$ na prostokącie $(\alpha, \theta) \in \left[0,1\right] \times \left[0, \frac{\pi}{2}\right]$.
 
-Plik zawierający wyniki dla poszczególnych $\alpha$, $\theta$ przechowuje je w formie dwóch tablic dwuwymiarowych przetworzonych w taki sposób, aby były gotowe do wczytania przez kartkę graficzną bez dodatkowych obliczeń. Dokładny opis formatu pliku znajduje się w rozdziale poświęconym architekturze aplikacji (rozdział \ref{chapter:TODO}).
+Plik zawierający wyniki dla poszczególnych $\alpha$, $\theta$ przechowuje je w formie dwóch tablic dwuwymiarowych przetworzonych w taki sposób, aby były gotowe do wczytania przez kartkę graficzną bez dodatkowych obliczeń. Dokładny opis formatu pliku znajduje się w dodatku \ref{appendix:ltc_fitter} poświęconym architekturze aplikacji wyznaczającej wymagane dane.
 
 Pierwsza tekstura zawiera współczynniki $M_{1}^{1}, M_{1}^{3}, M_{2}^{2}, M_{3}^{1}$ w postaci liczb zmiennoprzecinkowych o pojedynczej precyzji. Druga tekstura zawiera pozostały istotny współczynnik, czyli $M_{3}^{3}$, normę referencyjnego BRDF $n_D$ oraz oszacowany współczynnik Fresnela $f_D$.
 

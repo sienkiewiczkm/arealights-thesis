@@ -3,15 +3,15 @@
 \newcommand{\graphvizscale}{0.09}
 
 \begin{document}
-\chapter{Aplikacje przykładowe}
 
-\section{Program \texttt{ltc\_fitter}}
+\chapter{Program \texttt{ltc\_fitter}}
+\label{appendix:ltc_fitter}
 
 Program \texttt{ltc\_fitter} służy do generowania przekształceń przybliżających rozkłady opisane przez modele BRDF za pomocą metody liniowo transformowanych rozkładów kosinusowych. Zadaniem programu jest wyznaczenie współczynników oraz zapisanie tablic do podglądu wartości (ang. \textit{lookup tables}) do pliku.
 
 Kod programu można znaleźć na dołączonej płycie CD lub w repozytorium online pod adresem: \url{https://github.com/sienkiewiczkm/ltc_fitter}\footnote{W przypadku skorzystania z repozytorium online nie można zapomnieć o pobraniu zależności, które są dołączone w formie podmodułów \url{https://git-scm.com/docs/git-submodule}}.
 
-\subsection{Opis użytkowania}
+\section{Opis użytkowania}
 
 Aplikacja \texttt{ltc\_fitter} jest programem wywoływanym z linii poleceń, po uruchomieniu terminala i przejściu do odpowiedniego katalogu możemy uruchomić proces wyznaczenia parametrów z domyślnymi ustawieniami wywołując komendy z listingu \ref{lst:ltc_fitter_default}.
 
@@ -48,7 +48,7 @@ Przykłady wywołań z niestandardowymi ustawieniami znajdują się na listingu 
 (unix) $ ./ltc_fitter  --min-roughness=0.01 --output=large128.ltc --resolution=128
 \end{lstlisting}
 
-\subsection{Kompilacja}
+\section{Kompilacja}
 \label{section:ltcFitterCompilation}
 
 Aplikacja wykorzystuje pakiet CMake do wygenerowania projektu dla konkretnego kompilatora lub środowiska (np. clang, Visual Studio IDE), który będzie można wykorzystać potem do właściwego zbudowania aplikacji. Dokładny opis użytkowania tego programu można znaleźć w dokumentacji projektu CMake \cite{CMakeDoc}. Przykładowa kompilacja w systemie z rodziny Unix (przy użyciu domyślnego kompilatora C++ dla systemu) może zostać przeprowadzona w sposób przedstawiony na listingu \ref{lst:ltc_fitter_compilation}.
@@ -107,7 +107,7 @@ Projekt został przetestowany pod kątem błędów kompilacji z użyciem poniżs
 \end{figure}
 
 
-\subsection{Struktura kodu źródłowego}
+\section{Struktura kodu źródłowego}
 
 W główym katalogu repozytorium znajdziemy poszczególne pliki oraz katalogi zawierające wszystko co jest potrzebne do uruchomienia aplikacji.
 
@@ -160,7 +160,7 @@ W główym katalogu repozytorium znajdziemy poszczególne pliki oraz katalogi za
     stałe i funkcje, które nie wpasowały się do pozostałych modułów
 \end{description}
 
-\subsection{Architektura aplikacji}
+\section{Architektura aplikacji}
 
 Sercem programu jest elastyczna implementacja algorytmu pełzającego sympleksu z możliwością uruchomienia go w wariancie z funkcją kary. Diagram klas zawierający kluczowe elementy do zrozumienia architektury dopasowywania funkcji znajduje się na rys. \ref{fig:FunctionSolveClassDiagram}. 
 
@@ -201,7 +201,7 @@ Implementacja już istniejących interfejsów (rys. \ref{fig:LTCClassDiagram}) p
 
 Procedurę wyznaczania parametrów wejściowych dla BRDF referencyjnego oraz ich zapisu do pliku możemy znaleźć w funkcji \texttt{build\_lookup}. Funkcja ta, dzieli dziedzinę na zadaną liczbę próbek, znajduje przybliżone rozwiązanie początkowe i uruchamia funkcję \texttt{ltc\_fit}, która z kolei buduje drzewo zależności wymagane przez algorytm pływającego sympleksu i znajduje optymalne rozwiązanie dla danych parametrów wejściowych.
 
-\subsection{Format plików wyjściowych}
+\section{Format plików wyjściowych}
 
 Plik wyjściowy został zoptymalizowany w taki sposób, by jego wczytanie do pamięci karty graficznej nie wymagało żadnych modyfikacji danych. Plik ten możemy podzielić na trzy części: nagłówek, teksturę pierwszą i drugą.
 
@@ -279,13 +279,14 @@ Dane drugiej tekstury znajdują się od razu po danych pierwszej tekstury. Rekor
 %    \end{tabular}
 %\end{table}
 
-\section{Program \texttt{arealights}}
+
+\chapter{Program \texttt{arealights}}
 
 Program \texttt{arealights} jest aplikacją graficzną realizującą algorytmy symulujące światła powierzchniowe zamieszczone w tej pracy.
 
 Kod programu można znaleźć na dołączonej płycie CD lub w repozytorium online pod adresem: \url{https://github.com/sienkiewiczkm/arealights}.
 
-\subsection{Opis użytkowania}
+\section{Opis użytkowania}
 
 Aplikacja przykładowa posiada bardzo prosty interfejs składający się z okna konfiguracyjnego oraz podglądu (rys. \ref{fig:app_arealights_view}). Zmiana ustawień powoduje natychmiastowe zaaplikowanie wartości i odświeżenie podglądu. Akcje i przypisane do nich klawisze przedstawione są w tabeli \ref{tab:arealights_keybindings}.
 
@@ -333,11 +334,11 @@ Ustawienia światła (oznaczone numerem 1 na rys. \ref{fig:app_arealights_settin
     \label{fig:app_arealights_settings}
 \end{figure}
 
-\subsection{Kompilacja}
+\section{Kompilacja}
 
-Kompilacja tego projektu przebiega analogiczne do poprzedniego programu. Szczegóły dotyczące budowania aplikacji można znaleźć w rozdziale \ref{section:ltcFitterCompilation}.
+Kompilacja tego projektu przebiega analogiczne do poprzedniego programu. Szczegóły dotyczące budowania aplikacji można znaleźć w dodatku \ref{section:ltcFitterCompilation}.
 
-\subsection{Struktura kodu źródłowego}
+\section{Struktura kodu źródłowego}
 
 W głównym katalogu repozytorium znajdują się poszczególne pliki i katalogi:
 
@@ -358,7 +359,7 @@ W głównym katalogu repozytorium znajdują się poszczególne pliki i katalogi:
     
 \end{description}
 
-\subsection{Architektura aplikacji}
+\section{Architektura aplikacji}
 
 Hierarchia klas w aplikacji \texttt{arealights} jest znacznie mniej skomplikowana. Kod źródłowy podzielony jest na kilka głównych klas (wyłączając szkielet aplikacji, który zajmuje się podstawowymi operacjami typu stworzenie okna, odczytywanie urządzeń wejścia itd.).
 
@@ -366,7 +367,6 @@ Klasa \texttt{Application} jest główną klasą programu. Zarządza ona całym 
 
 W klasie \texttt{Interface} znajduje się definicja interfejsu użytkownika zrealizowanego za pomocą darmowej biblioteki ImGui \cite{ImGui}. Parametry są przekazywane przez główny obiekt programu do odpowiednich modułów.
 
-Architektura aplikacji jest bardzo prosta i starałem się tutaj nie wykorzystywać przesadnie abstrakcji, ponieważ w tym przypadku trudno jest przewidzieć, jakich zasobów będzie potrzebować nowa metoda, a na tym etapie zaciemniłoby to zapis.
-
+Zaimplementowane metody nie współdzielą dużej części logiki, dlatego aplikacja nie zawiera wielu warstw abstrakcji i w dużym stopniu każda z metod zarządza kontekstem renderowania samodzielnie. Zbyt wczesne dodanie dodatkowych warstw mogłoby utrudnić dodawanie nowych metod w przyszłości ze względu na ich inne wymagania.
 
 \end{document}

@@ -5,17 +5,7 @@
 
 \section{Wstęp}
 
-Wyprowadzone w poprzednim rozdziale równanie renderingu opisuje wszystkie badane przez nas efekty radiometryczne. Można je zapisać we wspomnianej już wcześniej formie całkowej:
-\begin{equation*}
-L_{o}(\omega_o) =
-\int_{\Omega} {
-    f_r(\omega_i, \omega_o)
-    L_i(\omega_i)
-    (n \cdot \omega_i)
-    \dd{\omega_i}
-}
-\tag{\ref{eq:pbr_rendering_equation} powtórzone}
-\end{equation*}
+Wyprowadzone w poprzednim rozdziale równanie renderingu opisuje wszystkie badane przez nas efekty radiometryczne. Można je zapisać we wspomnianej już wcześniej formie całkowej (\ref{eq:pbr_rendering_equation}).
 
 W przypadku świateł zajmujących ciągły fragment dziedziny sferycznej, nie jesteśmy w stanie bezpośrednio przedstawić całki (\ref{eq:pbr_rendering_equation}) w postaci sumy skończonej bez znacznej utraty dokładności. Niestety, również dla większości funkcji $L_i$, $f_r$ rozwiązanie nie jest możliwe do znalezienia metodą analityczną w bardzo ograniczonym czasie wymaganym do zachowania płynności aplikacji.
 
@@ -351,7 +341,7 @@ Dodatkowy czas potrzebny na przygotowanie ramki, policzenie sumy ważonej i wyś
 \label{eq:mc_incremental_mc_packets}
 \end{equation}
 
-Obliczenie sum ważonych (\ref{eq:mc_incremental_mc_single}) i (\ref{eq:mc_incremental_mc_packets}) może zostać zrealizowane za pomocą łańcucha buforów ramki i obliczone za pomocą wspartego sprzętowo mechanizmu łączenia kolorów (ang. \textit{blending}). Obecna partia musi być liczona w osobnym buforze oraz potem skopiowana do docelowego z wykorzystaniem mieszania. Można zastosować uproszczenie, w którym wykorzystamy tylko jeden bufor, ale często ze względu na istnienie wielu świateł i wybraną technikę np. odroczone cieniowanie (ang. \textit{deferred shading}) może być koniecznie zastosowanie przynajmniej dwóch.
+Obliczenie sum ważonych (\ref{eq:mc_incremental_mc_single}) i (\ref{eq:mc_incremental_mc_packets}) może zostać zrealizowane za pomocą łańcucha buforów ramki i obliczone za pomocą wspartego sprzętowo mechanizmu łączenia kolorów (ang. \textit{blending}). Obecna partia musi być liczona w osobnym buforze oraz potem skopiowana do docelowego z wykorzystaniem mieszania. Można zastosować uproszczenie, w którym wykorzystamy tylko jeden bufor, ale często ze względu na istnienie wielu świateł i wybraną technikę np. odroczonego cieniowania (ang. \textit{deferred shading}) może być koniecznie zastosowanie przynajmniej dwóch.
 
 \section{Metoda funkcji ważności}
 
@@ -622,7 +612,7 @@ Istotnym jest to, co właściwie reprezentuje $s_\theta$ oraz $s_\phi$, tzn. co 
     \label{fig:GGXSampleMReflect}
 \end{figure}
 
-\section{Monte-Carlo z wieloma funkcjami ważności}
+\section{Metoda Monte-Carlo z wieloma funkcjami ważności}
 \label{Chapter:MIS}
 
 Załóżmy, że mamy $n$ różnych funkcji gęstości prawodpodobieństwa $p_{i}(x)$ dla $i \in \{ 1, \ldots, n \}$ opisujących istotność poszczególnych próbek dla danych czynników szukanej funkcji $f(x)$. Każda z tych strategii działa lepiej w pewnych obszarach dziedziny, jednakże gorzej od nich w każdym innym miejscu. Chcielibyśmy dynamicznie wybierać, której strategii używać w danym momencie, tak aby wariancja spadła jeszcze bardziej.
